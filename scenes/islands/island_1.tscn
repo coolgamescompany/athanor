@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://c4lt6yourscch"]
+
+[ext_resource type="PackedScene" uid="uid://bs3motpksscxx" path="res://assets/models/island_1/island_1-col.glb" id="1_w123x"]
+[ext_resource type="Material" uid="uid://fv3gsy3jhm3v" path="res://shaders/smart_island_material.tres" id="2_gkfhm"]
+
+[node name="Island_1_Start" type="Node3D" unique_id=534627359]
+
+[node name="island_1-col" parent="." unique_id=340901377 instance=ExtResource("1_w123x")]
+
+[node name="Cube" parent="island_1-col" index="0" unique_id=750467202]
+material_override = ExtResource("2_gkfhm")
+
+[node name="Cube_003" parent="island_1-col" index="1" unique_id=47250901]
+material_override = ExtResource("2_gkfhm")
+
+[node name="Marker3D" type="Marker3D" parent="." unique_id=1572061149]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8854456, 0)
+
+[node name="Props" type="Node3D" parent="." unique_id=1179600536]
+
+[node name="Ingridients" type="Node3D" parent="." unique_id=1768097109]
+
+[node name="Lights" type="Node3D" parent="." unique_id=325438327]
+
+[editable path="island_1-col"]

@@ -1,0 +1,77 @@
+[gd_resource type="VisualShader" format=3 uid="uid://dnb8rrkvry2lf"]
+
+[ext_resource type="Texture2D" uid="uid://cykky3mm23yfw" path="res://assets/textures/grass/Grass003_2K-PNG_Color.png" id="1_vqewh"]
+[ext_resource type="Texture2D" uid="uid://cdrt50h45o6e3" path="res://assets/textures/stone/Rock063_2K-JPG_Color.jpg" id="2_24cgh"]
+
+[sub_resource type="VisualShaderNodeMix" id="VisualShaderNodeMix_24cgh"]
+default_input_values = [0, Vector3(0, 0, 0), 1, Vector3(1, 1, 1), 2, 0.5]
+op_type = 4
+
+[sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_b42l4"]
+parameter_name = "Stone_Albedo"
+
+[sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_qoqlh"]
+parameter_name = "Grass_Albedo"
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_y4rxl"]
+texture = ExtResource("1_vqewh")
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_mxfew"]
+texture = ExtResource("2_24cgh")
+
+[sub_resource type="VisualShaderNodeVaryingGetter" id="VisualShaderNodeVaryingGetter_gpr51"]
+varying_name = "world_normal_var"
+varying_type = 4
+
+[sub_resource type="VisualShaderNodeVectorDecompose" id="VisualShaderNodeVectorDecompose_y4rxl"]
+
+[sub_resource type="VisualShaderNodeSmoothStep" id="VisualShaderNodeSmoothStep_mxfew"]
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_gpr51"]
+parameter_name = "Grass_Start"
+default_value_enabled = true
+default_value = 0.5
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_luom8"]
+parameter_name = "Grass_End"
+default_value_enabled = true
+default_value = 0.7
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_luom8"]
+input_name = "normal"
+
+[sub_resource type="VisualShaderNodeVaryingSetter" id="VisualShaderNodeVaryingSetter_qgnod"]
+varying_name = "world_normal_var"
+varying_type = 4
+
+[resource]
+varyings/world_normal_var = "0,4"
+preview_params/Grass_Start = "0.5"
+preview_params/Grass_End = "0.7"
+nodes/vertex/0/position = Vector2(240, 60)
+nodes/vertex/1/node = SubResource("VisualShaderNodeInput_luom8")
+nodes/vertex/1/position = Vector2(-400, 80)
+nodes/vertex/2/node = SubResource("VisualShaderNodeVaryingSetter_qgnod")
+nodes/vertex/2/position = Vector2(-40, 80)
+nodes/vertex/connections = PackedInt32Array(1, 0, 2, 0)
+nodes/fragment/4/node = SubResource("VisualShaderNodeVectorDecompose_y4rxl")
+nodes/fragment/4/position = Vector2(-1020, 700)
+nodes/fragment/5/node = SubResource("VisualShaderNodeSmoothStep_mxfew")
+nodes/fragment/5/position = Vector2(-820, 480)
+nodes/fragment/6/node = SubResource("VisualShaderNodeFloatParameter_gpr51")
+nodes/fragment/6/position = Vector2(-1500, 360)
+nodes/fragment/7/node = SubResource("VisualShaderNodeFloatParameter_luom8")
+nodes/fragment/7/position = Vector2(-1500, 580)
+nodes/fragment/12/node = SubResource("VisualShaderNodeMix_24cgh")
+nodes/fragment/12/position = Vector2(60, 100)
+nodes/fragment/13/node = SubResource("VisualShaderNodeTexture2DParameter_b42l4")
+nodes/fragment/13/position = Vector2(-500, -260)
+nodes/fragment/14/node = SubResource("VisualShaderNodeTexture2DParameter_qoqlh")
+nodes/fragment/14/position = Vector2(-840, -260)
+nodes/fragment/15/node = SubResource("VisualShaderNodeTexture_y4rxl")
+nodes/fragment/15/position = Vector2(-600, 60)
+nodes/fragment/16/node = SubResource("VisualShaderNodeTexture_mxfew")
+nodes/fragment/16/position = Vector2(-260, 60)
+nodes/fragment/17/node = SubResource("VisualShaderNodeVaryingGetter_gpr51")
+nodes/fragment/17/position = Vector2(-1420, 900)
+nodes/fragment/connections = PackedInt32Array(6, 0, 5, 0, 7, 0, 5, 1, 5, 0, 12, 2, 12, 0, 0, 0, 14, 0, 15, 2, 13, 0, 16, 2, 15, 0, 12, 1, 16, 0, 12, 0, 4, 1, 5, 2, 17, 0, 4, 0)
