@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://crdkbv1scj4sk"]
 
 [ext_resource type="Script" uid="uid://o5i1j6nk8lk" path="res://scenes/player/player.gd" id="1_8afob"]
-[ext_resource type="PackedScene" uid="uid://qfy6iij8f5ge" path="res://scenes/ui/pause_menu.tscn" id="2_dovo2"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3qbcn"]
 
@@ -16,6 +15,3 @@ shape = SubResource("CapsuleShape3D_3qbcn")
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 current = true
-
-[node name="PauseMenu" parent="." unique_id=1236970684 instance=ExtResource("2_dovo2")]
-unique_name_in_owner = true

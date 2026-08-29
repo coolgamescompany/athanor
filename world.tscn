@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://byxcigcqc1ry" path="res://assets/textures/skybox/Panorama_Sky_12-512x512.png" id="1_f3sb7"]
 [ext_resource type="PackedScene" uid="uid://c4lt6yourscch" path="res://scenes/islands/island_1.tscn" id="2_fj7yv"]
 [ext_resource type="PackedScene" uid="uid://crdkbv1scj4sk" path="res://scenes/player/player.tscn" id="3_tlwt5"]
+[ext_resource type="PackedScene" uid="uid://qfy6iij8f5ge" path="res://scenes/ui/pause_menu.tscn" id="4_aqk2v"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_fj7yv"]
 panorama = ExtResource("1_f3sb7")
@@ -19,15 +20,29 @@ fog_sky_affect = 0.413
 
 [node name="World" type="Node3D" unique_id=1044360984]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=647825155]
+[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=179284645]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=1366538975]
+size = Vector2i(1152, 648)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/SubViewport" unique_id=647825155]
 environment = SubResource("Environment_3qbcn")
 
-[node name="Island_1_Start" parent="." unique_id=534627359 instance=ExtResource("2_fj7yv")]
+[node name="Island_1_Start" parent="SubViewportContainer/SubViewport" unique_id=534627359 instance=ExtResource("2_fj7yv")]
 
-[node name="Player" parent="." unique_id=7781218 instance=ExtResource("3_tlwt5")]
+[node name="Player" parent="SubViewportContainer/SubViewport" unique_id=7781218 instance=ExtResource("3_tlwt5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7323995, 0)
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1962530227]
-transform = Transform3D(-0.7660445, 0.60402274, 0.2198463, 0, -0.34202012, 0.9396926, 0.6427876, 0.71984637, 0.26200265, -0.8530445, 3.7416687, 5.6277966)
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewportContainer/SubViewport" unique_id=1962530227]
+transform = Transform3D(-0.7660445, 0.60402274, 0.2198463, 0, -0.34202012, 0.9396927, 0.6427876, 0.71984637, 0.26200265, -0.8530445, 3.7416687, 5.6277966)
 light_color = Color(0.72156835, 0.9255543, 0.97680384, 1)
 shadow_enabled = true
+
+[node name="PauseMenu" parent="." unique_id=1236970684 instance=ExtResource("4_aqk2v")]
+unique_name_in_owner = true
