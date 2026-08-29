@@ -22,6 +22,7 @@ var step_sounds: Array = [
 @onready var step_sound: AudioStreamPlayer = %StepSound
 @onready var jump_sound: AudioStreamPlayer = %JumpSound
 @onready var respawn_sound: AudioStreamPlayer = %RespawnSound
+@onready var spawn_particles: GPUParticles3D = %SpawnParticles
 
 var spawn_position: Vector3
 var default_height: float
@@ -55,6 +56,7 @@ func respawn() -> void:
 	is_crouching = false
 	
 	set_physics_process(true)
+	spawn_particles.restart()
 
 func _ready() -> void:
 	if has_node("/root/MusicManager"):
@@ -77,6 +79,13 @@ func _ready() -> void:
 				default_height = collision_shape.shape.height
 			break
 	camera_default_y = camera.position.y
+	
+	respawn_anim.play("wakeup")
+	respawn_anim.seek(0.0, true)
+	
+	# 2. Включаем сочный звук магического пробуждения
+	respawn_sound.play()
+	spawn_particles.restart()
 
 func _physics_process(delta: float) -> void:
 	if global_position.y < -30.0:

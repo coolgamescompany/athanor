@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://c4lt6yourscch" path="res://scenes/islands/island_1.tscn" id="2_fe2o3"]
 [ext_resource type="Script" uid="uid://biwknkdkknotl" path="res://scenes/ui/menu_button_hover.gd" id="4_m1kxf"]
 [ext_resource type="FontFile" uid="uid://owt1rutbk715" path="res://assets/fonts/radio wizard/RadioWizard-Regular.otf" id="4_x2yvf"]
+[ext_resource type="AudioStream" uid="uid://ps77oda3xnhd" path="res://assets/sfx/ui/click_004.ogg" id="6_uhagc"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_fe2o3"]
 panorama = ExtResource("1_sl1te")
@@ -108,6 +109,7 @@ theme_override_constants/separation = 10
 alignment = 2
 
 [node name="PlayButton" type="Button" parent="MainMenu/MarginContainer/VBoxContainer" unique_id=821436331]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("4_x2yvf")
 theme_override_font_sizes/font_size = 60
@@ -116,11 +118,12 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_1g8jr")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_m1kxf")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_x2yvf")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_uhagc")
-text = "Играть"
+text = "ИГРАТЬ"
 alignment = 0
 script = ExtResource("4_m1kxf")
 
 [node name="SettingsButton" type="Button" parent="MainMenu/MarginContainer/VBoxContainer" unique_id=1382728731]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("4_x2yvf")
 theme_override_font_sizes/font_size = 40
@@ -134,6 +137,7 @@ alignment = 0
 script = ExtResource("4_m1kxf")
 
 [node name="ExitButton" type="Button" parent="MainMenu/MarginContainer/VBoxContainer" unique_id=1225494185]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("4_x2yvf")
 theme_override_font_sizes/font_size = 40
@@ -145,6 +149,15 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_n4uci")
 text = "выйти"
 alignment = 0
 script = ExtResource("4_m1kxf")
+
+[node name="MenuClickSound" type="AudioStreamPlayer" parent="." unique_id=720252945]
+unique_name_in_owner = true
+stream = ExtResource("6_uhagc")
+
+[node name="MenuHoverSound" type="AudioStreamPlayer" parent="." unique_id=1648827433]
+unique_name_in_owner = true
+stream = ExtResource("6_uhagc")
+volume_db = -10.0
 
 [connection signal="pressed" from="MainMenu/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="MainMenu/MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]

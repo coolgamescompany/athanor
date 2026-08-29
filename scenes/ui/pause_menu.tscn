@@ -84,6 +84,7 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_gmlin")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_lvxji")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_p47bc")
 text = "Вернуться"
+alignment = 0
 script = ExtResource("3_0bnpd")
 
 [node name="SettingsButton" type="Button" parent="VBoxContainer" unique_id=1022096270]
@@ -96,6 +97,7 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_qek5x")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_5gtgg")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_h17s1")
 text = "настройки"
+alignment = 0
 script = ExtResource("3_0bnpd")
 
 [node name="ToMainMenuButton" type="Button" parent="VBoxContainer" unique_id=818502221]
@@ -108,6 +110,7 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_gx1jg")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_ugbui")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_fcs02")
 text = "в главное меню"
+alignment = 0
 script = ExtResource("3_0bnpd")
 
 [connection signal="pressed" from="VBoxContainer/ReturnButton" to="." method="_on_return_button_pressed"]

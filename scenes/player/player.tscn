@@ -99,6 +99,55 @@ shader_parameter/contrast = 1.0
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3qbcn"]
 
+[sub_resource type="Curve" id="Curve_p47bc"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.87183106, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_ickwh"]
+curve = SubResource("Curve_p47bc")
+
+[sub_resource type="Curve" id="Curve_75vfm"]
+_data = [Vector2(0.0016059969, 1), 0.0, 0.0, 0, 0, Vector2(0.99839395, 0.00097084045), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_atx1f"]
+curve = SubResource("Curve_75vfm")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_cur4o"]
+direction = Vector3(0, 0.5, 0)
+spread = 180.0
+initial_velocity_min = 3.0
+initial_velocity_max = 5.0
+gravity = Vector3(0, 0, 0)
+damping_min = 2.0
+damping_max = 2.0
+scale_curve = SubResource("CurveTexture_atx1f")
+alpha_curve = SubResource("CurveTexture_ickwh")
+
+[sub_resource type="Gradient" id="Gradient_p47bc"]
+offsets = PackedFloat32Array(0, 0.5107034)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_p47bc"]
+gradient = SubResource("Gradient_p47bc")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_txcr2"]
+transparency = 1
+blend_mode = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.92917067, 0.84747934, 1, 1)
+albedo_texture = SubResource("GradientTexture2D_p47bc")
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_3qbcn"]
+material = SubResource("StandardMaterial3D_txcr2")
+
 [node name="Player" type="CharacterBody3D" unique_id=7781218]
 process_mode = 3
 script = ExtResource("1_8afob")
@@ -142,3 +191,14 @@ volume_db = -18.0
 unique_name_in_owner = true
 stream = ExtResource("4_75vfm")
 volume_db = -6.0
+
+[node name="SpawnParticles" type="GPUParticles3D" parent="." unique_id=588083982]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+emitting = false
+amount = 65
+lifetime = 1.2
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_cur4o")
+draw_pass_1 = SubResource("QuadMesh_3qbcn")
