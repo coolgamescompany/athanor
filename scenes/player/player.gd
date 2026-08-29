@@ -3,16 +3,50 @@ extends CharacterBody3D
 # Управление мышью
 @export var mouse_sensitivity: float = 0.002
 @onready var camera: Camera3D = %Camera3D
+@onready var respawn_anim: AnimationPlayer = %AnimationPlayer
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 
+var spawn_position: Vector3
+
+
+# РЕСПАВН ПОСЛЕ ПАДЕНИЯц
+func respawn() -> void:
+	# Чтобы функция не вызывалась повторно, пока идет телепорт
+	if get_node("RespawnEffect/ColorRect").material.get_shader_parameter("white_fade") > 0.0:
+		return
+		
+	set_physics_process(false)
+	
+	# 1. Мгновенно включаем белый экран (перематываем анимацию на старт)
+	respawn_anim.play("wakeup")
+	respawn_anim.seek(0.0, true)
+	
+	# Ждем крошечную долю секунды, чтобы экран успел побелеть перед переносом
+	await get_tree().create_timer(0.05).timeout
+	
+	# 2. СБРОС УГЛА ВЗГЛЯДА
+	# Обнуляем вращение тела игрока (направляем вдоль оси Z мира)
+	global_rotation.y = 0.0
+	# Обнуляем наклон головы камеры (смотрит строго горизонтально)
+	camera.rotation.x = 0.0
+	
+	# 3. ТЕЛЕПОРТАЦИЯ
+	global_position = spawn_position
+	velocity = Vector3.ZERO
+	
+	set_physics_process(true)
+
 
 func _physics_process(delta: float) -> void:
+	if global_position.y < -30.0:
+		respawn()
+		
 	# Добавление гравитации
 	if not is_on_floor():
 		velocity += get_gravity() * delta
-
+	
 	# Прыжок
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
@@ -33,6 +67,8 @@ func _physics_process(delta: float) -> void:
 func _ready() -> void:
 	# Игрок на старте просто захватывает курсор для игры
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	# Запоминаем стартовую позицию
+	spawn_position = global_position
 	# Стандартный режим: игрок автоматически засыпает, когда игра на паузе
 	process_mode = PROCESS_MODE_PAUSABLE
 

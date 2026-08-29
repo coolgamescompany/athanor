@@ -66,6 +66,12 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 10
 
+[node name="Label" type="Label" parent="VBoxContainer" unique_id=368097935]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/outline_size = 1
+text = "П А У З А"
+
 [node name="ReturnButton" type="Button" parent="VBoxContainer" unique_id=1393983034]
 layout_mode = 2
 theme_override_font_sizes/font_size = 40

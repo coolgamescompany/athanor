@@ -1,12 +1,118 @@
 [gd_scene format=3 uid="uid://crdkbv1scj4sk"]
 
 [ext_resource type="Script" uid="uid://o5i1j6nk8lk" path="res://scenes/player/player.gd" id="1_8afob"]
+[ext_resource type="Shader" uid="uid://b2uj70co6hrxj" path="res://scenes/ui/respawn.gdshader" id="2_dovo2"]
+
+[sub_resource type="Animation" id="Animation_dovo2"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:material:shader_parameter/white_fade")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ColorRect:material:shader_parameter/blur_amount")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ColorRect:material:shader_parameter/contrast")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [1.0]
+}
+
+[sub_resource type="Animation" id="Animation_gmlin"]
+resource_name = "wakeup"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:material:shader_parameter/white_fade")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ColorRect:material:shader_parameter/blur_amount")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.8666667, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [5.0, 0.0, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("ColorRect:material:shader_parameter/contrast")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [2.0, 1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lvxji"]
+_data = {
+&"RESET": SubResource("Animation_dovo2"),
+&"wakeup": SubResource("Animation_gmlin")
+}
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3qbcn"]
+shader = ExtResource("2_dovo2")
+shader_parameter/blur_amount = 0.0
+shader_parameter/white_fade = 0.0
+shader_parameter/contrast = 1.0
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3qbcn"]
 
 [node name="Player" type="CharacterBody3D" unique_id=7781218]
 process_mode = 3
 script = ExtResource("1_8afob")
+
+[node name="RespawnEffect" type="CanvasLayer" parent="." unique_id=2750634]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="RespawnEffect" unique_id=17862937]
+unique_name_in_owner = true
+libraries/ = SubResource("AnimationLibrary_lvxji")
+
+[node name="ColorRect" type="ColorRect" parent="RespawnEffect" unique_id=669323316]
+material = SubResource("ShaderMaterial_3qbcn")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1018996501]
 shape = SubResource("CapsuleShape3D_3qbcn")
