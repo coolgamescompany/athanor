@@ -1,10 +1,14 @@
 extends Node3D
 
 func _ready() -> void:
-	# Снимаем паузу с движка (на всякий случай, если вышли из меню паузы)
-	get_tree().paused = false
-	# Делаем курсор мыши видимым и свободным для нажатия кнопок
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	
+	# Ждем один кадр, чтобы Autoload (MusicManager) успел создаться в памяти
+	await get_tree().process_frame
+	
+	# Теперь музыка запустится со 100% гарантией при первом включении игры!
+	if has_node("/root/MusicManager"):
+		get_node("/root/MusicManager").play_menu()
 
 
 func _on_play_button_pressed() -> void:

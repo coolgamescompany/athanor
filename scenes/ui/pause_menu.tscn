@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://3dmb60yj1q8v" path="res://scenes/ui/pause_menu.gd" id="1_f6eus"]
 [ext_resource type="Shader" uid="uid://hi1tiqfhpq02" path="res://shaders/pause_menu.gdshader" id="2_8uki6"]
 [ext_resource type="Script" uid="uid://biwknkdkknotl" path="res://scenes/ui/menu_button_hover.gd" id="3_0bnpd"]
+[ext_resource type="FontFile" uid="uid://owt1rutbk715" path="res://assets/fonts/radio wizard/RadioWizard-Regular.otf" id="3_8uki6"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3qbcn"]
 shader = ExtResource("2_8uki6")
@@ -70,11 +71,13 @@ theme_override_constants/separation = 10
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 1
+theme_override_fonts/font = ExtResource("3_8uki6")
 text = "П А У З А"
 
 [node name="ReturnButton" type="Button" parent="VBoxContainer" unique_id=1393983034]
 layout_mode = 2
-theme_override_font_sizes/font_size = 40
+theme_override_fonts/font = ExtResource("3_8uki6")
+theme_override_font_sizes/font_size = 60
 theme_override_styles/normal = SubResource("StyleBoxEmpty_8afob")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_dovo2")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_gmlin")
@@ -85,24 +88,26 @@ script = ExtResource("3_0bnpd")
 
 [node name="SettingsButton" type="Button" parent="VBoxContainer" unique_id=1022096270]
 layout_mode = 2
-theme_override_font_sizes/font_size = 25
+theme_override_fonts/font = ExtResource("3_8uki6")
+theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxEmpty_75vfm")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_0owmy")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_qek5x")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_5gtgg")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_h17s1")
-text = "Настройки"
+text = "настройки"
 script = ExtResource("3_0bnpd")
 
 [node name="ToMainMenuButton" type="Button" parent="VBoxContainer" unique_id=818502221]
 layout_mode = 2
-theme_override_font_sizes/font_size = 25
+theme_override_fonts/font = ExtResource("3_8uki6")
+theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxEmpty_je7p5")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_fm80t")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_gx1jg")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_ugbui")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_fcs02")
-text = "В главное меню"
+text = "в главное меню"
 script = ExtResource("3_0bnpd")
 
 [connection signal="pressed" from="VBoxContainer/ReturnButton" to="." method="_on_return_button_pressed"]

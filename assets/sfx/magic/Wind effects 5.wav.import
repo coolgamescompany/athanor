@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bkritw22pf7w8"
+path="res://.godot/imported/Wind effects 5.wav-fc73aa06a240eb568428312d38dc6ed5.sample"
+
+[deps]
+
+source_file="res://assets/sfx/magic/Wind effects 5.wav"
+dest_files=["res://.godot/imported/Wind effects 5.wav-fc73aa06a240eb568428312d38dc6ed5.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

@@ -72,7 +72,11 @@ func _on_return_button_pressed() -> void:
 func _on_settings_button_pressed() -> void:
 	pass # Настройки
 
-
 func _on_to_main_menu_button_pressed() -> void:
 	get_tree().paused = false
+	
+	# Принудительно включаем музыку меню перед выходом!
+	if has_node("/root/MusicManager"):
+		get_node("/root/MusicManager").play_menu()
+		
 	get_tree().change_scene_to_file("res://scenes/ui/main_menu.tscn")

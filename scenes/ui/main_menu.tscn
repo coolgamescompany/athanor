@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://byxcigcqc1ry" path="res://assets/textures/skybox/Panorama_Sky_12-512x512.png" id="1_sl1te"]
 [ext_resource type="PackedScene" uid="uid://c4lt6yourscch" path="res://scenes/islands/island_1.tscn" id="2_fe2o3"]
 [ext_resource type="Script" uid="uid://biwknkdkknotl" path="res://scenes/ui/menu_button_hover.gd" id="4_m1kxf"]
+[ext_resource type="FontFile" uid="uid://owt1rutbk715" path="res://assets/fonts/radio wizard/RadioWizard-Regular.otf" id="4_x2yvf"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_fe2o3"]
 panorama = ExtResource("1_sl1te")
@@ -82,6 +83,14 @@ text = "All rights reserved (с) 2026 CGC"
 horizontal_alignment = 2
 vertical_alignment = 2
 
+[node name="ColorRect" type="ColorRect" parent="MainMenu" unique_id=288415626]
+visible = false
+offset_left = -20.0
+offset_top = 469.0
+offset_right = 1213.0
+offset_bottom = 524.0
+color = Color(0.26570284, 0.14300346, 0.5017924, 0.41960785)
+
 [node name="MarginContainer" type="MarginContainer" parent="MainMenu" unique_id=788500684]
 anchors_preset = 15
 anchor_right = 1.0
@@ -98,17 +107,10 @@ size_flags_vertical = 8
 theme_override_constants/separation = 10
 alignment = 2
 
-[node name="Label" type="Label" parent="MainMenu/MarginContainer/VBoxContainer" unique_id=2089792008]
-layout_mode = 2
-theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
-theme_override_constants/outline_size = 4
-theme_override_font_sizes/font_size = 22
-text = "А Т А Н О Р"
-horizontal_alignment = 2
-
 [node name="PlayButton" type="Button" parent="MainMenu/MarginContainer/VBoxContainer" unique_id=821436331]
 layout_mode = 2
-theme_override_font_sizes/font_size = 40
+theme_override_fonts/font = ExtResource("4_x2yvf")
+theme_override_font_sizes/font_size = 60
 theme_override_styles/normal = SubResource("StyleBoxEmpty_3qbcn")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_1g8jr")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_m1kxf")
@@ -120,25 +122,27 @@ script = ExtResource("4_m1kxf")
 
 [node name="SettingsButton" type="Button" parent="MainMenu/MarginContainer/VBoxContainer" unique_id=1382728731]
 layout_mode = 2
-theme_override_font_sizes/font_size = 25
+theme_override_fonts/font = ExtResource("4_x2yvf")
+theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxEmpty_txcr2")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_btxxm")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_wb0q5")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_q85j6")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_8g5eo")
-text = "Настройки"
+text = "настройки"
 alignment = 0
 script = ExtResource("4_m1kxf")
 
 [node name="ExitButton" type="Button" parent="MainMenu/MarginContainer/VBoxContainer" unique_id=1225494185]
 layout_mode = 2
-theme_override_font_sizes/font_size = 25
+theme_override_fonts/font = ExtResource("4_x2yvf")
+theme_override_font_sizes/font_size = 40
 theme_override_styles/normal = SubResource("StyleBoxEmpty_cur4o")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_7suek")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_otr3d")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_8ekit")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_n4uci")
-text = "Выйти"
+text = "выйти"
 alignment = 0
 script = ExtResource("4_m1kxf")
 
