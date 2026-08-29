@@ -1,0 +1,123 @@
+[gd_scene format=3 uid="uid://8bnx7m0oh4fm"]
+
+[ext_resource type="Script" uid="uid://drojub8juayoa" path="res://scenes/ui/main_menu.gd" id="1_1g8jr"]
+[ext_resource type="Texture2D" uid="uid://byxcigcqc1ry" path="res://assets/textures/skybox/Panorama_Sky_12-512x512.png" id="1_sl1te"]
+[ext_resource type="PackedScene" uid="uid://c4lt6yourscch" path="res://scenes/islands/island_1.tscn" id="2_fe2o3"]
+[ext_resource type="Script" uid="uid://biwknkdkknotl" path="res://scenes/ui/menu_button_hover.gd" id="4_m1kxf"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_fe2o3"]
+panorama = ExtResource("1_sl1te")
+
+[sub_resource type="Sky" id="Sky_txcr2"]
+sky_material = SubResource("PanoramaSkyMaterial_fe2o3")
+
+[sub_resource type="Environment" id="Environment_1g8jr"]
+background_mode = 2
+sky = SubResource("Sky_txcr2")
+fog_enabled = true
+fog_light_color = Color(0.13681567, 0.15041906, 0.25735316, 1)
+fog_sky_affect = 0.413
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3qbcn"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1g8jr"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_m1kxf"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_x2yvf"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uhagc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_txcr2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_btxxm"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wb0q5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_q85j6"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8g5eo"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cur4o"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7suek"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_otr3d"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8ekit"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_n4uci"]
+
+[node name="MainMenu" type="Node3D" unique_id=236665702]
+script = ExtResource("1_1g8jr")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=965499833]
+environment = SubResource("Environment_1g8jr")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1145320120]
+transform = Transform3D(-0.7660445, 0.60402274, 0.2198463, 0, -0.34202012, 0.9396926, 0.6427876, 0.71984637, 0.26200265, -0.8530445, 3.7416687, 5.6277966)
+light_color = Color(0.72156835, 0.9255543, 0.97680384, 1)
+shadow_enabled = true
+
+[node name="Island_1_Start" parent="." unique_id=534627359 instance=ExtResource("2_fe2o3")]
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=344885894]
+transform = Transform3D(1, 0, 0, 0, 0.9433965, 0.33166695, 0, -0.33166695, 0.9433965, 0, 1.3826613, 7.262161)
+
+[node name="MainMenu" type="CanvasLayer" parent="." unique_id=1663851759]
+
+[node name="MarginContainer" type="MarginContainer" parent="MainMenu" unique_id=788500684]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainMenu/MarginContainer" unique_id=1994595203]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_constants/separation = 10
+alignment = 2
+
+[node name="PlayButton" type="Button" parent="MainMenu/MarginContainer/VBoxContainer" unique_id=821436331]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxEmpty_3qbcn")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_1g8jr")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_m1kxf")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_x2yvf")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_uhagc")
+text = "Играть"
+alignment = 0
+script = ExtResource("4_m1kxf")
+
+[node name="SettingsButton" type="Button" parent="MainMenu/MarginContainer/VBoxContainer" unique_id=1382728731]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxEmpty_txcr2")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_btxxm")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_wb0q5")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_q85j6")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_8g5eo")
+text = "Настройки"
+alignment = 0
+script = ExtResource("4_m1kxf")
+
+[node name="ExitButton" type="Button" parent="MainMenu/MarginContainer/VBoxContainer" unique_id=1225494185]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxEmpty_cur4o")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_7suek")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_otr3d")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_8ekit")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_n4uci")
+text = "Выйти"
+alignment = 0
+script = ExtResource("4_m1kxf")
+
+[connection signal="pressed" from="MainMenu/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="MainMenu/MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="MainMenu/MarginContainer/VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]

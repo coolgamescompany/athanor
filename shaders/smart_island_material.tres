@@ -8,6 +8,7 @@
 render_priority = 0
 shader = ExtResource("1_mnxas")
 shader_parameter/Stone_Albedo = ExtResource("3_7abbq")
+shader_parameter/Texture_Scale = 0.05
 shader_parameter/Grass_Albedo = ExtResource("2_8tj8i")
 shader_parameter/Grass_Start = 0.2
 shader_parameter/Grass_End = 0.6

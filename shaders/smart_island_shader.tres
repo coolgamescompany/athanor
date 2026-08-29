@@ -23,6 +23,12 @@ texture = ExtResource("2_24cgh")
 varying_name = "world_normal_var"
 varying_type = 4
 
+[sub_resource type="VisualShaderNodeTextureParameterTriplanar" id="VisualShaderNodeTextureParameterTriplanar_vqewh"]
+parameter_name = "Grass_Triplanar"
+
+[sub_resource type="VisualShaderNodeTextureParameterTriplanar" id="VisualShaderNodeTextureParameterTriplanar_24cgh"]
+parameter_name = "Stone_Triplanar"
+
 [sub_resource type="VisualShaderNodeVectorDecompose" id="VisualShaderNodeVectorDecompose_y4rxl"]
 
 [sub_resource type="VisualShaderNodeSmoothStep" id="VisualShaderNodeSmoothStep_mxfew"]
@@ -65,13 +71,17 @@ nodes/fragment/7/position = Vector2(-1500, 580)
 nodes/fragment/12/node = SubResource("VisualShaderNodeMix_24cgh")
 nodes/fragment/12/position = Vector2(60, 100)
 nodes/fragment/13/node = SubResource("VisualShaderNodeTexture2DParameter_b42l4")
-nodes/fragment/13/position = Vector2(-500, -260)
+nodes/fragment/13/position = Vector2(-460, -820)
 nodes/fragment/14/node = SubResource("VisualShaderNodeTexture2DParameter_qoqlh")
-nodes/fragment/14/position = Vector2(-840, -260)
+nodes/fragment/14/position = Vector2(-1200, -580)
 nodes/fragment/15/node = SubResource("VisualShaderNodeTexture_y4rxl")
-nodes/fragment/15/position = Vector2(-600, 60)
+nodes/fragment/15/position = Vector2(-960, -260)
 nodes/fragment/16/node = SubResource("VisualShaderNodeTexture_mxfew")
-nodes/fragment/16/position = Vector2(-260, 60)
+nodes/fragment/16/position = Vector2(-220, -500)
 nodes/fragment/17/node = SubResource("VisualShaderNodeVaryingGetter_gpr51")
 nodes/fragment/17/position = Vector2(-1420, 900)
+nodes/fragment/18/node = SubResource("VisualShaderNodeTextureParameterTriplanar_vqewh")
+nodes/fragment/18/position = Vector2(-720, 40)
+nodes/fragment/19/node = SubResource("VisualShaderNodeTextureParameterTriplanar_24cgh")
+nodes/fragment/19/position = Vector2(-580, -460)
 nodes/fragment/connections = PackedInt32Array(6, 0, 5, 0, 7, 0, 5, 1, 5, 0, 12, 2, 12, 0, 0, 0, 14, 0, 15, 2, 13, 0, 16, 2, 15, 0, 12, 1, 16, 0, 12, 0, 4, 1, 5, 2, 17, 0, 4, 0)

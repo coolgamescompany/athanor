@@ -1,0 +1,104 @@
+[gd_scene format=3 uid="uid://qfy6iij8f5ge"]
+
+[ext_resource type="Script" uid="uid://3dmb60yj1q8v" path="res://scenes/ui/pause_menu.gd" id="1_f6eus"]
+[ext_resource type="Shader" uid="uid://hi1tiqfhpq02" path="res://shaders/pause_menu.gdshader" id="2_8uki6"]
+[ext_resource type="Script" uid="uid://biwknkdkknotl" path="res://scenes/ui/menu_button_hover.gd" id="3_0bnpd"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3qbcn"]
+shader = ExtResource("2_8uki6")
+shader_parameter/blur_amount = 0.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8afob"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dovo2"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gmlin"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lvxji"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p47bc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_75vfm"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0owmy"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qek5x"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5gtgg"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_h17s1"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_je7p5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fm80t"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gx1jg"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ugbui"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fcs02"]
+
+[node name="PauseMenu" type="CanvasLayer" unique_id=1236970684]
+process_mode = 3
+script = ExtResource("1_f6eus")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1257655806]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_3qbcn")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1600167604]
+unique_name_in_owner = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -104.5
+offset_top = -72.5
+offset_right = 104.5
+offset_bottom = 72.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="ReturnButton" type="Button" parent="VBoxContainer" unique_id=1393983034]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = SubResource("StyleBoxEmpty_8afob")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_dovo2")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_gmlin")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_lvxji")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_p47bc")
+text = "Вернуться"
+script = ExtResource("3_0bnpd")
+
+[node name="SettingsButton" type="Button" parent="VBoxContainer" unique_id=1022096270]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxEmpty_75vfm")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_0owmy")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_qek5x")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_5gtgg")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_h17s1")
+text = "Настройки"
+script = ExtResource("3_0bnpd")
+
+[node name="ToMainMenuButton" type="Button" parent="VBoxContainer" unique_id=818502221]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+theme_override_styles/normal = SubResource("StyleBoxEmpty_je7p5")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_fm80t")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_gx1jg")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_ugbui")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_fcs02")
+text = "В главное меню"
+script = ExtResource("3_0bnpd")
+
+[connection signal="pressed" from="VBoxContainer/ReturnButton" to="." method="_on_return_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/ToMainMenuButton" to="." method="_on_to_main_menu_button_pressed"]
