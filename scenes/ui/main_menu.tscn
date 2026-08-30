@@ -7,19 +7,6 @@
 [ext_resource type="FontFile" uid="uid://owt1rutbk715" path="res://assets/fonts/radio wizard/RadioWizard-Regular.otf" id="4_x2yvf"]
 [ext_resource type="AudioStream" uid="uid://ps77oda3xnhd" path="res://assets/sfx/ui/click_004.ogg" id="6_uhagc"]
 
-[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_fe2o3"]
-panorama = ExtResource("1_sl1te")
-
-[sub_resource type="Sky" id="Sky_txcr2"]
-sky_material = SubResource("PanoramaSkyMaterial_fe2o3")
-
-[sub_resource type="Environment" id="Environment_1g8jr"]
-background_mode = 2
-sky = SubResource("Sky_txcr2")
-fog_enabled = true
-fog_light_color = Color(0.13681567, 0.15041906, 0.25735316, 1)
-fog_sky_affect = 0.413
-
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3qbcn"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1g8jr"]
@@ -50,23 +37,25 @@ fog_sky_affect = 0.413
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_n4uci"]
 
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_fe2o3"]
+panorama = ExtResource("1_sl1te")
+
+[sub_resource type="Sky" id="Sky_txcr2"]
+sky_material = SubResource("PanoramaSkyMaterial_fe2o3")
+
+[sub_resource type="Environment" id="Environment_1g8jr"]
+background_mode = 2
+sky = SubResource("Sky_txcr2")
+fog_enabled = true
+fog_light_color = Color(0.13681567, 0.15041906, 0.25735316, 1)
+fog_sky_affect = 0.413
+
 [node name="MainMenu" type="Node3D" unique_id=236665702]
+process_mode = 3
 script = ExtResource("1_1g8jr")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=965499833]
-environment = SubResource("Environment_1g8jr")
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1145320120]
-transform = Transform3D(-0.7660445, 0.60402274, 0.2198463, 0, -0.34202012, 0.9396926, 0.6427876, 0.71984637, 0.26200265, -0.8530445, 3.7416687, 5.6277966)
-light_color = Color(0.72156835, 0.9255543, 0.97680384, 1)
-shadow_enabled = true
-
-[node name="Island_1_Start" parent="." unique_id=534627359 instance=ExtResource("2_fe2o3")]
-
-[node name="Camera3D" type="Camera3D" parent="." unique_id=344885894]
-transform = Transform3D(1, 0, 0, 0, 0.9433965, 0.33166695, 0, -0.33166695, 0.9433965, 0, 1.3826613, 7.262161)
-
 [node name="MainMenu" type="CanvasLayer" parent="." unique_id=1663851759]
+unique_name_in_owner = true
 
 [node name="CopyrightLabel" type="Label" parent="MainMenu" unique_id=1767647343]
 anchors_preset = 7
@@ -149,6 +138,19 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_n4uci")
 text = "выйти"
 alignment = 0
 script = ExtResource("4_m1kxf")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=965499833]
+environment = SubResource("Environment_1g8jr")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1145320120]
+transform = Transform3D(-0.7660445, 0.60402274, 0.2198463, 0, -0.34202012, 0.9396926, 0.6427876, 0.71984637, 0.26200265, -0.8530445, 3.7416687, 5.6277966)
+light_color = Color(0.72156835, 0.9255543, 0.97680384, 1)
+shadow_enabled = true
+
+[node name="Island_1_Start" parent="." unique_id=534627359 instance=ExtResource("2_fe2o3")]
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=344885894]
+transform = Transform3D(1, 0, 0, 0, 0.9433965, 0.33166695, 0, -0.33166695, 0.9433965, 0, 1.3826613, 7.262161)
 
 [node name="MenuClickSound" type="AudioStreamPlayer" parent="." unique_id=720252945]
 unique_name_in_owner = true

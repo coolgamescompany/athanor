@@ -86,6 +86,19 @@ func _ready() -> void:
 	# 2. Включаем сочный звук магического пробуждения
 	respawn_sound.play()
 	spawn_particles.restart()
+	
+	# Подключаем камеру к изменению FOV
+	SettingsManager.fov_changed.connect(_on_fov_updated)
+	
+	# Сразу проверяем текущий FOV при старте (если файл уже есть на диске)
+	var config = ConfigFile.new()
+	if config.load("user://settings.cfg") == OK:
+		camera.fov = config.get_value("video", "fov", 75)
+	else:
+		camera.fov = 75 # Дефолтный FOV алхимика
+
+func _on_fov_updated(new_fov: float):
+	camera.fov = new_fov
 
 func _physics_process(delta: float) -> void:
 	if global_position.y < -30.0:
@@ -157,8 +170,22 @@ func _physics_process(delta: float) -> void:
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
-		rotate_y(-event.relative.x * mouse_sensitivity)
-		camera.rotate_x(-event.relative.y * mouse_sensitivity)
+		# Получаем значение от 1 до 100 из настроек. 
+		# Если файл пустой или сбоит, принудительно берём 5 (как среднюю скорость)
+		var raw_sens: float = SettingsManager.mouse_sensitivity
+		if raw_sens <= 0: 
+			raw_sens = 5.0
+		
+		# ЖЕСТКАЯ ПРЯМАЯ ФОРМУЛА:
+		# Берем вашу изначальную идеальную скорость (0.002) и умножаем на ползунок.
+		# Ползунок на 1 = ваша старая скорость. Ползунок на 10 = в 10 раз быстрее!
+		var sens: float = 0.002 * raw_sens
+		
+		var invert_multiplier = -1.0 if SettingsManager.mouse_inverted else 1.0
+		
+		# Поворачиваем камеру космического алхимика
+		rotate_y(-event.relative.x * sens)
+		camera.rotate_x(-event.relative.y * sens * invert_multiplier)
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-80), deg_to_rad(80))
 
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:

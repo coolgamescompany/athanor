@@ -9,6 +9,8 @@ extends Node3D
 @onready var click_sound: AudioStreamPlayer = %MenuClickSound
 
 func _ready() -> void:
+	# Железобетонно снимаем паузу со всей вселенной игры при заходе в меню!
+	get_tree().paused = false 
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	
 	# Ждем один кадр, чтобы Autoload (MusicManager) успел создаться в памяти
@@ -68,7 +70,15 @@ func _on_play_button_pressed() -> void:
 
 func _on_settings_button_pressed() -> void:
 	if click_sound: click_sound.play()
-	pass # Replace with function body.
+	
+	var settings_scene = preload("res://scenes/ui/settings_menu.tscn")
+	var settings_instance = settings_scene.instantiate()
+	
+	# Стучимся ко второй ноде в дереве сцены (твоему переименованному CanvasLayer)
+	# и закидываем настройки внутрь него, принудительно поверх кнопок
+	$MainMenu.add_child(settings_instance)
+
+
 
 func _on_exit_button_pressed() -> void:
 	if click_sound: click_sound.play()

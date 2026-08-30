@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://dp5k1ohu3omhh"]
+
+[ext_resource type="Script" uid="uid://bdam8wsdqxv3k" path="res://scenes/ui/hud.gd" id="1_0mwgc"]
+
+[node name="HUD" type="Control" unique_id=1582636669]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0mwgc")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1071331071]
+layer = 100
+
+[node name="FPSLabel" type="Label" parent="CanvasLayer" unique_id=208612731]
+unique_name_in_owner = true
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(5.1018596e-06, 0.79571843, 0.31231213, 1)

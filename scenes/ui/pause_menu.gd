@@ -70,7 +70,13 @@ func _on_return_button_pressed() -> void:
 
 
 func _on_settings_button_pressed() -> void:
-	pass # Настройки
+	
+	# Загружаем файл сцены настроек в память
+	var settings_scene = preload("res://scenes/ui/settings_menu.tscn") # Проверь свой путь к файлу!
+	# Создаем живую копию этой сцены
+	var settings_instance = settings_scene.instantiate()
+	# Добавляем её на экран поверх главного меню
+	add_child(settings_instance)
 
 func _on_to_main_menu_button_pressed() -> void:
 	get_tree().paused = false
