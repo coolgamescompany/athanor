@@ -1,6 +1,8 @@
 extends Control
 
 const SAVE_PATH = "user://settings.cfg"
+const ENV_PATH = "res://shaders/space_env.tres" # Путь к твоему файлу постобработки
+
 var config = ConfigFile.new()
 var is_loading: bool = true
 
@@ -33,7 +35,6 @@ const RESOLUTIONS = [Vector2i(1280, 720), Vector2i(1600, 900), Vector2i(1920, 10
 const LANGUAGES = ["ru", "en"]
 const FPS_LIMITS = [0, 30, 60, 144, 240]
 
-# Впишите сюда НАЗВАНИЯ ЭКШЕНОВ из вашего Project Settings -> Input Map, которые хотите дать настроить игроку
 const CONFIGURABLE_ACTIONS = {
 	"move_forward": "Вперед",
 	"move_backward": "Назад",
@@ -52,55 +53,65 @@ func _ready():
 	is_loading = false
 
 func _init_ui_elements():
-	# Видео
+	# Видео (Разрешение)
 	resolution_btn.clear()
-	for res in RESOLUTIONS: resolution_btn.add_item(str(res.x) + " x " + str(res.y))
+	for res in RESOLUTIONS: 
+		resolution_btn.add_item(str(res.x) + " x " + str(res.y))
 	resolution_btn.item_selected.connect(_on_resolution_selected)
 	
+	# Оконный режим
 	window_mode_btn.clear()
 	window_mode_btn.add_item("Оконный")
 	window_mode_btn.add_item("Полноэкранный")
 	window_mode_btn.add_item("Полуоконный")
 	window_mode_btn.item_selected.connect(_on_window_mode_selected)
 	
+	# Вертикальная синхронизация
 	vsync_btn.toggled.connect(_on_vsync_toggled)
 	
+	# Качество графики
 	graphics_btn.clear()
-	for q in ["Низкое", "Среднее", "Высокое", "Ультра"]: graphics_btn.add_item(q)
-	graphics_btn.item_selected.connect(func(idx): _auto_save_check())
+	for q in ["Низкое", "Среднее", "Высокое", "Ультра"]:
+		graphics_btn.add_item(q)
+	graphics_btn.item_selected.connect(_on_graphics_selected)
 	
+	# Угол обзора (FOV)
 	fov_slider.min_value = 60
 	fov_slider.max_value = 120
 	fov_slider.step = 1
-	# Связываем изменение ползунка с автосохранением и отправкой сигнала
-	fov_slider.value_changed.connect(func(val): 
+	fov_slider.value_changed.connect(func(val):
 		SettingsManager.fov_changed.emit(val)
 		_auto_save_check()
 	)
-
+	
 	# Звук
 	for slider in [master_slider, music_slider, sfx_slider]:
-		slider.min_value = 0.0; slider.max_value = 1.0; slider.step = 0.05
+		slider.min_value = 0.0
+		slider.max_value = 1.0
+		slider.step = 0.05
 	master_slider.value_changed.connect(_on_master_slider_value_changed)
 	music_slider.value_changed.connect(_on_music_slider_value_changed)
 	sfx_slider.value_changed.connect(_on_sfx_slider_value_changed)
 	
-	# Общие
+	# Общие (Язык)
 	language_btn.clear()
-	language_btn.add_item("Русский"); language_btn.add_item("English")
+	language_btn.add_item("Русский")
+	language_btn.add_item("English")
 	language_btn.item_selected.connect(_on_language_selected)
 	
+	# Отображение FPS и Лимит FPS
 	fps_btn.toggled.connect(_on_fps_toggled)
 	
 	fps_limit_btn.clear()
 	for limit in FPS_LIMITS:
 		fps_limit_btn.add_item("Без ограничений" if limit == 0 else str(limit) + " FPS")
 	fps_limit_btn.item_selected.connect(_on_fps_limit_selected)
-
+	
+	# Кнопки сброса
 	reset_progress_btn.pressed.connect(_on_reset_progress_pressed)
 	reset_settings_btn.pressed.connect(_on_reset_settings_pressed)
-
-	# Управление (мышь)
+	
+	# Управление (Мышь)
 	mouse_sens_slider.min_value = 0.01
 	mouse_sens_slider.max_value = 1.0
 	mouse_sens_slider.step = 0.01
@@ -108,8 +119,9 @@ func _init_ui_elements():
 	mouse_invert_btn.toggled.connect(_on_mouse_invert_toggled)
 
 func _create_keybind_menu():
-	for child in keybinds_grid.get_children(): child.queue_free()
-	
+	for child in keybinds_grid.get_children(): 
+		child.queue_free()
+		
 	for action in CONFIGURABLE_ACTIONS:
 		var label = Label.new()
 		label.text = CONFIGURABLE_ACTIONS[action]
@@ -127,7 +139,8 @@ func _get_action_key_text(action: String) -> String:
 	return "Не назначено"
 
 func _on_keybind_button_pressed(action: String, button: Button):
-	if key_waiting_for_action != "": return
+	if key_waiting_for_action != "": 
+		return
 	key_waiting_for_action = action
 	key_waiting_button = button
 	button.text = "... Нажмите клавишу ..."
@@ -149,8 +162,10 @@ func load_settings():
 	if !FileAccess.file_exists(SAVE_PATH):
 		_set_defaults()
 		return
-	if config.load(SAVE_PATH) != OK: return
-
+		
+	if config.load(SAVE_PATH) != OK: 
+		return
+		
 	resolution_btn.selected = config.get_value("video", "resolution_index", 2)
 	_on_resolution_selected(resolution_btn.selected)
 	
@@ -158,10 +173,15 @@ func load_settings():
 	_on_window_mode_selected(window_mode_btn.selected)
 	
 	vsync_btn.button_pressed = config.get_value("video", "vsync", true)
-	graphics_btn.selected = config.get_value("video", "graphics_quality", 2)
+	
+	# ИСПРАВЛЕНИЕ ТУТ: Сначала считываем сохраненный индекс из конфига, а потом активируем его график
+	var saved_graphics = config.get_value("video", "graphics_quality", 2)
+	graphics_btn.selected = saved_graphics
+	_on_graphics_selected(saved_graphics)
+	
 	fov_slider.value = config.get_value("video", "fov", 75)
 	SettingsManager.fov_changed.emit(fov_slider.value)
-
+	
 	master_slider.value = config.get_value("audio", "master_volume", 0.7)
 	music_slider.value = config.get_value("audio", "music_volume", 0.7)
 	sfx_slider.value = config.get_value("audio", "sfx_volume", 0.7)
@@ -169,44 +189,47 @@ func load_settings():
 	_on_master_slider_value_changed(master_slider.value)
 	_on_music_slider_value_changed(music_slider.value)
 	_on_sfx_slider_value_changed(sfx_slider.value)
-
+	
 	fps_btn.button_pressed = config.get_value("general", "show_fps", false)
+	
 	var limit_val = config.get_value("general", "fps_limit", 0)
 	fps_limit_btn.selected = FPS_LIMITS.find(limit_val) if FPS_LIMITS.find(limit_val) != -1 else 0
-
+	_on_fps_limit_selected(fps_limit_btn.selected)
+	
 	mouse_sens_slider.value = config.get_value("controls", "mouse_sensitivity", 20)
+	_on_mouse_sens_changed(mouse_sens_slider.value)
+	
 	mouse_invert_btn.button_pressed = config.get_value("controls", "mouse_inverted", false)
-
+	_on_mouse_invert_toggled(mouse_invert_btn.button_pressed)
+	
 	var current_lang = config.get_value("general", "locale", "ru")
 	language_btn.selected = LANGUAGES.find(current_lang) if LANGUAGES.find(current_lang) != -1 else 0
 	TranslationServer.set_locale(current_lang)
+	
 	_create_keybind_menu()
+
 
 func _set_defaults():
 	master_slider.value = 0.7
 	music_slider.value = 0.7
 	sfx_slider.value = 0.7
-	fov_slider.value = 75
+	fov_slider.value = 85 # Сделали дефолтный FOV приятным для 3D
 	window_mode_btn.selected = 0
 	vsync_btn.button_pressed = true
 	fps_btn.button_pressed = false
 	fps_limit_btn.selected = 0
 	graphics_btn.selected = 2
-	
-	# Наша чувствительность:
-	mouse_sens_slider.value = 1.0 # выставили ползунок в UI
-	_on_mouse_sens_changed(1.0)
+	mouse_sens_slider.value = 0.5
 	mouse_invert_btn.button_pressed = false
 	
-	# --- ВАЖНЕЙШИЙ ДОБАВЛЕННЫЙ БЛОК ---
-	# Принудительно передаем дефолтные значения в синглтон, 
-	# чтобы игроку не приходилось кликать по ним для "активации"
 	_on_master_slider_value_changed(0.7)
 	_on_music_slider_value_changed(0.7)
 	_on_sfx_slider_value_changed(0.7)
-	_on_mouse_sens_changed(20) # Отправляем чувствительность в SettingsManager напрямую!
+	_on_mouse_sens_changed(0.5)
 	_on_mouse_invert_toggled(false)
-	SettingsManager.fov_changed.emit(75)
+	_on_graphics_selected(2) # Сброс на Высокие
+	
+	SettingsManager.fov_changed.emit(85)
 
 func save_settings():
 	config.set_value("video", "resolution_index", resolution_btn.selected)
@@ -228,52 +251,108 @@ func save_settings():
 	config.save(SAVE_PATH)
 
 func _auto_save_check():
-	if !is_loading: save_settings()
+	# Если мы сейчас загружаемся (is_loading == true), то СТРОГО запрещаем сохранение!
+	if is_loading:
+		return
+	save_settings()
 
 func _on_resolution_selected(index):
-	DisplayServer.window_set_size(RESOLUTIONS[index]); _auto_save_check()
+	DisplayServer.window_set_size(RESOLUTIONS[index])
+	_auto_save_check()
 
 func _on_window_mode_selected(index):
-	SettingsManager._apply_window_mode(index); _auto_save_check()
+	SettingsManager._apply_window_mode(index)
+	_auto_save_check()
 
 func _on_vsync_toggled(toggled_on):
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED if toggled_on else DisplayServer.VSYNC_DISABLED)
 	_auto_save_check()
 
-func _on_master_slider_value_changed(value): SettingsManager._set_bus_vol("Master", value)
-func _on_music_slider_value_changed(value): SettingsManager._set_bus_vol("Music", value)
-func _on_sfx_slider_value_changed(value): SettingsManager._set_bus_vol("Sfx", value)
+func _on_graphics_selected(index):
+	var env = load(ENV_PATH) as Environment
+	if env:
+		match index:
+			0: # НИЗКОЕ
+				env.tonemap_mode = Environment.TONE_MAPPER_ACES
+				env.glow_enabled = false
+				env.ssao_enabled = false
+				env.ssil_enabled = false
+				env.volumetric_fog_enabled = false
+			1: # СРЕДНЕЕ
+				env.tonemap_mode = Environment.TONE_MAPPER_ACES
+				env.glow_enabled = true
+				env.glow_bloom = 0.15
+				env.ssao_enabled = false
+				env.ssil_enabled = false
+				env.volumetric_fog_enabled = true
+				env.volumetric_fog_density = 0.01
+			2: # ВЫСОКОЕ
+				env.tonemap_mode = Environment.TONE_MAPPER_ACES
+				env.glow_enabled = true
+				env.glow_bloom = 0.3
+				env.ssao_enabled = true
+				env.ssil_enabled = false
+				env.volumetric_fog_enabled = true
+				env.volumetric_fog_density = 0.01
+			3: # УЛЬТРА
+				env.tonemap_mode = Environment.TONE_MAPPER_ACES
+				env.glow_enabled = true
+				env.glow_bloom = 0.4
+				env.ssao_enabled = true
+				env.ssil_enabled = true
+				env.volumetric_fog_enabled = true
+				env.volumetric_fog_density = 0.02
+				
+	# Важно: вызываем сохранение только если мы НЕ в процессе загрузки меню
+	if !is_loading:
+		_auto_save_check()
 
+				
+func _on_master_slider_value_changed(value):
+	SettingsManager._set_bus_vol("Master", value)
+	
+func _on_music_slider_value_changed(value):
+	SettingsManager._set_bus_vol("Music", value)
+	
+func _on_sfx_slider_value_changed(value):
+	SettingsManager._set_bus_vol("Sfx", value)
+	
 func _on_language_selected(index):
-	TranslationServer.set_locale(LANGUAGES[index]); _auto_save_check()
-
-func _on_fps_toggled(toggled_on):
-	# Записываем состояние в глобальный синглтон, чтобы HUD сразу это увидел
-	SettingsManager.show_fps_counter = toggled_on
+	TranslationServer.set_locale(LANGUAGES[index])
 	_auto_save_check()
 
+func _on_fps_toggled(toggled_on):
+	SettingsManager.show_fps_counter = toggled_on
+	_auto_save_check()
+	
 func _on_fps_limit_selected(index):
 	Engine.max_fps = FPS_LIMITS[index]
 	_auto_save_check()
-
+	
 func _on_mouse_sens_changed(value):
-	SettingsManager.mouse_sensitivity = value; _auto_save_check()
-
+	SettingsManager.mouse_sensitivity = value
+	_auto_save_check()
+	
 func _on_mouse_invert_toggled(toggled_on):
-	SettingsManager.mouse_inverted = toggled_on; _auto_save_check()
+	SettingsManager.mouse_inverted = toggled_on
+	_auto_save_check()
 
 func _on_reset_progress_pressed():
-	if FileAccess.file_exists("user://save_game.dat"): DirAccess.remove_absolute("user://save_game.dat")
+	if FileAccess.file_exists("user://save_game.dat"):
+		DirAccess.remove_absolute("user://save_game.dat")
 
 func _on_reset_settings_pressed():
-	if FileAccess.file_exists(SAVE_PATH): DirAccess.remove_absolute(SAVE_PATH)
-	get_tree().reload_current_scene()
+	if FileAccess.file_exists(SAVE_PATH):
+		DirAccess.remove_absolute(SAVE_PATH)
+		get_tree().reload_current_scene()
 
 func _play_entrance_animation():
-	%MainPanel.modulate.a = 0.0; %MainPanel.scale = Vector2(0.9, 0.9)
+	%MainPanel.modulate.a = 0.0
+	%MainPanel.scale = Vector2(0.9, 0.9)
 	%MainPanel.pivot_offset = %MainPanel.get_combined_minimum_size() / 2
 	var tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	tween.tween_property(%MainPanel, "modulate:a", 1.0, 0.3)
 	tween.tween_property(%MainPanel, "scale", Vector2.ONE, 0.3)
 
-func _on_back_button_pressed(): queue_free()
+func _on_back_button_pressed():
+	queue_free()
