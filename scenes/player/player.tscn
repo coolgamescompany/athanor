@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://crdkbv1scj4sk"]
 
 [ext_resource type="Script" uid="uid://o5i1j6nk8lk" path="res://scenes/player/player.gd" id="1_8afob"]
-[ext_resource type="Shader" uid="uid://b2uj70co6hrxj" path="res://scenes/ui/respawn.gdshader" id="2_dovo2"]
+[ext_resource type="Shader" uid="uid://b2uj70co6hrxj" path="res://shaders/respawn.gdshader" id="2_dovo2"]
 [ext_resource type="AudioStream" uid="uid://cl00jtht24qq6" path="res://assets/sfx/walk/sfx_step_rock_l.wav" id="3_p47bc"]
 [ext_resource type="AudioStream" uid="uid://d2ul4o3u3mh2c" path="res://assets/sfx/magic/Healing Full.wav" id="4_75vfm"]
 [ext_resource type="AudioStream" uid="uid://dfr34xdhfwf1x" path="res://assets/sfx/walk2/footstep06.ogg" id="5_0owmy"]
@@ -100,6 +100,12 @@ shader_parameter/contrast = 1.0
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3qbcn"]
 
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_75vfm"]
+dof_blur_far_transition = 1000.0
+dof_blur_near_enabled = true
+dof_blur_near_distance = 0.6
+dof_blur_near_transition = 0.3
+
 [sub_resource type="Curve" id="Curve_p47bc"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.87183106, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 3
@@ -173,7 +179,14 @@ shape = SubResource("CapsuleShape3D_3qbcn")
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1773681554]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+attributes = SubResource("CameraAttributesPractical_75vfm")
 current = true
+fov = 85.0
+
+[node name="InteractionRay" type="RayCast3D" parent="Camera3D" unique_id=1036165145]
+unique_name_in_owner = true
+target_position = Vector3(0, 0, -3.5)
+collide_with_areas = true
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=562404480]
 unique_name_in_owner = true
@@ -204,4 +217,4 @@ explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_cur4o")
 draw_pass_1 = SubResource("QuadMesh_3qbcn")
 
-[node name="Control" parent="." unique_id=1582636669 instance=ExtResource("6_75vfm")]
+[node name="HUD" parent="." unique_id=1582636669 instance=ExtResource("6_75vfm")]

@@ -1,11 +1,14 @@
 [gd_scene format=3 uid="uid://8bnx7m0oh4fm"]
 
 [ext_resource type="Script" uid="uid://drojub8juayoa" path="res://scenes/ui/main_menu.gd" id="1_1g8jr"]
-[ext_resource type="Texture2D" uid="uid://byxcigcqc1ry" path="res://assets/textures/skybox/Panorama_Sky_12-512x512.png" id="1_sl1te"]
 [ext_resource type="PackedScene" uid="uid://c4lt6yourscch" path="res://scenes/islands/island_1.tscn" id="2_fe2o3"]
 [ext_resource type="Script" uid="uid://biwknkdkknotl" path="res://scenes/ui/menu_button_hover.gd" id="4_m1kxf"]
+[ext_resource type="Environment" uid="uid://bqowi0t27e1yp" path="res://shaders/space_env.tres" id="4_q85j6"]
 [ext_resource type="FontFile" uid="uid://owt1rutbk715" path="res://assets/fonts/radio wizard/RadioWizard-Regular.otf" id="4_x2yvf"]
+[ext_resource type="PackedScene" uid="uid://dgexre06toyse" path="res://scenes/ui/logotype.tscn" id="6_btxxm"]
 [ext_resource type="AudioStream" uid="uid://ps77oda3xnhd" path="res://assets/sfx/ui/click_004.ogg" id="6_uhagc"]
+[ext_resource type="Script" uid="uid://c84jcss56q2qr" path="res://scenes/ui/logotype_hover.gd" id="7_btxxm"]
+[ext_resource type="PackedScene" uid="uid://dh420m7h8b1q7" path="res://scenes/islands/island_main.tscn" id="9_q85j6"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3qbcn"]
 
@@ -36,19 +39,6 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8ekit"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_n4uci"]
-
-[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_fe2o3"]
-panorama = ExtResource("1_sl1te")
-
-[sub_resource type="Sky" id="Sky_txcr2"]
-sky_material = SubResource("PanoramaSkyMaterial_fe2o3")
-
-[sub_resource type="Environment" id="Environment_1g8jr"]
-background_mode = 2
-sky = SubResource("Sky_txcr2")
-fog_enabled = true
-fog_light_color = Color(0.13681567, 0.15041906, 0.25735316, 1)
-fog_sky_affect = 0.413
 
 [node name="MainMenu" type="Node3D" unique_id=236665702]
 process_mode = 3
@@ -140,14 +130,12 @@ alignment = 0
 script = ExtResource("4_m1kxf")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=965499833]
-environment = SubResource("Environment_1g8jr")
+environment = ExtResource("4_q85j6")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1145320120]
 transform = Transform3D(-0.7660445, 0.60402274, 0.2198463, 0, -0.34202012, 0.9396926, 0.6427876, 0.71984637, 0.26200265, -0.8530445, 3.7416687, 5.6277966)
 light_color = Color(0.72156835, 0.9255543, 0.97680384, 1)
 shadow_enabled = true
-
-[node name="Island_1_Start" parent="." unique_id=534627359 instance=ExtResource("2_fe2o3")]
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=344885894]
 transform = Transform3D(1, 0, 0, 0, 0.9433965, 0.33166695, 0, -0.33166695, 0.9433965, 0, 1.3826613, 7.262161)
@@ -160,6 +148,34 @@ stream = ExtResource("6_uhagc")
 unique_name_in_owner = true
 stream = ExtResource("6_uhagc")
 volume_db = -10.0
+
+[node name="logotype" parent="." unique_id=337784992 instance=ExtResource("6_btxxm")]
+transform = Transform3D(-0.15806119, -0.015380174, -0.9873095, -0.057296164, 0.9983369, -0.006379302, 0.9857656, 0.05556074, -0.15867949, -10.525576, -2.8307858, -3.213776)
+script = ExtResource("7_btxxm")
+
+[node name="Island_1_Start2" parent="." unique_id=534627359 instance=ExtResource("2_fe2o3")]
+transform = Transform3D(0.049352333, 0, -0.99878144, 0, 1, 0, 0.99878144, 0, 0.049352333, -19.84618, 2.8514786, -11.9391)
+
+[node name="Island_1_Start2" parent="Island_1_Start2" unique_id=2039688197 instance=ExtResource("2_fe2o3")]
+transform = Transform3D(-0.9665225, 0, 0.2565819, 0, 1, 0, -0.2565819, 0, -0.9665225, -19.846182, 9.546534, -21.462807)
+
+[node name="Island_1_Start2" parent="Island_1_Start2/Island_1_Start2" unique_id=318192962 instance=ExtResource("2_fe2o3")]
+transform = Transform3D(-0.96652234, 0, 0.25658178, 0, 1, 0, -0.25658178, 0, -0.96652234, -14.500448, -24.673326, 15.61591)
+
+[node name="Island_1_Start2" parent="Island_1_Start2/Island_1_Start2/Island_1_Start2" unique_id=2114078736 instance=ExtResource("2_fe2o3")]
+transform = Transform3D(-0.9665223, 0, 0.25658184, 0, 1, 0, -0.25658184, 0, -0.9665223, 10.294655, -24.673326, 22.180822)
+
+[node name="Island_1_Start3" parent="." unique_id=1706914292 instance=ExtResource("2_fe2o3")]
+transform = Transform3D(-0.99940276, 0, 0.034555554, 0, 1, 0, -0.034555554, 0, -0.99940276, 62.922733, -6.695055, -84.268585)
+
+[node name="Island_1_Start" parent="." unique_id=1330555744 instance=ExtResource("2_fe2o3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.92309, -6.695055, -37.372437)
+
+[node name="island_main" parent="." unique_id=1844439611 instance=ExtResource("9_q85j6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.858015, -6.695055, -30.826345)
+
+[node name="island_main" parent="island_main" unique_id=1659360328 instance=ExtResource("9_q85j6")]
+transform = Transform3D(-0.4863098, 0, -0.87378645, 0, 1, 0, 0.87378645, 0, -0.4863098, 1.1218395, -38.81166, -40.35005)
 
 [connection signal="pressed" from="MainMenu/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="MainMenu/MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]

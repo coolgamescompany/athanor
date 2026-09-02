@@ -1,6 +1,10 @@
 [gd_scene format=3 uid="uid://dp5k1ohu3omhh"]
 
 [ext_resource type="Script" uid="uid://bdam8wsdqxv3k" path="res://scenes/ui/hud.gd" id="1_0mwgc"]
+[ext_resource type="Shader" uid="uid://dfpui4dr47ien" path="res://shaders/crosshair.gdshader" id="2_hqnrr"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0mwgc"]
+shader = ExtResource("2_hqnrr")
 
 [node name="HUD" type="Control" unique_id=1582636669]
 layout_mode = 3
@@ -19,3 +23,18 @@ unique_name_in_owner = true
 offset_right = 40.0
 offset_bottom = 23.0
 theme_override_colors/font_color = Color(5.1018596e-06, 0.79571843, 0.31231213, 1)
+
+[node name="Crosshair" type="ColorRect" parent="CanvasLayer" unique_id=334743430]
+material = SubResource("ShaderMaterial_0mwgc")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 2.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(2, 2)

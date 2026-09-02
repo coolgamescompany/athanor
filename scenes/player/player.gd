@@ -1,6 +1,10 @@
 extends CharacterBody3D
 
 # Настройки скоростей
+@onready var interaction_ray: RayCast3D = %InteractionRay
+@onready var crosshair: ColorRect = get_node("HUD/CanvasLayer/Crosshair") # Проверь свой путь в сцене!
+
+# Настройки скоростей
 @export var WALK_SPEED: float = 5.0
 @export var RUN_SPEED: float = 8.5
 @export var CROUCH_SPEED: float = 2.5
@@ -167,6 +171,26 @@ func _physics_process(delta: float) -> void:
 		step_timer = 0.0
 
 	move_and_slide()
+	
+	# ЛОГИКА ИНТЕРАКТИВНОГО ПРИЦЕЛА
+	if interaction_ray.is_colliding():
+		# Получаем объект, на который наткнулся лазер
+		var hit_object = interaction_ray.get_collider()
+		
+		# Проверяем, есть ли у этого объекта маркер или группа "interactable"
+		# (Мы будем добавлять эту группу всем кристаллам, травам и алтарям)
+		if hit_object.is_in_group("interactable"):
+			# Плавно красим прицел в фиолетовый, если еще не покрашен
+			if crosshair.modulate != Color("9c27b0"):
+				create_tween().tween_property(crosshair, "modulate", Color("9c27b0"), 0.1)
+		else:
+			# Если объект твердый (остров), но не интерактивный — возвращаем белый
+			if crosshair.modulate != Color.WHITE:
+				create_tween().tween_property(crosshair, "modulate", Color.WHITE, 0.1)
+	else:
+		# Если лазер смотрит в пустоту космоса — возвращаем белый
+		if crosshair.modulate != Color.WHITE:
+			create_tween().tween_property(crosshair, "modulate", Color.WHITE, 0.1)
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:

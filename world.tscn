@@ -1,22 +1,10 @@
 [gd_scene format=3 uid="uid://bvg6d55mlfu4v"]
 
-[ext_resource type="Texture2D" uid="uid://byxcigcqc1ry" path="res://assets/textures/skybox/Panorama_Sky_12-512x512.png" id="1_f3sb7"]
+[ext_resource type="Environment" uid="uid://bqowi0t27e1yp" path="res://shaders/space_env.tres" id="1_036b0"]
 [ext_resource type="PackedScene" uid="uid://c4lt6yourscch" path="res://scenes/islands/island_1.tscn" id="2_fj7yv"]
 [ext_resource type="PackedScene" uid="uid://crdkbv1scj4sk" path="res://scenes/player/player.tscn" id="3_tlwt5"]
+[ext_resource type="PackedScene" uid="uid://dh420m7h8b1q7" path="res://scenes/islands/island_main.tscn" id="4_036b0"]
 [ext_resource type="PackedScene" uid="uid://qfy6iij8f5ge" path="res://scenes/ui/pause_menu.tscn" id="4_aqk2v"]
-
-[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_fj7yv"]
-panorama = ExtResource("1_f3sb7")
-
-[sub_resource type="Sky" id="Sky_txcr2"]
-sky_material = SubResource("PanoramaSkyMaterial_fj7yv")
-
-[sub_resource type="Environment" id="Environment_3qbcn"]
-background_mode = 2
-sky = SubResource("Sky_txcr2")
-fog_enabled = true
-fog_light_color = Color(0.13681567, 0.15041906, 0.25735316, 1)
-fog_sky_affect = 0.413
 
 [node name="World" type="Node3D" unique_id=1044360984]
 
@@ -29,10 +17,14 @@ grow_vertical = 2
 stretch = true
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=1366538975]
-size = Vector2i(1152, 648)
+handle_input_locally = false
+msaa_3d = 2
+use_taa = true
+size = Vector2i(1280, 720)
+render_target_update_mode = 4
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/SubViewport" unique_id=647825155]
-environment = SubResource("Environment_3qbcn")
+environment = ExtResource("1_036b0")
 
 [node name="Island_1_Start" parent="SubViewportContainer/SubViewport" unique_id=534627359 instance=ExtResource("2_fj7yv")]
 
@@ -43,6 +35,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7323995, 0)
 transform = Transform3D(-0.7660445, 0.60402274, 0.2198463, 0, -0.34202012, 0.9396927, 0.6427876, 0.71984637, 0.26200265, -0.8530445, 3.7416687, 5.6277966)
 light_color = Color(0.72156835, 0.9255543, 0.97680384, 1)
 shadow_enabled = true
+
+[node name="island_main" parent="SubViewportContainer/SubViewport" unique_id=2061596629 instance=ExtResource("4_036b0")]
+transform = Transform3D(0.007082717, 0, 0.9999749, 0, 1, 0, -0.9999749, 0, 0.007082717, -23.139912, 0, -40.50846)
 
 [node name="PauseMenu" parent="." unique_id=1236970684 instance=ExtResource("4_aqk2v")]
 unique_name_in_owner = true

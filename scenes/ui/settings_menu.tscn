@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://d1g240anjkkj3"]
 
 [ext_resource type="Script" uid="uid://bl65nwi4i5k5j" path="res://scenes/ui/settings_menu.gd" id="1_mhswj"]
-[ext_resource type="Shader" uid="uid://dljg4c73mhvbi" path="res://scenes/ui/settings_menu.gdshader" id="2_0b1cv"]
+[ext_resource type="Shader" uid="uid://dljg4c73mhvbi" path="res://shaders/settings_menu.gdshader" id="2_0b1cv"]
 [ext_resource type="FontFile" uid="uid://owt1rutbk715" path="res://assets/fonts/radio wizard/RadioWizard-Regular.otf" id="2_x3vyp"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0b1cv"]
