@@ -1,14 +1,14 @@
 [gd_scene format=3 uid="uid://dgexre06toyse"]
 
 [ext_resource type="PackedScene" uid="uid://3rd1ya61vxo2" path="res://assets/models/logotype/logotype.glb" id="1_3wah3"]
-[ext_resource type="Material" uid="uid://fv3gsy3jhm3v" path="res://shaders/smart_island_material.tres" id="2_s0quh"]
+[ext_resource type="Material" uid="uid://b3hat60d218pu" path="res://shaders/island_material.tres" id="2_3wah3"]
 
 [node name="logotype" unique_id=337784992 instance=ExtResource("1_3wah3")]
 
-[node name="LettersMesh" parent="." index="0" unique_id=1204241115]
+[node name="LettersMesh" parent="." index="0" unique_id=294211732]
 unique_name_in_owner = true
-material_override = ExtResource("2_s0quh")
+material_override = ExtResource("2_3wah3")
 
-[node name="StonesMesh" parent="." index="1" unique_id=1652441623]
+[node name="StonesMesh" parent="." index="1" unique_id=1997143439]
 unique_name_in_owner = true
-material_override = ExtResource("2_s0quh")
+material_override = ExtResource("2_3wah3")
