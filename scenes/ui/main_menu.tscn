@@ -9,6 +9,7 @@
 [ext_resource type="AudioStream" uid="uid://ps77oda3xnhd" path="res://assets/sfx/ui/click_004.ogg" id="6_uhagc"]
 [ext_resource type="Script" uid="uid://c84jcss56q2qr" path="res://scenes/ui/logotype_hover.gd" id="7_btxxm"]
 [ext_resource type="PackedScene" uid="uid://dh420m7h8b1q7" path="res://scenes/islands/island_main.tscn" id="9_q85j6"]
+[ext_resource type="PackedScene" uid="uid://dl0of6amuqiuh" path="res://assets/ambient_particles.tscn" id="10_8g5eo"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3qbcn"]
 
@@ -176,6 +177,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.858015, -6.695055, -30.826
 
 [node name="island_main" parent="island_main" unique_id=1659360328 instance=ExtResource("9_q85j6")]
 transform = Transform3D(-0.4863098, 0, -0.87378645, 0, 1, 0, 0.87378645, 0, -0.4863098, 1.1218395, -38.81166, -40.35005)
+
+[node name="AmbientParticles" parent="." unique_id=966053528 instance=ExtResource("10_8g5eo")]
 
 [connection signal="pressed" from="MainMenu/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="MainMenu/MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]

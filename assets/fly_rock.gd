@@ -3,8 +3,8 @@ extends MeshInstance3D
 var time = 0.0
 
 # Настройки полета (можно менять)
-var speed = 2.0     # Скорость движения
-var amplitude = 0.1 # Высота полета (в метрах)
+var speed = 1.0     # Скорость движения
+var amplitude = 0.2 # Высота полета (в метрах)
 
 func _process(delta):
 	time += delta

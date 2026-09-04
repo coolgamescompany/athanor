@@ -6,6 +6,7 @@
 [ext_resource type="AudioStream" uid="uid://d2ul4o3u3mh2c" path="res://assets/sfx/magic/Healing Full.wav" id="4_75vfm"]
 [ext_resource type="AudioStream" uid="uid://dfr34xdhfwf1x" path="res://assets/sfx/walk2/footstep06.ogg" id="5_0owmy"]
 [ext_resource type="PackedScene" uid="uid://dp5k1ohu3omhh" path="res://scenes/ui/hud.tscn" id="6_75vfm"]
+[ext_resource type="PackedScene" uid="uid://dl0of6amuqiuh" path="res://assets/ambient_particles.tscn" id="7_0owmy"]
 
 [sub_resource type="Animation" id="Animation_dovo2"]
 length = 0.001
@@ -218,3 +219,5 @@ process_material = SubResource("ParticleProcessMaterial_cur4o")
 draw_pass_1 = SubResource("QuadMesh_3qbcn")
 
 [node name="HUD" parent="." unique_id=1582636669 instance=ExtResource("6_75vfm")]
+
+[node name="AmbientParticles" parent="." unique_id=966053528 instance=ExtResource("7_0owmy")]

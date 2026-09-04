@@ -14,6 +14,7 @@ material_override = ExtResource("2_t7g3i")
 
 [node name="Cube_002" parent="." index="2" unique_id=1720301620]
 material_override = ExtResource("2_t7g3i")
+script = ExtResource("3_dyqhg")
 
 [node name="Cube_003" parent="." index="3" unique_id=1579260541]
 material_override = ExtResource("2_t7g3i")
