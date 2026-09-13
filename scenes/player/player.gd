@@ -22,9 +22,9 @@ var step_sounds: Array = [
 	preload("res://assets/sfx/walk/sfx_step_rock_l.wav"),
 	preload("res://assets/sfx/walk/sfx_step_rock_r.wav")
 ]
-@onready var step_sound: AudioStreamPlayer = %StepSound
-@onready var jump_sound: AudioStreamPlayer = %JumpSound
-@onready var respawn_sound: AudioStreamPlayer = %RespawnSound
+@onready var step_sound: AudioStreamPlayer3D = %StepSound
+@onready var jump_sound: AudioStreamPlayer3D = %JumpSound
+@onready var respawn_sound: AudioStreamPlayer3D = %RespawnSound
 @onready var spawn_particles: GPUParticles3D = %SpawnParticles
 @onready var tinnitus_sound: AudioStreamPlayer = $TinnitusSound
 
@@ -131,22 +131,29 @@ func _ready() -> void:
 	cam_tween.tween_property(camera, "fov", user_fov, 4.0)\
 		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	
-	# 3. ФИНАЛ ИНТРО (Прошло ровно 10 секунд от старта игры)
+	# --- Ровно на 10-й секунде игры, когда интро закончилось и управление открылось ---
 	await get_tree().create_timer(4.0).timeout
 	
-	# Включаем прицел обратно
 	if has_node("HUD/CanvasLayer/Crosshair"):
 		crosshair.visible = true
 		
-	# Включаем сигналы динамического изменения FOV из меню
 	SettingsManager.fov_changed.connect(_on_fov_updated)
-	
-	# Открываем управление!
 	is_intro_playing = false
 
+	# === ОБНОВЛЁННЫЙ РЕЖИССЁРСКИЙ ТАЙМИНГ ВЫЗОВА ТЕКСТА ===
+	var floating_text_node = get_node_or_null("../FloatingText")
+	
+	if floating_text_node:
+		# Даём игроку целых 3.0 секунды просто побегать и прийти в себя после вставания на ноги
+		# Флаг false запрещает таймеру тикать, пока игра на паузе!
+		await get_tree().create_timer(3.0, false).timeout 
 
+		floating_text_node.show_thought(self, "Где я?.. Моя голова... Как я здесь оказался?")
 		
-		
+		# Обучение вылетит только через 7.0 секунд после того, как исчезнет первая мысль!
+		# (Идеальный неспешный ААА-ритм)
+		await get_tree().create_timer(7.0, false).timeout
+		floating_text_node.show_system_message(self, "Нажмите на клавиши WASD для передвижения по острову")
 
 func _on_fov_updated(new_fov: float):
 	camera.fov = new_fov

@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://crdkbv1scj4sk" path="res://scenes/player/player.tscn" id="3_tlwt5"]
 [ext_resource type="PackedScene" uid="uid://dh420m7h8b1q7" path="res://scenes/islands/island_main.tscn" id="4_036b0"]
 [ext_resource type="PackedScene" uid="uid://qfy6iij8f5ge" path="res://scenes/ui/pause_menu.tscn" id="4_aqk2v"]
+[ext_resource type="PackedScene" uid="uid://28sxnhfgvy42" path="res://scenes/ui/floating_text.tscn" id="5_dwbse"]
 
 [node name="World" type="Node3D" unique_id=1044360984]
 
@@ -20,6 +21,7 @@ stretch = true
 handle_input_locally = false
 msaa_3d = 2
 use_taa = true
+audio_listener_enable_3d = true
 size = Vector2i(1280, 720)
 render_target_update_mode = 4
 
@@ -38,6 +40,8 @@ shadow_enabled = true
 
 [node name="island_main" parent="SubViewportContainer/SubViewport" unique_id=2061596629 instance=ExtResource("4_036b0")]
 transform = Transform3D(0.007082717, 0, 0.9999749, 0, 1, 0, -0.9999749, 0, 0.007082717, -23.139912, 0, -40.50846)
+
+[node name="FloatingText" parent="SubViewportContainer/SubViewport" unique_id=2140700472 instance=ExtResource("5_dwbse")]
 
 [node name="PauseMenu" parent="." unique_id=1236970684 instance=ExtResource("4_aqk2v")]
 unique_name_in_owner = true

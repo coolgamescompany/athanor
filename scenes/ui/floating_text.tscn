@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://28sxnhfgvy42"]
+
+[ext_resource type="FontFile" uid="uid://di3a8dbs8uq4t" path="res://assets/fonts/open sans semibold/OpenSans_SemiCondensed-SemiBold.ttf" id="1_0qskq"]
+[ext_resource type="Script" uid="uid://cvbiw5jv6hqdg" path="res://scenes/ui/floating_text.gd" id="1_x405i"]
+[ext_resource type="AudioStream" uid="uid://baj06opc2a72s" path="res://assets/sfx/UI pack sfx/pack/Jingle 026.wav" id="3_0v55c"]
+[ext_resource type="AudioStream" uid="uid://dhg26tgwcrxd" path="res://assets/sfx/UI pack sfx/menu fx/Menu1A.wav" id="4_gmpfe"]
+
+[node name="FloatingText" type="Node3D" unique_id=2140700472]
+process_mode = 1
+script = ExtResource("1_x405i")
+
+[node name="ThoughtsText" type="Label3D" parent="." unique_id=1766239885]
+pixel_size = 0.003
+billboard = 1
+no_depth_test = true
+modulate = Color(0.24286097, 0.00044571483, 0.36989576, 1)
+outline_modulate = Color(0.99388844, 0.71985453, 1, 1)
+text = "Где я... Моя голова.."
+font = ExtResource("1_0qskq")
+
+[node name="SystemText" type="Label3D" parent="." unique_id=1445371713]
+pixel_size = 0.003
+billboard = 1
+no_depth_test = true
+modulate = Color(0.8462797, 0.6693601, 1, 1)
+text = "Нажмите на клавиши WASD для передвижения"
+font = ExtResource("1_0qskq")
+
+[node name="ThoughtSound" type="AudioStreamPlayer3D" parent="." unique_id=548554228]
+stream = ExtResource("3_0v55c")
+volume_db = -5.0
+
+[node name="SystemSound" type="AudioStreamPlayer3D" parent="." unique_id=1035925246]
+stream = ExtResource("4_gmpfe")
+volume_db = -5.0

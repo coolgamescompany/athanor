@@ -266,17 +266,17 @@ collide_with_areas = true
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=562404480]
 unique_name_in_owner = true
 
-[node name="JumpSound" type="AudioStreamPlayer" parent="AudioStreamPlayer" unique_id=1348698553]
+[node name="JumpSound" type="AudioStreamPlayer3D" parent="AudioStreamPlayer" unique_id=598193008]
 unique_name_in_owner = true
 stream = ExtResource("5_0owmy")
 volume_db = -6.0
 
-[node name="StepSound" type="AudioStreamPlayer" parent="AudioStreamPlayer" unique_id=1894851352]
+[node name="StepSound" type="AudioStreamPlayer3D" parent="AudioStreamPlayer" unique_id=2142319482]
 unique_name_in_owner = true
 stream = ExtResource("3_p47bc")
 volume_db = -18.0
 
-[node name="RespawnSound" type="AudioStreamPlayer" parent="AudioStreamPlayer" unique_id=1680072570]
+[node name="RespawnSound" type="AudioStreamPlayer3D" parent="AudioStreamPlayer" unique_id=2054472394]
 unique_name_in_owner = true
 stream = ExtResource("4_75vfm")
 volume_db = -6.0
@@ -297,5 +297,6 @@ draw_pass_1 = SubResource("QuadMesh_3qbcn")
 [node name="AmbientParticles" parent="." unique_id=966053528 instance=ExtResource("7_0owmy")]
 
 [node name="TinnitusSound" type="AudioStreamPlayer" parent="." unique_id=931691717]
+process_mode = 1
 stream = ExtResource("8_qek5x")
 volume_db = -12.0

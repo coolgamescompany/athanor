@@ -16,6 +16,7 @@ var key_waiting_button: Button = null
 @onready var vsync_btn = %CheckButtonVsync
 @onready var graphics_btn = %OptionButtonGraphics
 @onready var fov_slider = %SliderFOV
+@onready var show_tutorial = %CheckButtonTutorial
 
 @onready var master_slider = %SliderMaster
 @onready var music_slider = %SliderMusic
@@ -117,7 +118,9 @@ func _init_ui_elements():
 	mouse_sens_slider.step = 0.01
 	mouse_sens_slider.value_changed.connect(_on_mouse_sens_changed)
 	mouse_invert_btn.toggled.connect(_on_mouse_invert_toggled)
-
+	
+	show_tutorial.toggled.connect(_on_tutorial_toggled)
+	
 func _create_keybind_menu():
 	for child in keybinds_grid.get_children(): 
 		child.queue_free()
@@ -174,6 +177,9 @@ func load_settings():
 	
 	vsync_btn.button_pressed = config.get_value("video", "vsync", true)
 	
+	# Имя твоей кнопки обучения в UI (поменяй на актуальное, если назвал иначе)
+	show_tutorial.button_pressed = config.get_value("general", "show_tutorial", true)
+
 	# ИСПРАВЛЕНИЕ ТУТ: Сначала считываем сохраненный индекс из конфига, а потом активируем его график
 	var saved_graphics = config.get_value("video", "graphics_quality", 2)
 	graphics_btn.selected = saved_graphics
@@ -213,6 +219,7 @@ func _set_defaults():
 	master_slider.value = 0.7
 	music_slider.value = 0.7
 	sfx_slider.value = 0.7
+	show_tutorial = true
 	fov_slider.value = 85 # Сделали дефолтный FOV приятным для 3D
 	window_mode_btn.selected = 0
 	vsync_btn.button_pressed = true
@@ -238,6 +245,9 @@ func save_settings():
 	config.set_value("video", "graphics_quality", graphics_btn.selected)
 	config.set_value("video", "fov", fov_slider.value)
 	
+	# ИСПРАВЛЕНО ТУТ: Сохраняем реальное состояние кнопки из UI на диск!
+	config.set_value("general", "show_tutorial", show_tutorial.button_pressed)
+	
 	config.set_value("audio", "master_volume", master_slider.value)
 	config.set_value("audio", "music_volume", music_slider.value)
 	config.set_value("audio", "sfx_volume", sfx_slider.value)
@@ -249,6 +259,8 @@ func save_settings():
 	config.set_value("controls", "mouse_sensitivity", mouse_sens_slider.value)
 	config.set_value("controls", "mouse_inverted", mouse_invert_btn.button_pressed)
 	config.save(SAVE_PATH)
+
+
 
 func _auto_save_check():
 	# Если мы сейчас загружаемся (is_loading == true), то СТРОГО запрещаем сохранение!
@@ -354,5 +366,13 @@ func _play_entrance_animation():
 	tween.tween_property(%MainPanel, "modulate:a", 1.0, 0.3)
 	tween.tween_property(%MainPanel, "scale", Vector2.ONE, 0.3)
 
+
 func _on_back_button_pressed():
+	# Принудительно сохраняем всё на диск в момент, когда игрок нажимает "Назад"
+	save_settings()
 	queue_free()
+	
+func _on_tutorial_toggled(toggled_on: bool) -> void:
+	# Напрямую переключаем флаг в синглтоне
+	SettingsManager.show_tutorial = toggled_on
+	_auto_save_check()

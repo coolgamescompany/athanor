@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dhghngf8mmc3"
+path="res://.godot/imported/Jingle 011.wav-6298e24b19d53af0765b4145894e1de1.sample"
+
+[deps]
+
+source_file="res://assets/sfx/UI pack sfx/pack/Jingle 011.wav"
+dest_files=["res://.godot/imported/Jingle 011.wav-6298e24b19d53af0765b4145894e1de1.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

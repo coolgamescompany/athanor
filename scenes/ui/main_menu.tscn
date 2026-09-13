@@ -58,8 +58,9 @@ offset_left = -240.0
 offset_top = -23.0
 grow_horizontal = 0
 grow_vertical = 0
+theme_override_colors/font_color = Color(0.8731184, 0.76510704, 1, 1)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
-text = "All rights reserved (с) 2026 CGC"
+text = "© 2026 CoolGamesCompany. All rights reserved."
 vertical_alignment = 2
 
 [node name="ColorRect" type="ColorRect" parent="MainMenu" unique_id=288415626]
