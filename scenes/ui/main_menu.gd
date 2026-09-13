@@ -9,6 +9,7 @@ extends Node3D
 @onready var click_sound: AudioStreamPlayer = %MenuClickSound
 
 func _ready() -> void:
+	SettingsManager.apply_saved_graphics()
 	# Железобетонно снимаем паузу со всей вселенной игры при заходе в меню!
 	get_tree().paused = false 
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE

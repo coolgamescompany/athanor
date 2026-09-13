@@ -96,7 +96,7 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_0owmy")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_qek5x")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_5gtgg")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_h17s1")
-text = "настройки"
+text = "Настройки"
 alignment = 0
 script = ExtResource("3_0bnpd")
 
@@ -109,7 +109,7 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_fm80t")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_gx1jg")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_ugbui")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_fcs02")
-text = "в главное меню"
+text = "В главное меню"
 alignment = 0
 script = ExtResource("3_0bnpd")
 

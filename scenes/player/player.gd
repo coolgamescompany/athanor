@@ -1,8 +1,7 @@
 extends CharacterBody3D
 
-# Настройки скоростей
 @onready var interaction_ray: RayCast3D = %InteractionRay
-@onready var crosshair: ColorRect = get_node("HUD/CanvasLayer/Crosshair") # Проверь свой путь в сцене!
+@onready var crosshair: ColorRect = get_node("HUD/CanvasLayer/Crosshair")
 
 # Настройки скоростей
 @export var WALK_SPEED: float = 5.0
@@ -27,6 +26,7 @@ var step_sounds: Array = [
 @onready var jump_sound: AudioStreamPlayer = %JumpSound
 @onready var respawn_sound: AudioStreamPlayer = %RespawnSound
 @onready var spawn_particles: GPUParticles3D = %SpawnParticles
+@onready var tinnitus_sound: AudioStreamPlayer = $TinnitusSound
 
 var spawn_position: Vector3
 var default_height: float
@@ -35,9 +35,12 @@ var is_crouching: bool = false
 var step_timer: float = 0.0
 var collision_shape: CollisionShape3D
 
+# --- ГЛАВНАЯ ПЕРЕМЕННАЯ БЛОКИРОВКИ УПРАВЛЕНИЯ ---
+var is_intro_playing: bool = true
+
 # РЕСПАВН ПОСЛЕ ПАДЕНИЯ
 func respawn() -> void:
-	if get_node("RespawnEffect/ColorRect").material.get_shader_parameter("white_fade") > 0.0:
+	if get_node("RespawnEffect/ShaderRect").material.get_shader_parameter("white_fade") > 0.0:
 
 		return
 		
@@ -63,19 +66,18 @@ func respawn() -> void:
 	spawn_particles.restart()
 
 func _ready() -> void:
+	SettingsManager.apply_saved_graphics()
 	if has_node("/root/MusicManager"):
 		get_node("/root/MusicManager").play_menu()
 		
-	
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	spawn_position = global_position
 	process_mode = PROCESS_MODE_PAUSABLE
 	
-	# Запуск игровой фоновой музыки через наш глобальный плеер!
 	if has_node("/root/MusicManager"):
 		get_node("/root/MusicManager").play_game()
 	
-	# Автоматически ищем коллизию капсулы для приседания
+	# Ищем коллизию капсулы для приседания
 	for child in get_children():
 		if child is CollisionShape3D:
 			collision_shape = child
@@ -84,22 +86,67 @@ func _ready() -> void:
 			break
 	camera_default_y = camera.position.y
 	
-	respawn_anim.play("wakeup")
-	respawn_anim.seek(0.0, true)
+	# --- КИНЕМАТОГРАФИЧНОЕ ИНТРО (10 СЕКУНД) ---
+	is_intro_playing = true
 	
-	# 2. Включаем сочный звук магического пробуждения
-	respawn_sound.play()
-	spawn_particles.restart()
+	# Сначала берем честный FOV из файла настроек, чтобы знать к какому значению идти
+	var user_fov = 75.0
+	if has_node("/root/SettingsManager"):
+		user_fov = get_node("/root/SettingsManager").current_fov
 	
-	# Подключаем камеру к изменению FOV
+	# Прячем прицел в темноте
+	if has_node("HUD/CanvasLayer/Crosshair"):
+		crosshair.visible = false
+	
+	# Алхимик жестко лежит лицом в полу
+	camera.position.y = -1.0
+	camera.rotation.x = deg_to_rad(60) # Поставил минус, чтобы взгляд был в землю, а не в небо
+	
+	respawn_anim.play("intro_wakeup")
+	
+	# 1. Звук тиннитуса с задержкой 1.5 сек
+	await get_tree().create_timer(1.5).timeout
+	if tinnitus_sound: 
+		tinnitus_sound.volume_db = -12.0
+		tinnitus_sound.play()
+		var audio_tween = create_tween()
+		audio_tween.tween_property(tinnitus_sound, "volume_db", -40.0, 8.5)
+		audio_tween.tween_callback(tinnitus_sound.stop)
+	
+	# 2. Ждем еще 6.5 секунды до полного открытия глаз (суммарно 6 секунд тишины и темноты)
+	await get_tree().create_timer(6.5).timeout
+	
+	# Начинаем плавный подъем из пола
+	var cam_tween = create_tween().set_parallel(true)
+	
+	# Камера плавно встает на ноги
+	cam_tween.tween_property(camera, "position:y", camera_default_y, 4.0)\
+		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		
+	# Глаза плавно поднимаются к горизонту скал
+	cam_tween.tween_property(camera, "rotation:x", 0.0, 4.0)\
+		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		
+	# Во время самого подъема плавно подгоняем FOV камеры под настройки пользователя!
+	cam_tween.tween_property(camera, "fov", user_fov, 4.0)\
+		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	
+	# 3. ФИНАЛ ИНТРО (Прошло ровно 10 секунд от старта игры)
+	await get_tree().create_timer(4.0).timeout
+	
+	# Включаем прицел обратно
+	if has_node("HUD/CanvasLayer/Crosshair"):
+		crosshair.visible = true
+		
+	# Включаем сигналы динамического изменения FOV из меню
 	SettingsManager.fov_changed.connect(_on_fov_updated)
 	
-	# Сразу проверяем текущий FOV при старте (если файл уже есть на диске)
-	var config = ConfigFile.new()
-	if config.load("user://settings.cfg") == OK:
-		camera.fov = config.get_value("video", "fov", 75)
-	else:
-		camera.fov = 75 # Дефолтный FOV алхимика
+	# Открываем управление!
+	is_intro_playing = false
+
+
+		
+		
 
 func _on_fov_updated(new_fov: float):
 	camera.fov = new_fov
@@ -107,6 +154,13 @@ func _on_fov_updated(new_fov: float):
 func _physics_process(delta: float) -> void:
 	if global_position.y < -30.0:
 		respawn()
+		return
+		
+	# Если идет интро — гравитация работает, но WASD, бег и прыжки полностью отключены!
+	if is_intro_playing:
+		if not is_on_floor():
+			velocity += get_gravity() * delta
+		move_and_slide()
 		return
 
 	# Добавление гравитации
@@ -193,6 +247,10 @@ func _physics_process(delta: float) -> void:
 			create_tween().tween_property(crosshair, "modulate", Color.WHITE, 0.1)
 
 func _input(event: InputEvent) -> void:
+	# Если идет катсцена — мышка намертво блокируется и не крутит голову!
+	if is_intro_playing: 
+		return
+		
 	if event is InputEventMouseMotion:
 		# Получаем значение от 1 до 100 из настроек. 
 		# Если файл пустой или сбоит, принудительно берём 5 (как среднюю скорость)

@@ -49,19 +49,17 @@ script = ExtResource("1_1g8jr")
 unique_name_in_owner = true
 
 [node name="CopyrightLabel" type="Label" parent="MainMenu" unique_id=1767647343]
-anchors_preset = 7
-anchor_left = 0.5
+anchors_preset = 3
+anchor_left = 1.0
 anchor_top = 1.0
-anchor_right = 0.5
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -563.5
+offset_left = -240.0
 offset_top = -23.0
-offset_right = 563.5
-grow_horizontal = 2
+grow_horizontal = 0
 grow_vertical = 0
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 text = "All rights reserved (с) 2026 CGC"
-horizontal_alignment = 2
 vertical_alignment = 2
 
 [node name="ColorRect" type="ColorRect" parent="MainMenu" unique_id=288415626]
@@ -98,7 +96,7 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_1g8jr")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_m1kxf")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_x2yvf")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_uhagc")
-text = "ИГРАТЬ"
+text = "Играть"
 alignment = 0
 script = ExtResource("4_m1kxf")
 
@@ -112,7 +110,7 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_btxxm")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_wb0q5")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_q85j6")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_8g5eo")
-text = "настройки"
+text = "Настройки"
 alignment = 0
 script = ExtResource("4_m1kxf")
 
@@ -126,7 +124,7 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_7suek")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_otr3d")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_8ekit")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_n4uci")
-text = "выйти"
+text = "Выйти"
 alignment = 0
 script = ExtResource("4_m1kxf")
 

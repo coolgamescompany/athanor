@@ -7,13 +7,14 @@
 [ext_resource type="AudioStream" uid="uid://dfr34xdhfwf1x" path="res://assets/sfx/walk2/footstep06.ogg" id="5_0owmy"]
 [ext_resource type="PackedScene" uid="uid://dp5k1ohu3omhh" path="res://scenes/ui/hud.tscn" id="6_75vfm"]
 [ext_resource type="PackedScene" uid="uid://dl0of6amuqiuh" path="res://assets/ambient_particles.tscn" id="7_0owmy"]
+[ext_resource type="AudioStream" uid="uid://dhvr6yfbes223" path="res://assets/soundtrack/tinnitus_sound.wav" id="8_qek5x"]
 
 [sub_resource type="Animation" id="Animation_dovo2"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("ColorRect:material:shader_parameter/white_fade")
+tracks/0/path = NodePath("ShaderRect:material:shader_parameter/white_fade")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -25,7 +26,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("ColorRect:material:shader_parameter/blur_amount")
+tracks/1/path = NodePath("ShaderRect:material:shader_parameter/blur_amount")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -37,7 +38,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("ColorRect:material:shader_parameter/contrast")
+tracks/2/path = NodePath("ShaderRect:material:shader_parameter/contrast")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -46,6 +47,70 @@ tracks/2/keys = {
 "update": 0,
 "values": [1.0]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("BlackRect:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_0owmy"]
+resource_name = "intro_wakeup"
+length = 10.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ShaderRect:material:shader_parameter/blur_amount")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(3, 6, 9),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [5.0, 4.00000019, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath("ShaderRect:material:shader_parameter/white_fade")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(3, 6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = false
+tracks/2/path = NodePath("ShaderRect:material:shader_parameter/contrast")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(3, 6, 9),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.5, 1.60000005225, 1.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("BlackRect:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(3, 4.5, 5, 6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(0, 0, 0, 0.3137255), Color(0, 0, 0, 1), Color(0, 0, 0, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_gmlin"]
 resource_name = "wakeup"
@@ -53,7 +118,7 @@ length = 1.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("ColorRect:material:shader_parameter/white_fade")
+tracks/0/path = NodePath("ShaderRect:material:shader_parameter/white_fade")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -65,7 +130,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("ColorRect:material:shader_parameter/blur_amount")
+tracks/1/path = NodePath("ShaderRect:material:shader_parameter/blur_amount")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -77,7 +142,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("ColorRect:material:shader_parameter/contrast")
+tracks/2/path = NodePath("ShaderRect:material:shader_parameter/contrast")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -90,6 +155,7 @@ tracks/2/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_lvxji"]
 _data = {
 &"RESET": SubResource("Animation_dovo2"),
+&"intro_wakeup": SubResource("Animation_0owmy"),
 &"wakeup": SubResource("Animation_gmlin")
 }
 
@@ -166,13 +232,21 @@ script = ExtResource("1_8afob")
 unique_name_in_owner = true
 libraries/ = SubResource("AnimationLibrary_lvxji")
 
-[node name="ColorRect" type="ColorRect" parent="RespawnEffect" unique_id=669323316]
+[node name="ShaderRect" type="ColorRect" parent="RespawnEffect" unique_id=669323316]
 material = SubResource("ShaderMaterial_3qbcn")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="BlackRect" type="ColorRect" parent="RespawnEffect" unique_id=2023865319]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1018996501]
 shape = SubResource("CapsuleShape3D_3qbcn")
@@ -221,3 +295,7 @@ draw_pass_1 = SubResource("QuadMesh_3qbcn")
 [node name="HUD" parent="." unique_id=1582636669 instance=ExtResource("6_75vfm")]
 
 [node name="AmbientParticles" parent="." unique_id=966053528 instance=ExtResource("7_0owmy")]
+
+[node name="TinnitusSound" type="AudioStreamPlayer" parent="." unique_id=931691717]
+stream = ExtResource("8_qek5x")
+volume_db = -12.0
