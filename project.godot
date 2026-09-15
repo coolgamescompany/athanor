@@ -19,6 +19,8 @@ config/icon="res://icon.svg"
 
 MusicManager="*uid://c7x02edass3sc"
 SettingsManager="*uid://dgijouny6fure"
+StoryDB="*uid://s34ragk4lmme"
+StoryManager="*uid://b1uk05wf06dly"
 
 [display]
 
