@@ -34,6 +34,7 @@ var step_timer: float = 0.0
 var collision_shape: CollisionShape3D
 
 # Флаг блокировки пользовательского ввода на время стартовой заставки
+var cam_tween: Tween
 var is_intro_playing: bool = true
 
 
@@ -88,41 +89,37 @@ func _ready() -> void:
 		audio_tween.tween_property(tinnitus_sound, "volume_db", -40.0, 8.5)
 		audio_tween.tween_callback(tinnitus_sound.stop)
 	
+
 	# Задержка до фазы полного открытия глаз
 	await get_tree().create_timer(6.5).timeout
 	
-	# Интерполяция позиционирования и параметров камеры к рабочим значениям
-	var cam_tween = create_tween().set_parallel(true)
-	cam_tween.tween_property(camera, "position:y", camera_default_y, 4.0)\
-		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	cam_tween.tween_property(camera, "rotation:x", 0.0, 4.0)\
-		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	cam_tween.tween_property(camera, "fov", user_fov, 4.0)\
-		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-	
-	# Завершение фазы интро, восстановление элементов интерфейса и активация ввода
-	# Завершение фазы интро, восстановление элементов интерфейса и активация ввода
-	await get_tree().create_timer(4.0).timeout
-	if has_node("HUD/CanvasLayer/Crosshair"):
-		crosshair.visible = true
+	# === СТРОГАЯ ЗАЩИТА ТВИНА КАМЕРЫ ОТ ПРОПУСКА ===
+	# Если разработчик уже пропустил интро кнопкой F/Enter — полностью блокируем создание Твина!
+	if is_intro_playing:
+		cam_tween = create_tween().set_parallel(true)
+		cam_tween.tween_property(camera, "position:y", camera_default_y, 4.0)\
+			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		cam_tween.tween_property(camera, "rotation:x", 0.0, 4.0)\
+			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+		cam_tween.tween_property(camera, "fov", user_fov, 4.0)\
+			.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 		
-	SettingsManager.fov_changed.connect(_on_fov_updated)
-	is_intro_playing = false
+		# Завершение фазы интро, восстановление элементов интерфейса и активация ввода
+		await get_tree().create_timer(4.0).timeout
+		
+		# Делаем финальную проверку, не нажали ли скип за эти 4 секунды
+		if is_intro_playing:
+			if has_node("HUD/CanvasLayer/Crosshair"):
+				crosshair.visible = true
+				
+			if not SettingsManager.fov_changed.is_connected(_on_fov_updated):
+				SettingsManager.fov_changed.connect(_on_fov_updated)
+				
+			is_intro_playing = false
 
-	# === ЗАПУСКАЕМ ИНТРО ЧЕРЕЗ МЕНЕДЖЕР СЮЖЕТА ===
-	if has_node("/root/StoryManager"):
-		get_node("/root/StoryManager").start_intro_sequence()
+			if has_node("/root/StoryManager"):
+				get_node("/root/StoryManager").start_intro_sequence()
 
-
-# --- ПОТОК УПРАВЛЕНИЯ СИСТЕМНЫМИ ИНСТРУКЦИЯМИ (ОБУЧЕНИЕ) ---
-func _run_tutorial_chain() -> void:
-	# Вывод базовой инструкции перемещения после завершения первой реплики
-	await get_tree().create_timer(8.5, false).timeout
-	StoryManager.play_phrase("intro_tutorial_1")
-	
-	# Вывод контекстной инструкции прыжка после фиксации взгляда на цели
-	await get_tree().create_timer(12.0, false).timeout
-	StoryManager.play_phrase("intro_tutorial_2")
 
 
 func _on_fov_updated(new_fov: float) -> void:
@@ -160,10 +157,12 @@ func _physics_process(delta: float) -> void:
 	var target_camera_y = (CROUCH_HEIGHT * 0.5) if is_crouching else camera_default_y
 	camera.position.y = lerp(camera.position.y, target_camera_y, delta * 10.0)
 
-	# Обработка триггера прыжка
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
-		jump_sound.play()
+	# Обработка триггера прыжка (Добавлена жесткая защита от Enter при пропуске)
+	if Input.is_action_just_pressed("ui_accept") and is_on_floor() and not is_intro_playing:
+		# Если игрок прыгает через Enter, СТРОГО запрещаем прыгать в микросекунду скипа!
+		if not Input.is_key_pressed(KEY_ENTER):
+			velocity.y = JUMP_VELOCITY
+			jump_sound.play()
 
 	# Определение модификатора линейной скорости (Шаг / Бег / Присед)
 	var current_speed = WALK_SPEED
@@ -217,6 +216,59 @@ func _physics_process(delta: float) -> void:
 
 
 func _input(event: InputEvent) -> void:
+	# --- МЕХАНИКА ПРОПУСКА ИНТРО НА КНОПКУ [F] или [ENTER] ---
+	# Сначала строго проверяем, является ли событие нажатием клавиши клавиатуры (InputEventKey)
+	if is_intro_playing and event is InputEventKey and event.pressed:
+		if event.physical_keycode == KEY_F or event.physical_keycode == KEY_ENTER:
+			print("Разработчик пропустил интро заставку.")
+
+			
+			# Полностью останавливаем AnimationPlayer и сбрасываем его состояние
+		if respawn_anim.is_playing():
+			respawn_anim.stop()
+			respawn_anim.seek(0.0, true) # Сбрасываем анимацию в самое начало/дефолт
+			
+			# Намертво убиваем Твин подъёма камеры
+		if cam_tween and cam_tween.is_valid():
+			cam_tween.kill()
+			
+			# Принудительно выставляем параметры материала шейдера в кристальную чёткость
+		if %ShaderRect and %ShaderRect.material:
+			%ShaderRect.material.set_shader_parameter("blur_amount", 0.0)
+			%ShaderRect.material.set_shader_parameter("contrast", 1.0)
+			%ShaderRect.material.set_shader_parameter("white_fade", 0.0)
+			
+		# Жестко выключаем видимость оверлеев напрямую через уникальные имена %
+		if %BlackRect: %BlackRect.visible = false
+		if %ShaderRect: %ShaderRect.visible = false
+				
+		# Мгновенно возвращаем камеру на дефолтную высоту человеческого роста и выравниваем взгляд по горизонту
+		camera.position.y = camera_default_y
+		camera.rotation.x = 0.0
+			
+			# Возвращаем FOV из настроек и прицел на экран
+		var user_fov = 75.0
+		if has_node("/root/SettingsManager"):
+			user_fov = get_node("/root/SettingsManager").current_fov
+		camera.fov = user_fov
+			
+		if has_node("HUD/CanvasLayer/Crosshair"):
+			crosshair.visible = true
+				
+			# Восстанавливаем обработку сигналов динамического изменения FOV с проверкой дубликатов
+		if not SettingsManager.fov_changed.is_connected(_on_fov_updated):
+			SettingsManager.fov_changed.connect(_on_fov_updated)
+				
+		is_intro_playing = false
+			
+		# Активируем стартовую цепочку фраз через независимый менеджер сюжета
+		if has_node("/root/StoryManager"):
+			get_node("/root/StoryManager").start_intro_sequence()
+				
+		# КРИТИЧЕСКИЙ ФИКС: Поглощаем ввод, чтобы Enter не улетал в механику прыжка!
+		get_viewport().set_input_as_handled()
+		return
+
 	# Игнорирование мыши во время блокировки управления катсценой
 	if is_intro_playing: 
 		return
@@ -247,7 +299,7 @@ func respawn() -> void:
 		
 	set_physics_process(false)
 	
-	# Запуск анимации ослепления и звукового сопровождения респауна
+	# Запуск анимации ослепления и звукового сопровожения респауна
 	respawn_anim.play("wakeup")
 	respawn_anim.seek(0.0, true)
 	respawn_sound.play()
@@ -265,3 +317,8 @@ func respawn() -> void:
 	
 	set_physics_process(true)
 	spawn_particles.restart()
+	
+	# Добавляем 1.5 секунды кинематографичной задержки, чтобы игрок успел прийти в себя после телепорта
+	await get_tree().create_timer(1.5, false).timeout
+	if has_node("/root/StoryManager"):
+		get_node("/root/StoryManager").play_phrase("fall_abyss_thought")

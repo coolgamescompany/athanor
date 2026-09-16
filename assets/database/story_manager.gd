@@ -1,17 +1,23 @@
 extends Node
 
+var played_phrases: Array[String] = []
+
 # Вспомогательная функция, которая останавливает таймер, если игрок падает или респавнится
 func _wait_for_safe_player(seconds: float) -> void:
 	var elapsed = 0.0
 	while elapsed < seconds:
-		# Находим игрока на сцене мира каждый кадр
-		var player = get_tree().current_scene.find_child("Player", true, false)
-		
-		# Если игрок существует, уверенно стоит на земле И не находится в процессе респауна
-		if player and player.is_on_floor() and player.global_position.y > -20.0:
-			elapsed += get_process_delta_time() # Только в этом безопасном случае таймер тикает вперед!
+		# Проверяем, существует ли вообще текущая сцена
+		var current_scene = get_tree().current_scene
+		if current_scene:
+			# Ищем игрока на сцене мира безопасным методом
+			var player = current_scene.find_child("Player", true, false)
+			
+			# Если игрок нашелся, уверенно стоит на земле И не находится в процессе респауна
+			if player and player.is_on_floor() and player.global_position.y > -20.0:
+				elapsed += get_process_delta_time() # Только в этом безопасном случае таймер тикает вперед!
 		
 		await get_tree().process_frame # Пропускаем кадр видеокарты
+
 
 # УЛЬТИМАТИВНАЯ НЕУБИВАЕМАЯ ЦЕПОЧКА ИНТРО С АВТО-ТАЙМИНГОМ
 func start_intro_sequence() -> void:
@@ -25,7 +31,7 @@ func start_intro_sequence() -> void:
 	await _wait_for_safe_player(5.0 + 1.5)
 	play_phrase("intro_tutorial_1") # Горит 6.0 сек
 	
-	# --- 3. ВТОРЯ МЫСЛЬ (ЗАМЕТИЛ ЧТО-ТО) ---
+	# --- 3. ВТОРАЯ МЫСЛЬ (ЗАМЕТИЛ ЧТО-ТО) ---
 	# Ждем, пока обучение погорит (6.0 сек) + даем 2.0 секунды побегать на WASD
 	await _wait_for_safe_player(6.0 + 2.0)
 	play_phrase("intro_thought_2") # Горит 5.0 сек
@@ -42,8 +48,16 @@ func start_intro_sequence() -> void:
 
 
 
-# Базовая функция отрисовки (остается неизменной)
 func play_phrase(phrase_id: String) -> void:
+	# --- ЖЕСТКАЯ ОДНОРАЗОВАЯ ПРОВЕРКА ---
+	# Если этот ID уже находится в списке прочитанных — мгновенно выходим!
+	if phrase_id in played_phrases:
+		return
+		
+	# Записываем фразу в черный список, чтобы она больше никогда не смогла повториться
+	played_phrases.append(phrase_id)
+	
+	# Дальше идёт твой стандартный рабочий код поиска игрока и ноды текста:
 	var player = get_tree().current_scene.find_child("Player", true, false) as CharacterBody3D
 	var floating_text = get_tree().current_scene.find_child("FloatingText", true, false)
 	

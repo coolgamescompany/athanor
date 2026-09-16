@@ -233,6 +233,7 @@ unique_name_in_owner = true
 libraries/ = SubResource("AnimationLibrary_lvxji")
 
 [node name="ShaderRect" type="ColorRect" parent="RespawnEffect" unique_id=669323316]
+unique_name_in_owner = true
 material = SubResource("ShaderMaterial_3qbcn")
 anchors_preset = 15
 anchor_right = 1.0
@@ -241,6 +242,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="BlackRect" type="ColorRect" parent="RespawnEffect" unique_id=2023865319]
+unique_name_in_owner = true
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
