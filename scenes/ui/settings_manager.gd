@@ -101,7 +101,7 @@ func load_game_settings() -> void:
 			for action in config.get_section_keys("keybinds"):
 				_apply_keybind(action, config.get_value("keybinds", action))
 
-		TranslationServer.set_locale(config.get_value("general", "locale", "ru"))
+		TranslationServer.set_locale(config.get_value("general", "locale", "en"))
 		
 		current_fov = config.get_value("video", "fov", 85.0)
 		fov_changed.emit(current_fov)
@@ -110,31 +110,27 @@ func load_game_settings() -> void:
 		_apply_graphics_preset(graphics_preset)
 
 # ГЕНЕРАЦИЯ ДЕФОЛТНОГО ФАЙЛА НА ДИСКЕ
-# ГЕНЕРАЦИЯ ДЕФОЛТНОГО ФАЙЛА НА ДИСКЕ
 func _set_default_runtime_settings():
-	show_tutorial = true # Жестко ВКЛЮЧЕНО при первом старте!
+	show_tutorial = true
 	show_fps_counter = false
 	mouse_sensitivity = 0.5
 	mouse_inverted = false
 	current_fov = 85.0
 	
 	var d_config = ConfigFile.new()
-	d_config.set_value("video", "resolution_index", 2)
+	d_config.set_value("video", "resolution_index", 0)
 	d_config.set_value("video", "window_mode", 0)
 	d_config.set_value("video", "vsync", true)
 	d_config.set_value("video", "graphics_quality", 1)
 	d_config.set_value("video", "fov", 85.0)
-	
-	# ИСПРАВЛЕНО ТУТ: Записываем в дефолтный файл TRUE
 	d_config.set_value("general", "show_tutorial", true)
-	
 	d_config.set_value("audio", "master_volume", 0.7)
 	d_config.set_value("audio", "music_volume", 0.7)
 	d_config.set_value("audio", "sfx_volume", 0.7)
 	d_config.set_value("general", "show_fps", false)
 	d_config.set_value("general", "fps_limit", 0)
-	d_config.set_value("general", "locale", "ru")
-	d_config.set_value("controls", "mouse_sensitivity", 0.5)
+	d_config.set_value("general", "locale", "en")
+	d_config.set_value("controls", "mouse_sensitivity", 0.7)
 	d_config.set_value("controls", "mouse_inverted", false)
 	d_config.save(SAVE_PATH) 
 	

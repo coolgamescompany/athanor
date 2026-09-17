@@ -119,7 +119,10 @@ func _ready() -> void:
 		
 		# Делаем финальную проверку, не нажали ли скип за эти 4 секунды
 		if is_intro_playing:
+			# Завершение фазы интро, восстановление элементов интерфейса и активация ввода
+			await get_tree().create_timer(4.0).timeout
 			if has_node("HUD/CanvasLayer/Crosshair"):
+				crosshair.visible = false # Оставляем выключенным до конца интро, если нужно, или true
 				crosshair.visible = true
 				
 			if not SettingsManager.fov_changed.is_connected(_on_fov_updated):
@@ -127,8 +130,9 @@ func _ready() -> void:
 				
 			is_intro_playing = false
 
+			# === СКРИПТОВЫЙ ТРИГГЕР: ИНТРО УСПЕШНО ЗАВЕРШЕНО ===
 			if has_node("/root/StoryManager"):
-				get_node("/root/StoryManager").start_intro_sequence()
+				get_node("/root/StoryManager").on_intro_finished()
 				
 	# Кэшируем стартовые углы поворота персонажа и камеры для сглаживания
 	target_rotation_y = rotation.y
@@ -188,6 +192,12 @@ func _physics_process(delta: float) -> void:
 
 	# Расчёт направления вектора движения на основе плоскостных осей координат
 	var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	
+	# === ТРИГГЕР НАЧАЛА ДВИЖЕНИЯ ИГРОКА ===
+	# Если игрок нажал на кнопки ходьбы (вектор input_dir не равен нулю) и катсцена не идет
+	if input_dir.length() > 0.0 and not is_intro_playing:
+		if has_node("/root/StoryManager"):
+			get_node("/root/StoryManager").on_player_moved()
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
 	if direction:
@@ -277,10 +287,11 @@ func _input(event: InputEvent) -> void:
 				SettingsManager.fov_changed.connect(_on_fov_updated)
 				
 			is_intro_playing = false
+			camera.make_current()
 			
-			# Запускаем нашу умную, последовательную цепочку мыслей и обучения
+			# Активируем триггер мгновенного завершения интро
 			if has_node("/root/StoryManager"):
-				get_node("/root/StoryManager").start_intro_sequence()
+				get_node("/root/StoryManager").on_intro_finished()
 				
 			# Поглощаем ввод, чтобы Enter не вызывал автоматический прыжок персонажа
 			get_viewport().set_input_as_handled()
@@ -349,4 +360,4 @@ func respawn() -> void:
 	# Добавляем 1.5 секунды кинематографичной задержки, чтобы игрок успел прийти в себя после телепорта
 	await get_tree().create_timer(1.5, false).timeout
 	if has_node("/root/StoryManager"):
-		get_node("/root/StoryManager").play_phrase("fall_abyss_thought")
+		get_node("/root/StoryManager").play_phrase_cinematic("fall_abyss_thought")
