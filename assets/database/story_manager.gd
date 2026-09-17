@@ -49,15 +49,11 @@ func start_intro_sequence() -> void:
 
 
 func play_phrase(phrase_id: String) -> void:
-	# --- ЖЕСТКАЯ ОДНОРАЗОВАЯ ПРОВЕРКА ---
-	# Если этот ID уже находится в списке прочитанных — мгновенно выходим!
 	if phrase_id in played_phrases:
 		return
 		
-	# Записываем фразу в черный список, чтобы она больше никогда не смогла повториться
 	played_phrases.append(phrase_id)
 	
-	# Дальше идёт твой стандартный рабочий код поиска игрока и ноды текста:
 	var player = get_tree().current_scene.find_child("Player", true, false) as CharacterBody3D
 	var floating_text = get_tree().current_scene.find_child("FloatingText", true, false)
 	
@@ -68,7 +64,13 @@ func play_phrase(phrase_id: String) -> void:
 	if phrase_data.is_empty(): 
 		return
 		
+	# === АВТОМАТИЧЕСКАЯ ГЕНЕРАЦИЯ КЛЮЧА ЛОКАЛИЗАЦИИ ===
+	# Берём phrase_id (например, "intro_thought_1"), делаем капслоком и добавляем "KEY_"
+	# На выходе железобетонно получится: "KEY_INTRO_THOUGHT_1"
+	var generated_key = "KEY_" + phrase_id.to_upper()
+	
+	# Передаем этот сгенерированный ключ в функции отрисовки текста!
 	if phrase_data["type"] == "thought":
-		floating_text.show_thought(player, phrase_data["text"], phrase_data["time"])
+		floating_text.show_thought(player, generated_key, phrase_data["time"])
 	elif phrase_data["type"] == "system":
-		floating_text.show_system_message(player, phrase_data["text"], phrase_data["time"])
+		floating_text.show_system_message(player, generated_key, phrase_data["time"])

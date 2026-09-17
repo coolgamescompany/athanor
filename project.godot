@@ -68,6 +68,10 @@ ui_down={
 
 joypads/ignore_joypad_on_unfocused_application=true
 
+[internationalization]
+
+locale/translations=PackedStringArray("res://translations/translations.en.translation", "res://translations/translations.ru.translation")
+
 [physics]
 
 3d/physics_engine="Jolt Physics"

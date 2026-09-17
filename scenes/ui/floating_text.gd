@@ -15,7 +15,10 @@ func show_thought(player_node: CharacterBody3D, message: String, duration: float
 	if not thoughts_template or not player_node: return
 		
 	var text_instance = thoughts_template.duplicate() as Label3D
-	text_instance.text = message
+	
+	# === ИСПРАВЛЕНО ТУТ: message теперь сам является ключом! ===
+	# Функция tr() автоматически превратит "KEY_INTRO_THOUGHT_1" в текст из CSV-файла
+	text_instance.text = tr(message)
 	
 	var forward_dir = -player_node.global_transform.basis.z.normalized()
 	var cam_pos = player_node.get_node("Camera3D").global_position
@@ -45,6 +48,7 @@ func show_thought(player_node: CharacterBody3D, message: String, duration: float
 	await fade_tween.finished
 	text_instance.queue_free()
 
+
 # === 2. ВЫВОД ИНСТРУКЦИЙ ОБУЧЕНИЯ (Белый текст) ===
 func show_system_message(player_node: CharacterBody3D, message: String, duration: float = 6.0) -> void:
 	if not system_template or not player_node: return
@@ -54,7 +58,9 @@ func show_system_message(player_node: CharacterBody3D, message: String, duration
 			return 
 
 	var text_instance = system_template.duplicate() as Label3D
-	text_instance.text = message
+	
+	# === ИСПРАВЛЕНО ТУТ: tr(message) переводит системную подсказку ===
+	text_instance.text = tr(message)
 	
 	var forward_dir = -player_node.global_transform.basis.z.normalized()
 	var cam_pos = player_node.get_node("Camera3D").global_position

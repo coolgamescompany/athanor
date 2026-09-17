@@ -89,7 +89,9 @@ alignment = 2
 
 [node name="PlayButton" type="Button" parent="MainMenu/MarginContainer/VBoxContainer" unique_id=821436331]
 unique_name_in_owner = true
+auto_translate_mode = 1
 layout_mode = 2
+tooltip_auto_translate_mode = 1
 theme_override_fonts/font = ExtResource("4_x2yvf")
 theme_override_font_sizes/font_size = 60
 theme_override_styles/normal = SubResource("StyleBoxEmpty_3qbcn")
@@ -97,7 +99,7 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_1g8jr")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_m1kxf")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_x2yvf")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_uhagc")
-text = "Играть"
+text = "KEY_MENU_PLAY"
 alignment = 0
 script = ExtResource("4_m1kxf")
 
@@ -111,7 +113,7 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_btxxm")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_wb0q5")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_q85j6")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_8g5eo")
-text = "Настройки"
+text = "KEY_MENU_SETTINGS"
 alignment = 0
 script = ExtResource("4_m1kxf")
 
@@ -125,7 +127,7 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_7suek")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_otr3d")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_8ekit")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_n4uci")
-text = "Выйти"
+text = "KEY_MENU_EXIT"
 alignment = 0
 script = ExtResource("4_m1kxf")
 

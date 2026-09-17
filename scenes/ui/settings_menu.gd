@@ -62,9 +62,9 @@ func _init_ui_elements():
 	
 	# Оконный режим
 	window_mode_btn.clear()
-	window_mode_btn.add_item("Оконный")
-	window_mode_btn.add_item("Полноэкранный")
-	window_mode_btn.add_item("Полуоконный")
+	window_mode_btn.add_item("KEY_SETTINGS_WINDOW_MODE_WINDOW")
+	window_mode_btn.add_item("KEY_SETTINGS_WINDOW_MODE_FULL")
+	window_mode_btn.add_item("KEY_SETTINGS_WINDOW_MODE_HALF")
 	window_mode_btn.item_selected.connect(_on_window_mode_selected)
 	
 	# Вертикальная синхронизация
@@ -72,7 +72,7 @@ func _init_ui_elements():
 	
 	# Качество графики
 	graphics_btn.clear()
-	for q in ["Низкое", "Среднее", "Высокое", "Ультра"]:
+	for q in ["KEY_SETTINGS_QUALITY_LOW", "KEY_SETTINGS_QUALITY_MEDIUM", "KEY_SETTINGS_QUALITY_HIGH", "KEY_SETTINGS_QUALITY_ULTRA"]:
 		graphics_btn.add_item(q)
 	graphics_btn.item_selected.connect(_on_graphics_selected)
 	
@@ -105,7 +105,7 @@ func _init_ui_elements():
 	
 	fps_limit_btn.clear()
 	for limit in FPS_LIMITS:
-		fps_limit_btn.add_item("Без ограничений" if limit == 0 else str(limit) + " FPS")
+		fps_limit_btn.add_item("KEY_BUTTON_WITHOUT_LIMIT" if limit == 0 else str(limit) + " FPS")
 	fps_limit_btn.item_selected.connect(_on_fps_limit_selected)
 	
 	# Кнопки сброса

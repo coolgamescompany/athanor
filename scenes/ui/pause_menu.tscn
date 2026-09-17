@@ -72,7 +72,7 @@ layout_mode = 2
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_constants/outline_size = 1
 theme_override_fonts/font = ExtResource("3_8uki6")
-text = "П А У З А"
+text = "KEY_MENU_PAUSE"
 
 [node name="ReturnButton" type="Button" parent="VBoxContainer" unique_id=1393983034]
 layout_mode = 2
@@ -83,7 +83,7 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_dovo2")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_gmlin")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_lvxji")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_p47bc")
-text = "Вернуться"
+text = "KEY_MENU_BACK"
 alignment = 0
 script = ExtResource("3_0bnpd")
 
@@ -96,7 +96,7 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_0owmy")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_qek5x")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_5gtgg")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_h17s1")
-text = "Настройки"
+text = "KEY_MENU_SETTINGS"
 alignment = 0
 script = ExtResource("3_0bnpd")
 
@@ -109,7 +109,7 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_fm80t")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_gx1jg")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_ugbui")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_fcs02")
-text = "В главное меню"
+text = "KEY_MENU_TO_MAIN_MENU"
 alignment = 0
 script = ExtResource("3_0bnpd")
 
