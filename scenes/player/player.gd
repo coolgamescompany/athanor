@@ -218,56 +218,54 @@ func _physics_process(delta: float) -> void:
 func _input(event: InputEvent) -> void:
 	# --- МЕХАНИКА ПРОПУСКА ИНТРО НА КНОПКУ [F] или [ENTER] ---
 	# Сначала строго проверяем, является ли событие нажатием клавиши клавиатуры (InputEventKey)
+	# --- МЕХАНИКА ПРОПУСКА ИНТРО НА КНОПКУ [F] или [ENTER] ---
 	if is_intro_playing and event is InputEventKey and event.pressed:
 		if event.physical_keycode == KEY_F or event.physical_keycode == KEY_ENTER:
 			print("Разработчик пропустил интро заставку.")
-
 			
-			# Полностью останавливаем AnimationPlayer и сбрасываем его состояние
-		if respawn_anim.is_playing():
-			respawn_anim.stop()
-			respawn_anim.seek(0.0, true) # Сбрасываем анимацию в самое начало/дефолт
+			# 1. Принудительно останавливаем текущую анимацию интро
+			if respawn_anim.is_playing():
+				respawn_anim.stop()
+				respawn_anim.seek(0.0, true) # Возвращаем аниматор в исходную позицию
 			
-			# Намертво убиваем Твин подъёма камеры
-		if cam_tween and cam_tween.is_valid():
-			cam_tween.kill()
+			# Намертво убиваем Твин подъёма головы, если он успел создаться
+			if cam_tween and cam_tween.is_valid():
+				cam_tween.kill()
 			
-			# Принудительно выставляем параметры материала шейдера в кристальную чёткость
-		if %ShaderRect and %ShaderRect.material:
-			%ShaderRect.material.set_shader_parameter("blur_amount", 0.0)
-			%ShaderRect.material.set_shader_parameter("contrast", 1.0)
-			%ShaderRect.material.set_shader_parameter("white_fade", 0.0)
-			
-		# Жестко выключаем видимость оверлеев напрямую через уникальные имена %
-		if %BlackRect: %BlackRect.visible = false
-		if %ShaderRect: %ShaderRect.visible = false
+			# ЖЕСТКИЙ ФИКС ЭФФЕКТОВ: Вместо сброса параметров шейдера в ноль, 
+			# мы просто СВЕРТЫВАЕМ видимость самих оверлеев! Материал останется нетронутым для респауна!
+			if %BlackRect: 
+				%BlackRect.modulate.a = 0.0 # Сбрасываем прозрачность темноты в ноль на всякий случай
+				%BlackRect.visible = false
+			if %ShaderRect: 
+				%ShaderRect.visible = false
 				
-		# Мгновенно возвращаем камеру на дефолтную высоту человеческого роста и выравниваем взгляд по горизонту
-		camera.position.y = camera_default_y
-		camera.rotation.x = 0.0
+			# 2. Мгновенно выравниваем камеру на стандартную высоту человеческого роста
+			camera.position.y = camera_default_y
+			camera.rotation.x = 0.0
 			
-			# Возвращаем FOV из настроек и прицел на экран
-		var user_fov = 75.0
-		if has_node("/root/SettingsManager"):
-			user_fov = get_node("/root/SettingsManager").current_fov
-		camera.fov = user_fov
+			# 3. Восстанавливаем FOV из файла конфигурации и возвращаем прицел
+			var user_fov = 75.0
+			if has_node("/root/SettingsManager"):
+				user_fov = get_node("/root/SettingsManager").current_fov
+			camera.fov = user_fov
 			
-		if has_node("HUD/CanvasLayer/Crosshair"):
-			crosshair.visible = true
+			if has_node("HUD/CanvasLayer/Crosshair"):
+				crosshair.visible = true
 				
-			# Восстанавливаем обработку сигналов динамического изменения FOV с проверкой дубликатов
-		if not SettingsManager.fov_changed.is_connected(_on_fov_updated):
-			SettingsManager.fov_changed.connect(_on_fov_updated)
+			# 4. Безопасно восстанавливаем обработку сигналов изменения FOV из меню
+			if not SettingsManager.fov_changed.is_connected(_on_fov_updated):
+				SettingsManager.fov_changed.connect(_on_fov_updated)
 				
-		is_intro_playing = false
+			is_intro_playing = false
 			
-		# Активируем стартовую цепочку фраз через независимый менеджер сюжета
-		if has_node("/root/StoryManager"):
-			get_node("/root/StoryManager").start_intro_sequence()
+			# Запускаем нашу умную, последовательную цепочку мыслей и обучения
+			if has_node("/root/StoryManager"):
+				get_node("/root/StoryManager").start_intro_sequence()
 				
-		# КРИТИЧЕСКИЙ ФИКС: Поглощаем ввод, чтобы Enter не улетал в механику прыжка!
-		get_viewport().set_input_as_handled()
-		return
+			# Поглощаем ввод, чтобы Enter не вызывал автоматический прыжок персонажа
+			get_viewport().set_input_as_handled()
+			return
 
 	# Игнорирование мыши во время блокировки управления катсценой
 	if is_intro_playing: 
@@ -296,6 +294,9 @@ func _input(event: InputEvent) -> void:
 func respawn() -> void:
 	if get_node("RespawnEffect/ShaderRect").material.get_shader_parameter("white_fade") > 0.0:
 		return
+		
+	# ЖЕСТКИЙ ФИКС: При падении включаем ТОЛЬКО шейдер вспышки! Чёрную шторку не трогаем!
+	if %ShaderRect: %ShaderRect.visible = true
 		
 	set_physics_process(false)
 	
