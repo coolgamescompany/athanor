@@ -37,6 +37,10 @@ var collision_shape: CollisionShape3D
 var cam_tween: Tween
 var is_intro_playing: bool = true
 
+# Накапливаемые целевые углы поворота для реализации плавного сглаживания (LERP)
+var target_rotation_y: float = 0.0
+var target_rotation_x: float = 0.0
+
 
 func _ready() -> void:
 	# === ФИКС СИНХРОНИЗАЦИИ ДЛЯ SUBVIEWPORT ===
@@ -125,6 +129,10 @@ func _ready() -> void:
 
 			if has_node("/root/StoryManager"):
 				get_node("/root/StoryManager").start_intro_sequence()
+				
+	# Кэшируем стартовые углы поворота персонажа и камеры для сглаживания
+	target_rotation_y = rotation.y
+	target_rotation_x = camera.rotation.x
 
 
 
@@ -283,13 +291,21 @@ func _input(event: InputEvent) -> void:
 		return
 		
 	# Расчёт векторов вращения камеры и трансформации осей взгляда
+	# Расчёт векторов вращения камеры и трансформации осей взгляда
 	if event is InputEventMouseMotion:
 		var raw_sens: float = SettingsManager.mouse_sensitivity
 		if raw_sens <= 0: 
-			raw_sens = 5.0
+			raw_sens = 0.5
 		
-		var sens: float = 0.002 * raw_sens
+		# Возвращаем стандартный комфортный шаг чувствительности
+		var sens: float = 0.003 * raw_sens
 		var invert_multiplier = -1.0 if SettingsManager.mouse_inverted else 1.0
+		
+		# ВМЕСТО ПОВОРОТА: Просто копим целевые значения углов!
+		target_rotation_y -= event.relative.x * sens
+		target_rotation_x -= event.relative.y * sens * invert_multiplier
+		target_rotation_x = clamp(target_rotation_x, deg_to_rad(-80), deg_to_rad(80))
+
 		
 		rotate_y(-event.relative.x * sens)
 		camera.rotate_x(-event.relative.y * sens * invert_multiplier)
