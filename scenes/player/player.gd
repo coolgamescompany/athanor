@@ -39,6 +39,12 @@ var is_intro_playing: bool = true
 
 
 func _ready() -> void:
+	# === ФИКС СИНХРОНИЗАЦИИ ДЛЯ SUBVIEWPORT ===
+	# Находим SubViewport, в котором живет игрок, и насильно привязываем к нему глаза нашей камеры
+	var my_viewport = get_viewport()
+	if my_viewport:
+		# Говорим вьюпорту обновлять рендеринг и слушаться именно эту камеру
+		camera.make_current()
 	# Инициализация графических параметров из конфигурационного файла
 	SettingsManager.apply_saved_graphics()
 	
@@ -155,7 +161,8 @@ func _physics_process(delta: float) -> void:
 		collision_shape.shape.height = lerp(collision_shape.shape.height, target_height, delta * 10.0)
 	
 	var target_camera_y = (CROUCH_HEIGHT * 0.5) if is_crouching else camera_default_y
-	camera.position.y = lerp(camera.position.y, target_camera_y, delta * 10.0)
+	camera.position.y = target_camera_y # Скрипт камеры сам плавно подхватит это значение!
+
 
 	# Обработка триггера прыжка (Добавлена жесткая защита от Enter при пропуске)
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor() and not is_intro_playing:
@@ -216,8 +223,12 @@ func _physics_process(delta: float) -> void:
 
 
 func _input(event: InputEvent) -> void:
-	# --- МЕХАНИКА ПРОПУСКА ИНТРО НА КНОПКУ [F] или [ENTER] ---
-	# Сначала строго проверяем, является ли событие нажатием клавиши клавиатуры (InputEventKey)
+	# === ФИКС СИНХРОНИЗАЦИИ ДЛЯ SUBVIEWPORT ===
+	# Находим SubViewport, в котором живет игрок, и насильно привязываем к нему глаза нашей камеры
+	var my_viewport = get_viewport()
+	if my_viewport:
+		# Говорим вьюпорту обновлять рендеринг и слушаться именно эту камеру
+		camera.make_current()
 	# --- МЕХАНИКА ПРОПУСКА ИНТРО НА КНОПКУ [F] или [ENTER] ---
 	if is_intro_playing and event is InputEventKey and event.pressed:
 		if event.physical_keycode == KEY_F or event.physical_keycode == KEY_ENTER:
