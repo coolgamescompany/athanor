@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://bxw06ghddhu24"]
+
+[ext_resource type="PackedScene" uid="uid://b5ucrttoo3oat" path="res://assets/rock/rock2.glb" id="1_bksxx"]
+[ext_resource type="PackedScene" uid="uid://bj037ksaexcfn" path="res://assets/rock/tiny_rocks.glb" id="2_dssm0"]
+
+[node name="AnimatableBody3D2" type="AnimatableBody3D" unique_id=711401535]
+
+[node name="rock2" parent="." unique_id=1575103820 instance=ExtResource("1_bksxx")]
+transform = Transform3D(0.7749159, -0.10565388, 0.6231714, 0.0823337, 0.99440295, 0.06621106, -0.62667894, 0, 0.77927756, -7.007662, 1.2357073, 6.7242966)
+
+[node name="rock4" parent="." unique_id=118676379 instance=ExtResource("1_bksxx")]
+transform = Transform3D(-0.69927394, 0.20237032, -0.68561083, 0.30285588, 0.9526336, -0.027704507, 0.64752936, -0.22701427, -0.7274409, -15.217333, 0, 6.9020004)
+
+[node name="rock6" parent="." unique_id=993667994 instance=ExtResource("1_bksxx")]
+transform = Transform3D(0.422194, 0, 0.90650547, 0, 1, 0, -0.90650547, 0, 0.422194, -12.8073635, 3.7598834, -1.2758522)
+
+[node name="rock8" parent="." unique_id=1856172631 instance=ExtResource("1_bksxx")]
+transform = Transform3D(-0.7755429, 0, -0.6312949, 0, 1, 0, 0.6312949, 0, -0.7755429, -16.316267, 6.745845, 1.742218)
+
+[node name="rock11" parent="." unique_id=772496756 instance=ExtResource("1_bksxx")]
+transform = Transform3D(0.48399466, 0, -0.8750709, 0, 1, 0, 0.8750709, 0, 0.48399466, -19.070541, 9.091274, 3.2179718)
+
+[node name="tiny_rocks" parent="." unique_id=288976980 instance=ExtResource("2_dssm0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.3247, 0, 2.046133)

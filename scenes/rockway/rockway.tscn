@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://rwxvcsj4vt5y"]
+
+[ext_resource type="PackedScene" uid="uid://byr77uv55voe5" path="res://scenes/rockway/rockway_1.tscn" id="1_c5yix"]
+[ext_resource type="Script" uid="uid://bakojlqpy8xcx" path="res://scenes/rockway/rockway_controller.gd" id="1_kgvb3"]
+[ext_resource type="PackedScene" uid="uid://bxw06ghddhu24" path="res://scenes/rockway/rockway_2.tscn" id="2_kgvb3"]
+[ext_resource type="PackedScene" uid="uid://cc2ix55yko5ce" path="res://scenes/rockway/rockway_3.tscn" id="3_ri5sf"]
+
+[node name="Rockway" type="Node3D" unique_id=1629384071]
+script = ExtResource("1_kgvb3")
+
+[node name="AnimatableBody3D1" parent="." unique_id=702849371 instance=ExtResource("1_c5yix")]
+
+[node name="AnimatableBody3D2" parent="." unique_id=711401535 instance=ExtResource("2_kgvb3")]
+
+[node name="AnimatableBody3D3" parent="." unique_id=2043061568 instance=ExtResource("3_ri5sf")]

@@ -99,7 +99,6 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_1g8jr")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_m1kxf")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_x2yvf")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_uhagc")
-text = "KEY_MENU_PLAY"
 alignment = 0
 script = ExtResource("4_m1kxf")
 

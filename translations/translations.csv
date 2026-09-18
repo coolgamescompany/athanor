@@ -8,6 +8,7 @@ KEY_FIND_CRYSTAL_THOUGHT,"Wow, is this an alchemical crystal?! It will make a gr
 KEY_FIND_CRYSTAL_TUTORIAL,"Press [E] to gather the ingredient","Нажмите [E], чтобы собрать ингредиент"
 KEY_FALL_ABYSS_THOUGHT,"This abyss is endless... The island's magic brought me back","Эта бездна бесконечна... Магия острова вернула меня обратно"
 KEY_MENU_PLAY,"Play","Играть"
+KEY_MENU_CONTINUE,"Continue","Продолжить"
 KEY_MENU_SETTINGS,"Settings","Настройки"
 KEY_MENU_EXIT,"Exit","Выйти"
 KEY_MENU_BACK,"Back","Вернуться"

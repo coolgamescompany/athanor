@@ -30,9 +30,56 @@ func _ready() -> void:
 		if btn is Button:
 			btn.focus_mode = Control.FOCUS_NONE
 			btn.modulate = default_color
-			# Привязываем наведение мыши к нашим универсальным функциям пониже:
-			btn.mouse_entered.connect(_on_btn_hover_start.bind(btn))
-			btn.mouse_exited.connect(_on_btn_hover_end.bind(btn))
+			
+			# Безопасное подключение наведения мыши
+			if not btn.mouse_entered.is_connected(_on_btn_hover_start):
+				btn.mouse_entered.connect(_on_btn_hover_start.bind(btn))
+			if not btn.mouse_exited.is_connected(_on_btn_hover_end):
+				btn.mouse_exited.connect(_on_btn_hover_end.bind(btn))
+
+			# === БЕЗОПАСНОЕ АВТОМАТИЧЕСКОЕ ПОДКЛЮЧЕНИЕ КЛИКОВ ===
+			if btn == %PlayButton and not btn.pressed.is_connected(_on_play_button_pressed):
+				btn.pressed.connect(_on_play_button_pressed)
+			elif btn == %SettingsButton and not btn.pressed.is_connected(_on_settings_button_pressed):
+				btn.pressed.connect(_on_settings_button_pressed)
+			elif btn == %ExitButton and not btn.pressed.is_connected(_on_exit_button_pressed):
+				btn.pressed.connect(_on_exit_button_pressed)
+
+
+			
+			if btn == %PlayButton and not btn.pressed.is_connected(_on_play_button_pressed):
+				btn.pressed.connect(_on_play_button_pressed)
+			elif btn == %SettingsButton and not btn.pressed.is_connected(_on_settings_button_pressed):
+				btn.pressed.connect(_on_settings_button_pressed)
+			elif btn == %ExitButton and not btn.pressed.is_connected(_on_exit_button_pressed):
+				btn.pressed.connect(_on_exit_button_pressed)
+
+
+			
+
+	# Ищем уникальную ноду кнопки "Играть" по её имени со знаком %
+	var play_button = get_node_or_null("%PlayButton")
+	
+	if play_button:
+		# Мгновенно прячем пустую кнопку, чтобы перестраховаться
+		play_button.modulate.a = 0.0
+		
+		# Проверяем физическое существование файла на диске
+		var dir = DirAccess.open("user://")
+		if dir and dir.file_exists("save_game.cfg"):
+			play_button.text = "KEY_MENU_CONTINUE"
+		else:
+			play_button.text = "KEY_MENU_PLAY"
+			
+		# Ждем ровно один кадр, чтобы движок применил текст в памяти
+		await get_tree().process_frame
+		
+		# Плавно зажигаем кнопку с уже ГОТОВЫМ текстом
+		var show_tween = create_tween()
+		show_tween.tween_property(play_button, "modulate:a", 1.0, 0.1)
+
+
+
 			
 	
 

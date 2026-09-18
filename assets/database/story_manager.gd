@@ -14,12 +14,13 @@ var is_phrase_playing: bool = false
 # Флаг, зафиксировали ли мы первое движение игрока
 var has_player_moved_at_least_once: bool = false
 
+
 # === СОБЫТИЙНЫЙ ТРИГГЕР 1: КОНЕЦ ИНТРО (Досмотрели или пропустили) ===
 func on_intro_finished() -> void:
 	if current_story_stage > 0: return
 	current_story_stage = 1 # СТАДИЯ 1: Монолог о голове
 	
-	# Неспешное появление первой мысли после открытия глаз
+	# Дальше идет твой красивый рабочий неспешный тайминг:
 	await _wait_for_safe_player(1.5)
 	await play_phrase_cinematic("intro_thought_1") # Длится 5.0 сек + 0.8 сек анимация
 	
@@ -34,10 +35,9 @@ func on_intro_finished() -> void:
 	if has_player_moved_at_least_once:
 		# Сразу запускаем следующую стадию без ожидания!
 		_run_island_monologue_chain()
-
-
 		
-# === СОБЫТИЙНЫЙ ТРИГГЕР 2: ИГРОК ВПЕРВЫЕ НАЖАЛ WASD ===
+
+
 # === СОБЫТИЙНЫЙ ТРИГГЕР 2: ИГРОК НАЖАЛ WASD ===
 func on_player_moved() -> void:
 	# Запоминаем, что игрок в принципе умеет ходить

@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://cgo7ragxna8xf"]
+
+[ext_resource type="PackedScene" uid="uid://c373y7ur885t6" path="res://assets/portal/portal2.glb" id="1_lg4hd"]
+
+[node name="Portal2" type="Node3D" unique_id=1322518164]
+
+[node name="portal2" parent="." unique_id=580846549 instance=ExtResource("1_lg4hd")]

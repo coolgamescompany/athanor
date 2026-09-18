@@ -349,9 +349,13 @@ func _on_mouse_invert_toggled(toggled_on):
 	SettingsManager.mouse_inverted = toggled_on
 	_auto_save_check()
 
-func _on_reset_progress_pressed():
-	if FileAccess.file_exists("user://save_game.dat"):
-		DirAccess.remove_absolute("user://save_game.dat")
+func _on_reset_progress_pressed() -> void:
+	# 1. Вызываем физическое удаление файла с диска и очистку памяти
+	if has_node("/root/SaveManager"):
+		get_node("/root/SaveManager").clear_save()
+		
+	# 2. Перезагружаем текущую сцену Главного Меню, чтобы кнопка "Продолжить" мгновенно превратилась обратно в "Играть"!
+	get_tree().reload_current_scene()
 
 func _on_reset_settings_pressed():
 	if FileAccess.file_exists(SAVE_PATH):
