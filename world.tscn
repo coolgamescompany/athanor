@@ -37,7 +37,7 @@ transform = Transform3D(-0.35857427, 0, -0.9335012, 0, 1, 0, 0.9335012, 0, -0.35
 [node name="Island_1_Start" parent="SubViewportContainer/SubViewport" unique_id=534627359 instance=ExtResource("2_fj7yv")]
 
 [node name="Player" parent="SubViewportContainer/SubViewport" unique_id=7781218 instance=ExtResource("3_tlwt5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7323995, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.430685, 13.222931, 6.551152)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewportContainer/SubViewport" unique_id=1962530227]
 transform = Transform3D(-0.7660445, 0.60402274, 0.2198463, 0, -0.34202012, 0.9396927, 0.6427876, 0.71984637, 0.26200265, -0.8530445, 3.7416687, 5.6277966)
@@ -45,17 +45,19 @@ light_color = Color(0.72156835, 0.9255543, 0.97680384, 1)
 shadow_enabled = true
 
 [node name="island_main" parent="SubViewportContainer/SubViewport" unique_id=2061596629 instance=ExtResource("4_036b0")]
-transform = Transform3D(0.007082717, 0, 0.9999749, 0, 1, 0, -0.9999749, 0, 0.007082717, -23.139912, 26.444212, -40.50846)
+transform = Transform3D(0.023089657, 0, 3.2599182, 0, 3.26, 0, -3.2599182, 0, 0.023089657, -23.139912, 26.444212, -40.50846)
 
 [node name="FloatingText" parent="SubViewportContainer/SubViewport" unique_id=2140700472 instance=ExtResource("5_dwbse")]
 
+[node name="Portal1" parent="SubViewportContainer/SubViewport" unique_id=1596774714 node_paths=PackedStringArray("target_portal") instance=ExtResource("7_pkg7o")]
+transform = Transform3D(0.83012766, 0.016793903, 0.22019741, 0.025420519, 0.84355235, -0.1601692, -0.2193688, 0.16130197, 0.81470233, -27.063955, 10.352087, 5.6960535)
+target_portal = NodePath("../Portal2")
+
+[node name="Portal2" parent="SubViewportContainer/SubViewport" unique_id=1322518164 node_paths=PackedStringArray("target_portal") instance=ExtResource("8_gbfbk")]
+transform = Transform3D(0.72498924, 0, 0.48092687, 0, 0.87, 0, -0.48092687, 0, 0.72498924, -36.497208, 32.00865, -51.543434)
+target_portal = NodePath("../Portal1")
+
 [node name="PauseMenu" parent="." unique_id=1236970684 instance=ExtResource("4_aqk2v")]
 unique_name_in_owner = true
-
-[node name="Portal1" parent="." unique_id=1596774714 instance=ExtResource("7_pkg7o")]
-transform = Transform3D(0.83012766, 0.016793903, 0.22019741, 0.025420519, 0.84355235, -0.1601692, -0.2193688, 0.16130197, 0.81470233, -27.063955, 10.352087, 5.6960535)
-
-[node name="Portal2" parent="." unique_id=1322518164 instance=ExtResource("8_gbfbk")]
-transform = Transform3D(0.72498924, 0, 0.48092687, 0, 0.87, 0, -0.48092687, 0, 0.72498924, -27.557611, 27.453451, -41.7522)
 
 [node name="Rockway" parent="." unique_id=1629384071 instance=ExtResource("9_ioo17")]

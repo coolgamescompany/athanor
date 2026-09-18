@@ -1,7 +1,23 @@
 [gd_scene format=3 uid="uid://cgo7ragxna8xf"]
 
 [ext_resource type="PackedScene" uid="uid://c373y7ur885t6" path="res://assets/portal/portal2.glb" id="1_lg4hd"]
+[ext_resource type="Script" uid="uid://drobsw06q02ne" path="res://scenes/portal/portal.gd" id="2_wscf4"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_q2ig4"]
+size = Vector3(2.590332, 2.5178223, 1.2958984)
 
 [node name="Portal2" type="Node3D" unique_id=1322518164]
+script = ExtResource("2_wscf4")
 
 [node name="portal2" parent="." unique_id=580846549 instance=ExtResource("1_lg4hd")]
+transform = Transform3D(1.31, 0, 0, 0, 1.31, 0, 0, 0, 1.31, 0, 0, 0)
+
+[node name="PortalArea" type="Area3D" parent="." unique_id=739354768]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0663667, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PortalArea" unique_id=582052281]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.020751953, 1.9122324, -0.14794922)
+shape = SubResource("BoxShape3D_q2ig4")
+
+[connection signal="body_entered" from="PortalArea" to="PortalArea" method="_on_body_entered"]
+[connection signal="body_exited" from="PortalArea" to="PortalArea" method="_on_body_exited"]
