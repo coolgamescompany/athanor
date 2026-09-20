@@ -1,6 +1,7 @@
 [gd_resource type="ShaderMaterial" format=3 uid="uid://b3hat60d218pu"]
 
 [ext_resource type="Texture2D" uid="uid://cykky3mm23yfw" path="res://assets/textures/grass/Grass003_2K-PNG_Color.png" id="2_8algs"]
+[ext_resource type="Texture2D" uid="uid://bt4ldnwmax73v" path="res://assets/textures/dirt/wmremove-transformed.png" id="2_di20a"]
 [ext_resource type="Texture2D" uid="uid://cdrt50h45o6e3" path="res://assets/textures/stone/Rock063_2K-JPG_Color.jpg" id="5_xxgvi"]
 
 [sub_resource type="Shader" id="Shader_hes6n"]
@@ -10,15 +11,28 @@ group_uniforms Grass_Settings;
 uniform sampler2D grass_albedo : source_color, filter_linear_mipmap_anisotropic;
 uniform sampler2D grass_normal : hint_normal, filter_linear_mipmap_anisotropic;
 uniform sampler2D grass_roughness : filter_linear_mipmap_anisotropic;
+uniform float grass_scale : hint_range(0.01, 10.0) = 1.0;     // Масштаб травы
+
+group_uniforms Dirt_Settings;
+uniform sampler2D dirt_albedo : source_color, filter_linear_mipmap_anisotropic;
+uniform sampler2D dirt_normal : hint_normal, filter_linear_mipmap_anisotropic;
+uniform sampler2D dirt_roughness : filter_linear_mipmap_anisotropic;
+uniform float dirt_scale : hint_range(0.01, 10.0) = 1.0;      // Масштаб грязи
 
 group_uniforms Stone_Settings;
 uniform sampler2D stone_albedo : source_color, filter_linear_mipmap_anisotropic;
 uniform sampler2D stone_normal : hint_normal, filter_linear_mipmap_anisotropic;
 uniform sampler2D stone_roughness : filter_linear_mipmap_anisotropic;
+uniform float stone_scale : hint_range(0.01, 10.0) = 1.0;     // Масштаб камня
+
+group_uniforms Noise_Settings;
+uniform sampler2D noise_tex : filter_linear_mipmap_anisotropic; // Seamless NoiseTexture2D
+uniform float noise_scale : hint_range(0.01, 10.0) = 1.0;     // Масштаб пятен грязи
+uniform float dirt_amount : hint_range(0.0, 1.0) = 0.5;       // Сколько грязи будет на траве
+uniform float dirt_contrast : hint_range(0.1, 20.0) = 2.0;    // Жесткость границ грязи
 
 group_uniforms Global_Settings;
-uniform float texture_scale : hint_range(0.01, 10.0) = 1.0;
-uniform float blend_sharpness : hint_range(0.1, 10.0) = 2.0;
+uniform float slope_sharpness : hint_range(0.1, 20.0) = 4.0;  // Резкость перехода камень/земля
 
 // Переменные для передачи чистых данных из vertex в fragment
 varying vec3 local_pos;
@@ -30,16 +44,16 @@ void vertex() {
 	local_normal = NORMAL;
 }
 
-vec3 get_triplanar_blend(sampler2D tex, vec3 p, vec3 n) {
+vec3 get_triplanar_blend(sampler2D tex, vec3 p, vec3 n, float scale) {
 	vec3 blending = abs(n);
 	blending = normalize(max(blending, 0.00001));
 	float sum = blending.x + blending.y + blending.z;
 	blending /= vec3(sum);
 	
 	// Применяем масштаб к локальным координатам меша
-	vec2 uv_x = p.zy * texture_scale;
-	vec2 uv_y = p.xz * texture_scale;
-	vec2 uv_z = p.xy * texture_scale;
+	vec2 uv_x = p.zy * scale;
+	vec2 uv_y = p.xz * scale;
+	vec2 uv_z = p.xy * scale;
 	
 	vec3 x_tex = texture(tex, uv_x).rgb;
 	vec3 y_tex = texture(tex, uv_y).rgb;
@@ -49,26 +63,42 @@ vec3 get_triplanar_blend(sampler2D tex, vec3 p, vec3 n) {
 }
 
 void fragment() {
-	// Используем переданные чистые локальные координаты
-	// Сэмплируем Albedo
-	vec3 g_alb = get_triplanar_blend(grass_albedo, local_pos, local_normal);
-	vec3 s_alb = get_triplanar_blend(stone_albedo, local_pos, local_normal);
+	// 1. СЭМПЛИРОВАНИЕ ВСЕХ ТЕКСТУР С ИНДИВИДУАЛЬНЫМИ МАСШТАБАМИ
+	// Камень (использует stone_scale)
+	vec3 s_alb = get_triplanar_blend(stone_albedo, local_pos, local_normal, stone_scale);
+	vec3 s_norm = get_triplanar_blend(stone_normal, local_pos, local_normal, stone_scale);
+	float s_rough = get_triplanar_blend(stone_roughness, local_pos, local_normal, stone_scale).r;
 	
-	// Сэмплируем Normal
-	vec3 g_norm = get_triplanar_blend(grass_normal, local_pos, local_normal);
-	vec3 s_norm = get_triplanar_blend(stone_normal, local_pos, local_normal);
+	// Трава (использует grass_scale)
+	vec3 g_alb = get_triplanar_blend(grass_albedo, local_pos, local_normal, grass_scale);
+	vec3 g_norm = get_triplanar_blend(grass_normal, local_pos, local_normal, grass_scale);
+	float g_rough = get_triplanar_blend(grass_roughness, local_pos, local_normal, grass_scale).r;
 	
-	// Сэмплируем Roughness (берем только R канал, так как карта черно-белая)
-	float g_rough = get_triplanar_blend(grass_roughness, local_pos, local_normal).r;
-	float s_rough = get_triplanar_blend(stone_roughness, local_pos, local_normal).r;
+	// Грязь (использует dirt_scale)
+	vec3 d_alb = get_triplanar_blend(dirt_albedo, local_pos, local_normal, dirt_scale);
+	vec3 d_norm = get_triplanar_blend(dirt_normal, local_pos, local_normal, dirt_scale);
+	float d_rough = get_triplanar_blend(dirt_roughness, local_pos, local_normal, dirt_scale).r;
 	
-	// Рассчитываем маску верха по локальной нормали модели
-	float blend_mask = clamp(dot(normalize(local_normal), vec3(0.0, 1.0, 0.0)) * blend_sharpness, 0.0, 1.0);
-	
-	// Смешиваем и выводим финальные параметры
-	ALBEDO = mix(s_alb, g_alb, blend_mask);
-	NORMAL_MAP = mix(s_norm, g_norm, blend_mask);
-	ROUGHNESS = mix(s_rough, g_rough, blend_mask);
+	// Шум для грязи (использует noise_scale)
+	float noise = get_triplanar_blend(noise_tex, local_pos, local_normal, noise_scale).r;
+
+	// 2. РАСЧЕТ МАСКИ ГРЯЗИ НА ТРАВЕ
+	float dirt_threshold = 1.0 - dirt_amount; 
+	float dirt_mask = clamp((noise - dirt_threshold) * dirt_contrast + 0.5, 0.0, 1.0);
+
+	// 3. ПЕРВОЕ СМЕШИВАНИЕ: Накладываем грязь на траву
+	vec3 ground_alb = mix(g_alb, d_alb, dirt_mask);
+	vec3 ground_norm = mix(g_norm, d_norm, dirt_mask);
+	float ground_rough = mix(g_rough, d_rough, dirt_mask);
+
+	// 4. РАСЧЕТ МАСКИ НАКЛОНА (Камень vs Земляной ковер)
+	float slope = clamp(dot(normalize(local_normal), vec3(0.0, 1.0, 0.0)), 0.0, 1.0);
+	float stone_vs_ground_mask = clamp((slope - 0.5) * slope_sharpness + 0.5, 0.0, 1.0);
+
+	// 5. ВТОРОЕ СМЕШИВАНИЕ: Отделяем вертикальный камень от горизонтальной земли
+	ALBEDO = mix(s_alb, ground_alb, stone_vs_ground_mask);
+	NORMAL_MAP = mix(s_norm, ground_norm, stone_vs_ground_mask);
+	ROUGHNESS = mix(s_rough, ground_rough, stone_vs_ground_mask);
 }
 "
 
@@ -76,6 +106,13 @@ void fragment() {
 render_priority = 0
 shader = SubResource("Shader_hes6n")
 shader_parameter/grass_albedo = ExtResource("2_8algs")
+shader_parameter/grass_scale = 1.0
+shader_parameter/dirt_albedo = ExtResource("2_di20a")
+shader_parameter/dirt_scale = 2.40300011344398
 shader_parameter/stone_albedo = ExtResource("5_xxgvi")
-shader_parameter/texture_scale = 0.54000002495148
-shader_parameter/blend_sharpness = 2.0
+shader_parameter/stone_scale = 1.0
+shader_parameter/noise_tex = ExtResource("2_di20a")
+shader_parameter/noise_scale = 0.00999999977648
+shader_parameter/dirt_amount = 0.7200000342
+shader_parameter/dirt_contrast = 16.04000075864012
+shader_parameter/slope_sharpness = 4.0
