@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://cti6tnlimqjj5"]
+
+[ext_resource type="PackedScene" uid="uid://napvbjmkhcqw" path="res://assets/models/Cube-col.glb" id="1_p5vdx"]
+[ext_resource type="Material" uid="uid://b3hat60d218pu" path="res://shaders/island_material.tres" id="2_0kkre"]
+
+[node name="Cube-col2" unique_id=1053710356 instance=ExtResource("1_p5vdx")]
+
+[node name="Cube" parent="." index="0" unique_id=1484537510]
+material_override = ExtResource("2_0kkre")
