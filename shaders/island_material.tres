@@ -8,9 +8,13 @@ code = "shader_type spatial;
 
 group_uniforms Grass_Settings;
 uniform sampler2D grass_albedo : source_color, filter_linear_mipmap_anisotropic;
+uniform sampler2D grass_normal : hint_normal, filter_linear_mipmap_anisotropic;
+uniform sampler2D grass_roughness : filter_linear_mipmap_anisotropic;
 
 group_uniforms Stone_Settings;
 uniform sampler2D stone_albedo : source_color, filter_linear_mipmap_anisotropic;
+uniform sampler2D stone_normal : hint_normal, filter_linear_mipmap_anisotropic;
+uniform sampler2D stone_roughness : filter_linear_mipmap_anisotropic;
 
 group_uniforms Global_Settings;
 uniform float texture_scale : hint_range(0.01, 10.0) = 1.0;
@@ -46,14 +50,25 @@ vec3 get_triplanar_blend(sampler2D tex, vec3 p, vec3 n) {
 
 void fragment() {
 	// Используем переданные чистые локальные координаты
+	// Сэмплируем Albedo
 	vec3 g_alb = get_triplanar_blend(grass_albedo, local_pos, local_normal);
 	vec3 s_alb = get_triplanar_blend(stone_albedo, local_pos, local_normal);
+	
+	// Сэмплируем Normal
+	vec3 g_norm = get_triplanar_blend(grass_normal, local_pos, local_normal);
+	vec3 s_norm = get_triplanar_blend(stone_normal, local_pos, local_normal);
+	
+	// Сэмплируем Roughness (берем только R канал, так как карта черно-белая)
+	float g_rough = get_triplanar_blend(grass_roughness, local_pos, local_normal).r;
+	float s_rough = get_triplanar_blend(stone_roughness, local_pos, local_normal).r;
 	
 	// Рассчитываем маску верха по локальной нормали модели
 	float blend_mask = clamp(dot(normalize(local_normal), vec3(0.0, 1.0, 0.0)) * blend_sharpness, 0.0, 1.0);
 	
+	// Смешиваем и выводим финальные параметры
 	ALBEDO = mix(s_alb, g_alb, blend_mask);
-	ROUGHNESS = 1.0; 
+	NORMAL_MAP = mix(s_norm, g_norm, blend_mask);
+	ROUGHNESS = mix(s_rough, g_rough, blend_mask);
 }
 "
 
