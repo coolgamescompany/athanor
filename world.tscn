@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://ccoerdlwhbaet" path="res://scenes/portal/portal1.tscn" id="7_pkg7o"]
 [ext_resource type="PackedScene" uid="uid://cgo7ragxna8xf" path="res://scenes/portal/portal2.tscn" id="8_gbfbk"]
 [ext_resource type="PackedScene" uid="uid://rwxvcsj4vt5y" path="res://scenes/rockway/rockway.tscn" id="9_ioo17"]
+[ext_resource type="PackedScene" uid="uid://iyhgbla3drfq" path="res://assets/models/tree/tree_1.glb" id="10_wse8f"]
 
 [node name="World" type="Node3D" unique_id=1044360984]
 
@@ -32,7 +33,6 @@ render_target_update_mode = 4
 environment = ExtResource("1_036b0")
 
 [node name="Island_1_Start3" parent="SubViewportContainer/SubViewport" unique_id=1931036163 instance=ExtResource("2_fj7yv")]
-transform = Transform3D(1.469822, 0, 0, 0, 0.877967, 0, 0, 0, 1.4803632, 0, 0, 0)
 
 [node name="Island_1_Start2" parent="SubViewportContainer/SubViewport" unique_id=601728064 instance=ExtResource("2_fj7yv")]
 transform = Transform3D(-0.80599177, 0.20941237, -0.87123907, 0.15754011, 0.9042796, 0.22892995, 0.88940656, 0.029597685, -0.83007836, -26.35923, 9.459701, 5.249629)
@@ -62,3 +62,5 @@ target_portal = NodePath("../Portal1")
 unique_name_in_owner = true
 
 [node name="Rockway" parent="." unique_id=1629384071 instance=ExtResource("9_ioo17")]
+
+[node name="tree_1" parent="." unique_id=1527563554 instance=ExtResource("10_wse8f")]

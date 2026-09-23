@@ -6,9 +6,9 @@
 
 [node name="island_1-col" unique_id=1931036163 instance=ExtResource("1_w123x")]
 
-[node name="Cube" parent="." index="0" unique_id=905895938]
+[node name="Cube" parent="." index="0" unique_id=365580272]
 material_override = ExtResource("2_jehju")
 
-[node name="Cube_003" parent="." index="1" unique_id=174851548]
+[node name="Cube_003" parent="." index="1" unique_id=48228719]
 material_override = ExtResource("2_jehju")
 script = ExtResource("3_mloar")
