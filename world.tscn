@@ -62,9 +62,5 @@ target_portal = NodePath("../Portal1")
 unique_name_in_owner = true
 
 [node name="Rockway" parent="." unique_id=1629384071 instance=ExtResource("9_ioo17")]
-<<<<<<< HEAD
 
 [node name="tree_1" parent="." unique_id=1527563554 instance=ExtResource("10_wse8f")]
-=======
-process_mode = 1
->>>>>>> 54be16b5299cc4017244229676c6e6db6f9924f0
