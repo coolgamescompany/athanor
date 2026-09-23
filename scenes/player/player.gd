@@ -174,11 +174,6 @@ func _physics_process(delta: float) -> void:
 	if global_position.y < -30.0:
 		respawn()
 		return
-	
-	# ПЛАВНОЕ СГЛАЖИВАНИЕ МЫШИ (LERP)
-	if not is_intro_playing:
-		rotation.y = lerp_angle(rotation.y, target_rotation_y, delta * 25.0)
-		camera.rotation.x = lerp(camera.rotation.x, target_rotation_x, delta * 25.0)
 
 		
 	# Блокировка перемещения и обработки ввода в режиме воспроизведения интро
@@ -339,7 +334,8 @@ func _input(event: InputEvent) -> void:
 	if is_intro_playing: 
 		return
 		
-	# Расчёт векторов вращения камеры и трансформации осей взгляда
+
+	# Классическое отзывчивое вращение за мышкой
 	if event is InputEventMouseMotion:
 		var raw_sens: float = SettingsManager.mouse_sensitivity
 		if raw_sens <= 0: 
@@ -348,16 +344,12 @@ func _input(event: InputEvent) -> void:
 		var sens: float = 0.003 * raw_sens
 		var invert_multiplier = -1.0 if SettingsManager.mouse_inverted else 1.0
 		
-		target_rotation_y -= event.relative.x * sens
-		target_rotation_x -= event.relative.y * sens * invert_multiplier
-		target_rotation_x = clamp(target_rotation_x, deg_to_rad(-80), deg_to_rad(80))
-
-
-
-		
+		# Мгновенно поворачиваем персонажа и камеру без задержек
 		rotate_y(-event.relative.x * sens)
 		camera.rotate_x(-event.relative.y * sens * invert_multiplier)
 		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-80), deg_to_rad(80))
+
+
 
 	# Автоматический захват фокуса мыши при клике по экрану
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:

@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://drobsw06q02ne" path="res://scenes/portal/portal.gd" id="2_dikl4"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_mdck7"]
-size = Vector3(1, 2.5178223, 1.2958984)
+size = Vector3(1, 1.5465088, 1.2958984)
 
 [node name="Portal1" type="Node3D" unique_id=1596774714]
 script = ExtResource("2_dikl4")
@@ -13,10 +13,10 @@ script = ExtResource("2_dikl4")
 transform = Transform3D(1.18, 0, 0, 0, 1.18, 0, 0, 0, 1.18, 0, 0, 0)
 
 [node name="PortalArea" type="Area3D" parent="." unique_id=849474288]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.28109145, 0)
+transform = Transform3D(1, 0, 0, 0, 1.5715716, 0, 0, 0, 1, 0, 0.06944561, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PortalArea" unique_id=1185541767]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5683446, -0.14794922)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5222571, -0.14794922)
 shape = SubResource("BoxShape3D_mdck7")
 
 [connection signal="body_entered" from="PortalArea" to="PortalArea" method="_on_body_entered"]

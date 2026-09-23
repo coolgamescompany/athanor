@@ -90,10 +90,28 @@ func teleport_player(player: CharacterBody3D) -> void:
 	target_portal.is_ready_to_teleport = false
 	player.set_physics_process(false)
 	
-	# Перенос в пространстве
-	var target_center: Vector3 = target_area.global_position
-	target_center.y += 0.5
-	player.global_position = target_center
+	# === НОВЫЙ РАСЧЕТ ТОЧКИ ТЕЛЕПОРТАЦИИ ===
+	# Берем глобальную позицию центра целевой зоны
+	var target_position: Vector3 = target_area.global_position
+	
+	# Ищем CollisionShape3D внутри целевой зоны, чтобы узнать ее точные размеры
+	for child in target_area.get_children():
+		if child is CollisionShape3D and child.shape:
+			# Вычисляем локальный габаритный контейнер (AABB) формы коллизии
+			var shape_aabb: AABB = child.shape.get_debug_mesh().get_aabb()
+			
+			# Находим самую верхнюю точку зоны:
+			# К центру зоны по Y прибавляем половину высоты коллизии (размер по Y умноженный на глобальный масштаб)
+			var half_height = (shape_aabb.size.y * child.global_transform.basis.get_scale().y) / 2.0
+			target_position.y += half_height
+			break
+	
+	# Небольшой запас безопасности (зазор), чтобы ноги игрока гарантированно встали чуть НАД верхней гранью
+	target_position.y += 0.1 
+	
+	# Переносим игрока на вычисленную верхнюю точку
+	player.global_position = target_position
+	# =======================================
 	
 	# Убеждаемся, что ShaderRect горит перед анимацией вспышки появления
 	var shader_rect = player.find_child("ShaderRect", true, false)
