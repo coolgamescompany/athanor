@@ -144,11 +144,12 @@ transform = Transform3D(1, 0, 0, 0, 0.9433965, 0.33166695, 0, -0.33166695, 0.943
 [node name="MenuClickSound" type="AudioStreamPlayer" parent="." unique_id=720252945]
 unique_name_in_owner = true
 stream = ExtResource("6_uhagc")
+volume_db = -10.0
 
 [node name="MenuHoverSound" type="AudioStreamPlayer" parent="." unique_id=1648827433]
 unique_name_in_owner = true
 stream = ExtResource("6_uhagc")
-volume_db = -10.0
+volume_db = -20.0
 
 [node name="logotype" parent="." unique_id=337784992 instance=ExtResource("6_btxxm")]
 transform = Transform3D(-0.15806119, -0.015380174, -0.9873095, -0.057296164, 0.9983369, -0.006379302, 0.9857656, 0.05556074, -0.15867949, -10.525576, -2.8307858, -3.213776)

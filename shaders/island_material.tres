@@ -1,7 +1,6 @@
 [gd_resource type="ShaderMaterial" format=3 uid="uid://b3hat60d218pu"]
 
 [ext_resource type="Texture2D" uid="uid://cykky3mm23yfw" path="res://assets/textures/grass/Grass003_2K-PNG_Color.png" id="2_8algs"]
-[ext_resource type="Texture2D" uid="uid://bt4ldnwmax73v" path="res://assets/textures/dirt/wmremove-transformed.png" id="2_di20a"]
 [ext_resource type="Texture2D" uid="uid://cdrt50h45o6e3" path="res://assets/textures/stone/Rock063_2K-JPG_Color.jpg" id="5_xxgvi"]
 
 [sub_resource type="Shader" id="Shader_hes6n"]
@@ -107,12 +106,11 @@ render_priority = 0
 shader = SubResource("Shader_hes6n")
 shader_parameter/grass_albedo = ExtResource("2_8algs")
 shader_parameter/grass_scale = 2.20300010394398
-shader_parameter/dirt_albedo = ExtResource("2_di20a")
-shader_parameter/dirt_scale = 3.29300015571898
+shader_parameter/dirt_albedo = ExtResource("2_8algs")
+shader_parameter/dirt_scale = 0.5510000254739801
 shader_parameter/stone_albedo = ExtResource("5_xxgvi")
 shader_parameter/stone_scale = 2.97800014075648
-shader_parameter/noise_tex = ExtResource("2_di20a")
-shader_parameter/noise_scale = 1.39500006556398
-shader_parameter/dirt_amount = 0.7200000342
-shader_parameter/dirt_contrast = 5.59800026264512
+shader_parameter/noise_scale = 0.00999999977648
+shader_parameter/dirt_amount = 0.562000026695
+shader_parameter/dirt_contrast = 0.90200003958512
 shader_parameter/slope_sharpness = 4.0

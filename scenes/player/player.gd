@@ -11,11 +11,11 @@ var step_sounds: Array = [
 	preload("res://assets/sfx/walk/sfx_step_rock_l.wav"),
 	preload("res://assets/sfx/walk/sfx_step_rock_r.wav")
 ]
-@onready var step_sound: AudioStreamPlayer3D = %StepSound
-@onready var jump_sound: AudioStreamPlayer3D = %JumpSound
-@onready var respawn_sound: AudioStreamPlayer3D = %RespawnSound
+@onready var step_sound: AudioStreamPlayer = %StepSound
+@onready var jump_sound: AudioStreamPlayer = %JumpSound
+@onready var respawn_sound: AudioStreamPlayer = %RespawnSound
 @onready var spawn_particles: GPUParticles3D = %SpawnParticles
-@onready var tinnitus_sound: AudioStreamPlayer = $TinnitusSound
+@onready var tinnitus_sound: AudioStreamPlayer = %TinnitusSound
 
 # --- НАСТРОЙКИ ФИЗИКИ ПЕРЕМЕЩЕНИЯ ---
 @export var WALK_SPEED: float = 5.0

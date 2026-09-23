@@ -126,12 +126,12 @@ tracks/1/keys = {
 }
 tracks/2/type = "value"
 tracks/2/imported = false
-tracks/2/enabled = false
+tracks/2/enabled = true
 tracks/2/path = NodePath("ShaderRect:material:shader_parameter/contrast")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(3, 6, 9),
+"times": PackedFloat32Array(0, 6, 9),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [0.5, 1.60000005225, 1.0]
@@ -243,14 +243,6 @@ shader_parameter/blur_amount = 5.0
 shader_parameter/white_fade = 0.0
 shader_parameter/contrast = 2.0
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3qbcn"]
-
-[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_75vfm"]
-dof_blur_far_transition = 1000.0
-dof_blur_near_enabled = true
-dof_blur_near_distance = 0.6
-dof_blur_near_transition = 0.3
-
 [sub_resource type="Curve" id="Curve_p47bc"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.87183106, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 3
@@ -300,6 +292,14 @@ particles_anim_loop = false
 [sub_resource type="QuadMesh" id="QuadMesh_3qbcn"]
 material = SubResource("StandardMaterial3D_txcr2")
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3qbcn"]
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_75vfm"]
+dof_blur_far_transition = 1000.0
+dof_blur_near_enabled = true
+dof_blur_near_distance = 0.6
+dof_blur_near_transition = 0.3
+
 [node name="Player" type="CharacterBody3D" unique_id=7781218 groups=["player"]]
 process_mode = 3
 script = ExtResource("1_8afob")
@@ -328,6 +328,17 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
+[node name="SpawnParticles" type="GPUParticles3D" parent="." unique_id=588083982]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+emitting = false
+amount = 80
+lifetime = 1.2
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_cur4o")
+draw_pass_1 = SubResource("QuadMesh_3qbcn")
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1018996501]
 shape = SubResource("CapsuleShape3D_3qbcn")
 
@@ -344,40 +355,30 @@ unique_name_in_owner = true
 target_position = Vector3(0, 0, -3.5)
 collide_with_areas = true
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=562404480]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=597040215]
 unique_name_in_owner = true
 
-[node name="JumpSound" type="AudioStreamPlayer3D" parent="AudioStreamPlayer" unique_id=598193008]
+[node name="JumpSound" type="AudioStreamPlayer" parent="AudioStreamPlayer" unique_id=77396145]
 unique_name_in_owner = true
 stream = ExtResource("5_0owmy")
-volume_db = -6.0
+volume_db = -15.0
 
-[node name="StepSound" type="AudioStreamPlayer3D" parent="AudioStreamPlayer" unique_id=2142319482]
+[node name="StepSound" type="AudioStreamPlayer" parent="AudioStreamPlayer" unique_id=887132240]
 unique_name_in_owner = true
 stream = ExtResource("3_p47bc")
-volume_db = -18.0
+volume_db = -15.0
 
-[node name="RespawnSound" type="AudioStreamPlayer3D" parent="AudioStreamPlayer" unique_id=2054472394]
+[node name="RespawnSound" type="AudioStreamPlayer" parent="AudioStreamPlayer" unique_id=1195860650]
 unique_name_in_owner = true
 stream = ExtResource("4_75vfm")
-volume_db = -6.0
+volume_db = -10.0
 
-[node name="SpawnParticles" type="GPUParticles3D" parent="." unique_id=588083982]
+[node name="TinnitusSound" type="AudioStreamPlayer" parent="AudioStreamPlayer" unique_id=1288139238]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
-emitting = false
-amount = 80
-lifetime = 1.2
-one_shot = true
-explosiveness = 1.0
-process_material = SubResource("ParticleProcessMaterial_cur4o")
-draw_pass_1 = SubResource("QuadMesh_3qbcn")
-
-[node name="HUD" parent="." unique_id=1582636669 instance=ExtResource("6_75vfm")]
-
-[node name="AmbientParticles" parent="." unique_id=966053528 instance=ExtResource("7_0owmy")]
-
-[node name="TinnitusSound" type="AudioStreamPlayer" parent="." unique_id=931691717]
 process_mode = 1
 stream = ExtResource("8_qek5x")
 volume_db = -12.0
+
+[node name="AmbientParticles" parent="." unique_id=966053528 instance=ExtResource("7_0owmy")]
+
+[node name="HUD" parent="." unique_id=1582636669 instance=ExtResource("6_75vfm")]
