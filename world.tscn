@@ -38,7 +38,7 @@ transform = Transform3D(1.469822, 0, 0, 0, 0.877967, 0, 0, 0, 1.4803632, 0, 0, 0
 transform = Transform3D(-0.80599177, 0.20941237, -0.87123907, 0.15754011, 0.9042796, 0.22892995, 0.88940656, 0.029597685, -0.83007836, -26.35923, 9.459701, 5.249629)
 
 [node name="Player" parent="SubViewportContainer/SubViewport" unique_id=7781218 instance=ExtResource("3_tlwt5")]
-transform = Transform3D(0.18266931, 0, 0.9831744, 0, 1, 0, -0.9831744, 0, 0.18266931, 1.425957, 2.5186265, 0.2742467)
+transform = Transform3D(0.18266931, 0, 0.9831744, 0, 1, 0, -0.9831744, 0, 0.18266931, -23.946074, 12.493313, 3.8443856)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewportContainer/SubViewport" unique_id=1962530227]
 transform = Transform3D(-0.7660445, 0.60402274, 0.2198463, 0, -0.34202012, 0.9396927, 0.6427876, 0.71984637, 0.26200265, -0.8530445, 3.7416687, 5.6277966)
@@ -62,3 +62,4 @@ target_portal = NodePath("../Portal1")
 unique_name_in_owner = true
 
 [node name="Rockway" parent="." unique_id=1629384071 instance=ExtResource("9_ioo17")]
+process_mode = 1

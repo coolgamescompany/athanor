@@ -17,6 +17,9 @@ var bodies: Array[AnimatableBody3D] = []
 var initial_positions: Array[Vector3] = []
 var offsets: Array[float] = []
 
+# Кастомный игровой таймер, защищённый от паузы
+var internal_time: float = 0.0
+
 func _ready() -> void:
 	# 1. Загружаем материал
 	var custom_material = load(MATERIAL_PATH)
@@ -46,16 +49,20 @@ func _apply_material_to_meshes(node: Node, mat: Material) -> void:
 		if child.get_child_count() > 0:
 			_apply_material_to_meshes(child, mat)
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
+	# Накапливаем время на основе delta текущего кадра.
+	# Во время паузы delta станет равна 0, и внутреннее время камней полностью замрёт!
+	internal_time += delta
+	
 	# 3. Двигаем каждую группу физически корректно
 	for i in range(bodies.size()):
 		var body = bodies[i]
 		var init_pos = initial_positions[i]
 		var time_offset = offsets[i] if i < offsets.size() else 0.0
 		
-		# Считаем синусоиду для конкретной группы
-		var time = Time.get_ticks_msec() / 1000.0 + time_offset
-		var offset_y = sin(time * speed) * amplitude
+		# Считаем синусоиду на основе нашего замерзающего игрового времени
+		var group_time = internal_time + time_offset
+		var offset_y = sin(group_time * speed) * amplitude
 		
 		# Двигаем AnimatableBody3D
 		body.position.y = init_pos.y + offset_y
