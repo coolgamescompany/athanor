@@ -8,8 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://28sxnhfgvy42" path="res://scenes/ui/floating_text.tscn" id="5_dwbse"]
 [ext_resource type="PackedScene" uid="uid://ccoerdlwhbaet" path="res://scenes/portal/portal1.tscn" id="7_pkg7o"]
 [ext_resource type="PackedScene" uid="uid://cgo7ragxna8xf" path="res://scenes/portal/portal2.tscn" id="8_gbfbk"]
+[ext_resource type="PackedScene" uid="uid://c0rs33k1vnrma" path="res://scenes/tree_1/tree_1.tscn" id="8_wse8f"]
 [ext_resource type="PackedScene" uid="uid://rwxvcsj4vt5y" path="res://scenes/rockway/rockway.tscn" id="9_ioo17"]
-[ext_resource type="PackedScene" uid="uid://iyhgbla3drfq" path="res://assets/models/tree/tree_1.glb" id="10_wse8f"]
 
 [node name="World" type="Node3D" unique_id=1044360984]
 
@@ -38,7 +38,7 @@ environment = ExtResource("1_036b0")
 transform = Transform3D(-0.80599177, 0.20941237, -0.87123907, 0.15754011, 0.9042796, 0.22892995, 0.88940656, 0.029597685, -0.83007836, -26.35923, 9.459701, 5.249629)
 
 [node name="Player" parent="SubViewportContainer/SubViewport" unique_id=7781218 instance=ExtResource("3_tlwt5")]
-transform = Transform3D(0.18266931, 0, 0.9831744, 0, 1, 0, -0.9831744, 0, 0.18266931, -23.946074, 12.493313, 3.8443856)
+transform = Transform3D(0.18266931, 0, 0.9831744, 0, 1, 0, -0.9831744, 0, 0.18266931, 3.1450844, 3.5468082, 0.7350755)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewportContainer/SubViewport" unique_id=1962530227]
 transform = Transform3D(-0.7660445, 0.60402274, 0.2198463, 0, -0.34202012, 0.9396927, 0.6427876, 0.71984637, 0.26200265, -0.8530445, 3.7416687, 5.6277966)
@@ -58,9 +58,9 @@ target_portal = NodePath("../Portal2")
 transform = Transform3D(0.72498924, 0, 0.48092687, 0, 0.87, 0, -0.48092687, 0, 0.72498924, -36.497208, 32.00865, -51.543434)
 target_portal = NodePath("../Portal1")
 
+[node name="tree_1" parent="SubViewportContainer/SubViewport" unique_id=41199596 instance=ExtResource("8_wse8f")]
+
 [node name="PauseMenu" parent="." unique_id=1236970684 instance=ExtResource("4_aqk2v")]
 unique_name_in_owner = true
 
 [node name="Rockway" parent="." unique_id=1629384071 instance=ExtResource("9_ioo17")]
-
-[node name="tree_1" parent="." unique_id=1527563554 instance=ExtResource("10_wse8f")]

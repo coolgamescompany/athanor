@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://c0rs33k1vnrma"]
+
+[ext_resource type="PackedScene" uid="uid://nm6s4h5dces2" path="res://assets/models/tree_1/tree_1.glb" id="1_ec4jf"]
+[ext_resource type="Shader" uid="uid://bkmvc5gorrk8o" path="res://shaders/leaves.gdshader" id="2_s1flc"]
+[ext_resource type="Texture2D" uid="uid://crhpiuiu57rfl" path="res://assets/models/tree_1/tree_1_leaves_albedo_purp-leaves_roughness.png" id="3_s1flc"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ioo17"]
+render_priority = 0
+shader = ExtResource("2_s1flc")
+shader_parameter/albedo = Color(1, 1, 1, 1)
+shader_parameter/texture_albedo = ExtResource("3_s1flc")
+shader_parameter/alpha_scissor_threshold = 0.5
+shader_parameter/wind_speed = 1.0
+shader_parameter/wind_strength = 0.2
+shader_parameter/wind_frequency = 2.0
+
+[node name="tree_1" unique_id=41199596 instance=ExtResource("1_ec4jf")]
+
+[node name="leaves" parent="." index="0" unique_id=496572582]
+material_override = SubResource("ShaderMaterial_ioo17")
