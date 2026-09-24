@@ -10,28 +10,34 @@ group_uniforms Grass_Settings;
 uniform sampler2D grass_albedo : source_color, filter_linear_mipmap_anisotropic;
 uniform sampler2D grass_normal : hint_normal, filter_linear_mipmap_anisotropic;
 uniform sampler2D grass_roughness : filter_linear_mipmap_anisotropic;
-uniform float grass_scale : hint_range(0.01, 10.0) = 1.0;     // Масштаб травы
+uniform float grass_scale : hint_range(0.01, 10.0) = 1.0;          // Масштаб травы
+uniform float grass_normal_bump : hint_range(0.0, 5.0) = 1.0;     // Сила нормали травы
+uniform float grass_roughness_strength : hint_range(0.0, 2.0) = 1.0; // Множитель шероховатости травы
 
 group_uniforms Dirt_Settings;
 uniform sampler2D dirt_albedo : source_color, filter_linear_mipmap_anisotropic;
 uniform sampler2D dirt_normal : hint_normal, filter_linear_mipmap_anisotropic;
 uniform sampler2D dirt_roughness : filter_linear_mipmap_anisotropic;
-uniform float dirt_scale : hint_range(0.01, 10.0) = 1.0;      // Масштаб грязи
+uniform float dirt_scale : hint_range(0.01, 10.0) = 1.0;           // Масштаб грязи
+uniform float dirt_normal_bump : hint_range(0.0, 5.0) = 1.0;      // Сила нормали грязи
+uniform float dirt_roughness_strength : hint_range(0.0, 2.0) = 1.0;  // Множитель шероховатости грязи
 
 group_uniforms Stone_Settings;
 uniform sampler2D stone_albedo : source_color, filter_linear_mipmap_anisotropic;
 uniform sampler2D stone_normal : hint_normal, filter_linear_mipmap_anisotropic;
 uniform sampler2D stone_roughness : filter_linear_mipmap_anisotropic;
-uniform float stone_scale : hint_range(0.01, 10.0) = 1.0;     // Масштаб камня
+uniform float stone_scale : hint_range(0.01, 10.0) = 1.0;          // Масштаб камня
+uniform float stone_normal_bump : hint_range(0.0, 5.0) = 1.0;     // Сила нормали камня
+uniform float stone_roughness_strength : hint_range(0.0, 2.0) = 1.0; // Множитель шероховатости камня
 
 group_uniforms Noise_Settings;
-uniform sampler2D noise_tex : filter_linear_mipmap_anisotropic; // Seamless NoiseTexture2D
-uniform float noise_scale : hint_range(0.01, 10.0) = 1.0;     // Масштаб пятен грязи
-uniform float dirt_amount : hint_range(0.0, 1.0) = 0.5;       // Сколько грязи будет на траве
-uniform float dirt_contrast : hint_range(0.1, 20.0) = 2.0;    // Жесткость границ грязи
+uniform sampler2D noise_tex : filter_linear_mipmap_anisotropic;   // Seamless NoiseTexture2D
+uniform float noise_scale : hint_range(0.01, 10.0) = 1.0;         // Масштаб пятен грязи
+uniform float dirt_amount : hint_range(0.0, 1.0) = 0.5;           // Сколько грязи будет на траве
+uniform float dirt_contrast : hint_range(0.1, 20.0) = 2.0;        // Жесткость границ грязи
 
 group_uniforms Global_Settings;
-uniform float slope_sharpness : hint_range(0.1, 20.0) = 4.0;  // Резкость перехода камень/земля
+uniform float slope_sharpness : hint_range(0.1, 20.0) = 4.0;      // Резкость перехода камень/земля
 
 // Переменные для передачи чистых данных из vertex в fragment
 varying vec3 local_pos;
@@ -63,23 +69,34 @@ vec3 get_triplanar_blend(sampler2D tex, vec3 p, vec3 n, float scale) {
 
 void fragment() {
 	// 1. СЭМПЛИРОВАНИЕ ВСЕХ ТЕКСТУР С ИНДИВИДУАЛЬНЫМИ МАСШТАБАМИ
-	// Камень (использует stone_scale)
+	// Камень
 	vec3 s_alb = get_triplanar_blend(stone_albedo, local_pos, local_normal, stone_scale);
 	vec3 s_norm = get_triplanar_blend(stone_normal, local_pos, local_normal, stone_scale);
 	float s_rough = get_triplanar_blend(stone_roughness, local_pos, local_normal, stone_scale).r;
 	
-	// Трава (использует grass_scale)
+	// Трава
 	vec3 g_alb = get_triplanar_blend(grass_albedo, local_pos, local_normal, grass_scale);
 	vec3 g_norm = get_triplanar_blend(grass_normal, local_pos, local_normal, grass_scale);
 	float g_rough = get_triplanar_blend(grass_roughness, local_pos, local_normal, grass_scale).r;
 	
-	// Грязь (использует dirt_scale)
+	// Грязь
 	vec3 d_alb = get_triplanar_blend(dirt_albedo, local_pos, local_normal, dirt_scale);
 	vec3 d_norm = get_triplanar_blend(dirt_normal, local_pos, local_normal, dirt_scale);
 	float d_rough = get_triplanar_blend(dirt_roughness, local_pos, local_normal, dirt_scale).r;
 	
-	// Шум для грязи (использует noise_scale)
+	// Шум для грязи
 	float noise = get_triplanar_blend(noise_tex, local_pos, local_normal, noise_scale).r;
+
+	// РЕГУЛИРОВКА КАРТ НОРМАЛЕЙ И ROUGHNESS
+	// Регулировка силы нормалей (корректируем каналы X и Y, оставляя Z направленным вверх)
+	s_norm = vec3(s_norm.xy * stone_normal_bump, s_norm.z);
+	g_norm = vec3(g_norm.xy * grass_normal_bump, g_norm.z);
+	d_norm = vec3(d_norm.xy * dirt_normal_bump, d_norm.z);
+
+	// Регулировка шероховатости (умножаем и зажимаем в стандартный диапазон 0.0 - 1.0)
+	s_rough = clamp(s_rough * stone_roughness_strength, 0.0, 1.0);
+	g_rough = clamp(g_rough * grass_roughness_strength, 0.0, 1.0);
+	d_rough = clamp(d_rough * dirt_roughness_strength, 0.0, 1.0);
 
 	// 2. РАСЧЕТ МАСКИ ГРЯЗИ НА ТРАВЕ
 	float dirt_threshold = 1.0 - dirt_amount; 
@@ -97,6 +114,7 @@ void fragment() {
 	// 5. ВТОРОЕ СМЕШИВАНИЕ: Отделяем вертикальный камень от горизонтальной земли
 	ALBEDO = mix(s_alb, ground_alb, stone_vs_ground_mask);
 	NORMAL_MAP = mix(s_norm, ground_norm, stone_vs_ground_mask);
+	NORMAL_MAP_DEPTH = 1.0; // Гарантирует корректный рендер измененной карты нормалей
 	ROUGHNESS = mix(s_rough, ground_rough, stone_vs_ground_mask);
 }
 "
@@ -106,10 +124,16 @@ render_priority = 0
 shader = SubResource("Shader_hes6n")
 shader_parameter/grass_albedo = ExtResource("2_8algs")
 shader_parameter/grass_scale = 2.20300010394398
+shader_parameter/grass_normal_bump = 1.0
+shader_parameter/grass_roughness_strength = 1.0
 shader_parameter/dirt_albedo = ExtResource("2_8algs")
 shader_parameter/dirt_scale = 0.5510000254739801
+shader_parameter/dirt_normal_bump = 1.0
+shader_parameter/dirt_roughness_strength = 1.0
 shader_parameter/stone_albedo = ExtResource("5_xxgvi")
 shader_parameter/stone_scale = 2.97800014075648
+shader_parameter/stone_normal_bump = 1.0
+shader_parameter/stone_roughness_strength = 1.0
 shader_parameter/noise_scale = 0.00999999977648
 shader_parameter/dirt_amount = 0.562000026695
 shader_parameter/dirt_contrast = 0.90200003958512
