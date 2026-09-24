@@ -161,6 +161,9 @@ func _ready() -> void:
 				
 	target_rotation_y = rotation.y
 	target_rotation_x = camera.rotation.x
+	
+	if respawn_anim:
+		respawn_anim.animation_finished.connect(_on_portal_animation_finished)
 
 
 
@@ -390,3 +393,51 @@ func respawn() -> void:
 	await get_tree().create_timer(1.5, false).timeout
 	if has_node("/root/StoryManager"):
 		get_node("/root/StoryManager").play_phrase_cinematic("fall_abyss_thought")
+
+# === НОВАЯ ЛОГИКА ДЛЯ ВЗАИМОДЕЙСТВИЯ С ПОРТАЛАМИ ===
+
+## Вызывается порталом, когда игрок заходит в зону ожидания
+func start_portal_fading() -> void:
+	# Находим ShaderRect через уникальное имя (так как у вас используется % в коде)
+	var shader_rect = %ShaderRect if has_node("%ShaderRect") else null
+	if shader_rect: 
+		shader_rect.visible = true
+		
+	if respawn_anim and respawn_anim.has_animation("portal_entered"):
+		respawn_anim.speed_scale = 1.0
+		respawn_anim.play("portal_entered")
+
+
+## Вызывается порталом, если игрок передумал и вышел из зоны до телепортации
+func cancel_portal_fading() -> void:
+	print("--- ИГРОК: Отмена портала, плавный откат анимации назад ---")
+	if respawn_anim and respawn_anim.has_animation("portal_entered"):
+		respawn_anim.play_backwards("portal_entered")
+		respawn_anim.speed_scale = 0.7
+
+
+## Вызывается порталом в момент успешного переноса тела в целевую точку
+func complete_teleport() -> void:
+	var shader_rect = %ShaderRect if has_node("%ShaderRect") else null
+	if shader_rect: 
+		shader_rect.visible = true
+		
+	if respawn_anim and respawn_anim.has_animation("wakeup"):
+		respawn_anim.speed_scale = 1.0
+		respawn_anim.play("wakeup")
+		respawn_anim.seek(0.0, true)
+		
+	if respawn_sound: 
+		respawn_sound.play()
+	if spawn_particles: 
+		spawn_particles.restart()
+
+
+## Сигнал: срабатывает, когда AnimationPlayer заканчивает ЛЮБУЮ анимацию
+func _on_portal_animation_finished(anim_name: StringName) -> void:
+	# Если проигралась анимация портала назад (speed_scale < 1.0 означает откат),
+	# то выключаем видимость оверлея
+	if anim_name == &"portal_entered" and respawn_anim.speed_scale < 1.0:
+		var shader_rect = %ShaderRect if has_node("%ShaderRect") else null
+		if shader_rect: 
+			shader_rect.visible = false

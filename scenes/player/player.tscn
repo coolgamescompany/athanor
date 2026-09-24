@@ -211,7 +211,7 @@ tracks/1/path = NodePath("ShaderRect:material:shader_parameter/blur_amount")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.8666667, 1.5),
+"times": PackedFloat32Array(0, 0.8, 1.5),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [5.0, 0.0, 0.0]

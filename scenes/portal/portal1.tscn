@@ -19,5 +19,8 @@ transform = Transform3D(1, 0, 0, 0, 1.5715716, 0, 0, 0, 1, 0, 0.06944561, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5222571, -0.14794922)
 shape = SubResource("BoxShape3D_mdck7")
 
+[node name="SpawnMarker" type="Marker3D" parent="PortalArea" unique_id=2091630116]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.500955, 0)
+
 [connection signal="body_entered" from="PortalArea" to="PortalArea" method="_on_body_entered"]
 [connection signal="body_exited" from="PortalArea" to="PortalArea" method="_on_body_exited"]

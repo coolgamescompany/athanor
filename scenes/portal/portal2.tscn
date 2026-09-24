@@ -13,11 +13,13 @@ script = ExtResource("2_wscf4")
 transform = Transform3D(1.31, 0, 0, 0, 1.31, 0, 0, 0, 1.31, 0, 0, 0)
 
 [node name="PortalArea" type="Area3D" parent="." unique_id=739354768]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3157363, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2341971, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="PortalArea" unique_id=582052281]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.020751953, 2.5426986, -0.14794922)
 shape = SubResource("BoxShape3D_q2ig4")
+
+[node name="SpawnMarker" type="Marker3D" parent="PortalArea" unique_id=1958318660]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.31651735, 0)
 
 [connection signal="body_entered" from="PortalArea" to="PortalArea" method="_on_body_entered"]
 [connection signal="body_exited" from="PortalArea" to="PortalArea" method="_on_body_exited"]
