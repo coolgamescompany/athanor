@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://dx7gw0a3p0tvu"]
+
+[ext_resource type="PackedScene" uid="uid://cbhm4sdpondqo" path="res://assets/models/stone/stone02-col.glb" id="1_w3kta"]
+[ext_resource type="Shader" uid="uid://cq27f1lemsgku" path="res://shaders/pbr_shader.gdshader" id="2_wxs1h"]
+[ext_resource type="Texture2D" uid="uid://bjyy3108xbvj8" path="res://assets/models/stone/stone01-col_stone_albedo.png" id="3_bpwxi"]
+[ext_resource type="Texture2D" uid="uid://chvnjkmqy28mu" path="res://assets/models/stone/stone01-col_stone_normal_map.png" id="4_00725"]
+[ext_resource type="Texture2D" uid="uid://cjsf4rk7q0kfs" path="res://assets/models/stone/stone01-col_stone_roughness.png" id="5_a7otd"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d5fvp"]
+render_priority = 0
+shader = ExtResource("2_wxs1h")
+shader_parameter/uv_scale = Vector2(1, 1)
+shader_parameter/uv_offset = Vector2(0, 0)
+shader_parameter/albedo_color = Color(1, 1, 1, 1)
+shader_parameter/texture_albedo = ExtResource("3_bpwxi")
+shader_parameter/metallic_intensity = 0.0
+shader_parameter/roughness_intensity = 0.2650000125875
+shader_parameter/texture_roughness = ExtResource("5_a7otd")
+shader_parameter/normal_intensity = 1.0
+shader_parameter/texture_normal = ExtResource("4_00725")
+
+[node name="stone02-col" unique_id=385294908 instance=ExtResource("1_w3kta")]
+
+[node name="stone2" parent="." index="0" unique_id=524678974]
+transform = Transform3D(0.6008758, 0, 0, 0, 0.6008758, 0, 0, 0, 0.6008758, -0.3069203, 0, 0.10619736)
+material_override = SubResource("ShaderMaterial_d5fvp")

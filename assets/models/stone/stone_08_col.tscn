@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://b7r34x71bcc78"]
+
+[ext_resource type="PackedScene" uid="uid://b22qr7g6lpmcu" path="res://assets/models/stone/stone08-col.glb" id="1_a4ttq"]
+[ext_resource type="Material" uid="uid://7bqghcssofly" path="res://shaders/stone_material.tres" id="2_0c6dy"]
+
+[node name="stone08-col" unique_id=220616533 instance=ExtResource("1_a4ttq")]
+
+[node name="stone5" parent="." index="0" unique_id=1247309486]
+transform = Transform3D(0.5011737, 0, 0, 0, 0.6008758, 0, 0, 0, 0.6008758, 0, 0, 0)
+material_override = ExtResource("2_0c6dy")

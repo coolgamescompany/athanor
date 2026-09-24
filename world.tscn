@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://cgo7ragxna8xf" path="res://scenes/portal/portal2.tscn" id="8_gbfbk"]
 [ext_resource type="PackedScene" uid="uid://c0rs33k1vnrma" path="res://scenes/tree_1/tree_1.tscn" id="8_wse8f"]
 [ext_resource type="PackedScene" uid="uid://rwxvcsj4vt5y" path="res://scenes/rockway/rockway.tscn" id="9_ioo17"]
+[ext_resource type="PackedScene" uid="uid://bg4rhg3h5xlk8" path="res://assets/models/stone/stone_001_col.tscn" id="11_ic0uy"]
 
 [node name="World" type="Node3D" unique_id=1044360984]
 
@@ -59,9 +60,11 @@ transform = Transform3D(0.72498924, 0, 0.48092687, 0, 0.87, 0, -0.48092687, 0, 0
 target_portal = NodePath("../Portal1")
 
 [node name="tree_1" parent="SubViewportContainer/SubViewport" unique_id=41199596 instance=ExtResource("8_wse8f")]
-visible = false
 
 [node name="PauseMenu" parent="." unique_id=1236970684 instance=ExtResource("4_aqk2v")]
 unique_name_in_owner = true
 
 [node name="Rockway" parent="." unique_id=1629384071 instance=ExtResource("9_ioo17")]
+
+[node name="stone01-col" parent="." unique_id=685230471 instance=ExtResource("11_ic0uy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.720643, 1.2431101, -0.1400938)

@@ -2,18 +2,21 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d2xvo1x6n6oqm"
-path.s3tc="res://.godot/imported/Grass003_1K-JPG_Roughness.jpg-b0c04107f66e87c13e512773c57ee0d4.s3tc.ctex"
-path.etc2="res://.godot/imported/Grass003_1K-JPG_Roughness.jpg-b0c04107f66e87c13e512773c57ee0d4.etc2.ctex"
+uid="uid://cjsf4rk7q0kfs"
+path.s3tc="res://.godot/imported/stone01-col_stone_roughness.png-9e311d2cd828d85482ce7845f44c4875.s3tc.ctex"
+path.etc2="res://.godot/imported/stone01-col_stone_roughness.png-9e311d2cd828d85482ce7845f44c4875.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
+generator_parameters={
+"md5": "c017b504120e9c535f7944490fae0877"
+}
 
 [deps]
 
-source_file="res://assets/textures/grass/Grass003_1K-JPG_Roughness.jpg"
-dest_files=["res://.godot/imported/Grass003_1K-JPG_Roughness.jpg-b0c04107f66e87c13e512773c57ee0d4.s3tc.ctex", "res://.godot/imported/Grass003_1K-JPG_Roughness.jpg-b0c04107f66e87c13e512773c57ee0d4.etc2.ctex"]
+source_file="res://assets/models/stone/stone01-col_stone_roughness.png"
+dest_files=["res://.godot/imported/stone01-col_stone_roughness.png-9e311d2cd828d85482ce7845f44c4875.s3tc.ctex", "res://.godot/imported/stone01-col_stone_roughness.png-9e311d2cd828d85482ce7845f44c4875.etc2.ctex"]
 
 [params]
 

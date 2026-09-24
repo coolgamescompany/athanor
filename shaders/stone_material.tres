@@ -1,0 +1,19 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://7bqghcssofly"]
+
+[ext_resource type="Shader" uid="uid://cq27f1lemsgku" path="res://shaders/pbr_shader.gdshader" id="1_un56l"]
+[ext_resource type="Texture2D" uid="uid://bjyy3108xbvj8" path="res://assets/models/stone/stone01-col_stone_albedo.png" id="2_qq326"]
+[ext_resource type="Texture2D" uid="uid://chvnjkmqy28mu" path="res://assets/models/stone/stone01-col_stone_normal_map.png" id="3_1g2mv"]
+[ext_resource type="Texture2D" uid="uid://cjsf4rk7q0kfs" path="res://assets/models/stone/stone01-col_stone_roughness.png" id="4_bwyrr"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_un56l")
+shader_parameter/uv_scale = Vector2(1, 1)
+shader_parameter/uv_offset = Vector2(0, 0)
+shader_parameter/albedo_color = Color(1, 1, 1, 1)
+shader_parameter/texture_albedo = ExtResource("2_qq326")
+shader_parameter/metallic_intensity = 0.0
+shader_parameter/roughness_intensity = 0.2650000125875
+shader_parameter/texture_roughness = ExtResource("4_bwyrr")
+shader_parameter/normal_intensity = 1.0
+shader_parameter/texture_normal = ExtResource("3_1g2mv")

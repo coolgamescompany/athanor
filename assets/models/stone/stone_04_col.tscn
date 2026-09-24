@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://wr8uin5182vy"]
+
+[ext_resource type="PackedScene" uid="uid://c1501owej3o0n" path="res://assets/models/stone/stone04-col.glb" id="1_tv133"]
+[ext_resource type="Material" uid="uid://7bqghcssofly" path="res://shaders/stone_material.tres" id="2_w84cm"]
+
+[node name="stone04-col" unique_id=1059642456 instance=ExtResource("1_tv133")]
+
+[node name="stone4" parent="." index="0" unique_id=2096991284]
+transform = Transform3D(0.5011737, 0, 0, 0, 0.6008758, 0, 0, 0, 0.6008758, -0.08928585, 0, 0.1818552)
+material_override = ExtResource("2_w84cm")
+
+[node name="CollisionShape3D" parent="stone4/StaticBody3D" parent_id_path=PackedInt32Array(1352669929) index="0" unique_id=343321642]
+transform = Transform3D(0.9999998, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)

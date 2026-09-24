@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://bg4rhg3h5xlk8"]
+
+[ext_resource type="PackedScene" uid="uid://rpu6cpc0hsk3" path="res://assets/models/stone/stone01-col.glb" id="1_lec0r"]
+
+[node name="stone01-col" unique_id=685230471 instance=ExtResource("1_lec0r")]
+
+[node name="stone1" parent="." index="0" unique_id=869948064]
+transform = Transform3D(0.6008758, 0, 0, 0, 0.6008758, 0, 0, 0, 0.6008758, 0, 0, 0)
