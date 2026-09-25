@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cgo7ragxna8xf"]
 
-[ext_resource type="PackedScene" uid="uid://c373y7ur885t6" path="res://assets/portal/portal2.glb" id="1_lg4hd"]
+[ext_resource type="PackedScene" uid="uid://c373y7ur885t6" path="res://assets/models/portal/portal2.glb" id="1_lg4hd"]
 [ext_resource type="Script" uid="uid://drobsw06q02ne" path="res://scenes/portal/portal.gd" id="2_wscf4"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_q2ig4"]

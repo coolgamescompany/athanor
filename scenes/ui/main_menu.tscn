@@ -9,7 +9,7 @@
 [ext_resource type="AudioStream" uid="uid://ps77oda3xnhd" path="res://assets/sfx/ui/click_004.ogg" id="6_uhagc"]
 [ext_resource type="Script" uid="uid://c84jcss56q2qr" path="res://scenes/ui/logotype_hover.gd" id="7_btxxm"]
 [ext_resource type="PackedScene" uid="uid://dh420m7h8b1q7" path="res://scenes/islands/island_main.tscn" id="9_q85j6"]
-[ext_resource type="PackedScene" uid="uid://dl0of6amuqiuh" path="res://assets/ambient_particles.tscn" id="10_8g5eo"]
+[ext_resource type="PackedScene" uid="uid://dl0of6amuqiuh" path="res://assets/system/ambient_particles.tscn" id="10_8g5eo"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3qbcn"]
 

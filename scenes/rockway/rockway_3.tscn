@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cc2ix55yko5ce"]
 
-[ext_resource type="PackedScene" uid="uid://bk6g047wdxuvj" path="res://assets/rock/rock1.glb" id="1_01fc7"]
-[ext_resource type="PackedScene" uid="uid://bj037ksaexcfn" path="res://assets/rock/tiny_rocks.glb" id="2_844dc"]
+[ext_resource type="PackedScene" uid="uid://bk6g047wdxuvj" path="res://assets/models/rock/rock1.glb" id="1_01fc7"]
+[ext_resource type="PackedScene" uid="uid://bj037ksaexcfn" path="res://assets/models/rock/tiny_rocks.glb" id="2_844dc"]
 
 [node name="AnimatableBody3D3" type="AnimatableBody3D" unique_id=2043061568]
 

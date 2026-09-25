@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://bfiuev5tj55sr"]
+
+[ext_resource type="PackedScene" uid="uid://nlhekagr72vb" path="res://assets/models/pipe/pipe_1.glb" id="1_ch3pk"]
+
+[node name="pipe_1" unique_id=1931591835 instance=ExtResource("1_ch3pk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.237808, 0, -44.63851)
+
+[node name="prefab_normalpipe1_randommachinerypipes_Material_000002_0" parent="." index="0" unique_id=902603226]
+transform = Transform3D(0.030977607, 0, 0, 0, 0.030977614, 0, 0, 0, 0.030977614, 0.02752477, -0.16226675, -0.11986181)

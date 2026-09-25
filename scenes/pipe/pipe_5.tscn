@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://dupnayg56wjdi"]
+
+[ext_resource type="PackedScene" uid="uid://by1vtielfi4t5" path="res://assets/models/pipe/pipe_5.glb" id="1_q8ags"]
+
+[node name="pipe_5" unique_id=1347496327 instance=ExtResource("1_q8ags")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.416794, 4.4692965, 0)
+
+[node name="Material2_001" parent="." index="0" unique_id=1279571228]
+transform = Transform3D(1, 0, 0, 0, -3.5762787e-07, 0.99999994, 0, -0.99999994, -3.5762787e-07, 0, -24.958477, 58.270187)

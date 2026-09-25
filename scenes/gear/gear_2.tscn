@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://dlawmcftxjro2"]
+
+[ext_resource type="PackedScene" uid="uid://b3kyhp5fxr3kw" path="res://assets/models/gear/steampunk_gear (1).glb" id="1_pstk3"]
+
+[node name="Gear2" type="Node3D" unique_id=67170882]
+
+[node name="Sketchfab_Scene" parent="." unique_id=663977440 instance=ExtResource("1_pstk3")]

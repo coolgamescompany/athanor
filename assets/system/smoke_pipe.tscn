@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://bwxn1ra1mlerd"]
+
+[ext_resource type="Texture2D" uid="uid://bpwlkosf1n6kd" path="res://assets/textures/smoke/pngegg.png" id="1_8nvdr"]
+
+[sub_resource type="Gradient" id="Gradient_ag6xn"]
+offsets = PackedFloat32Array(0, 0.24355671, 0.35438144, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_rpmx2"]
+gradient = SubResource("Gradient_ag6xn")
+
+[sub_resource type="Curve" id="Curve_6oc3t"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_twnr7"]
+curve = SubResource("Curve_6oc3t")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hkxm2"]
+direction = Vector3(0, 1, 0)
+initial_velocity_min = 2.0
+initial_velocity_max = 4.0
+gravity = Vector3(0, 6, -1)
+use_scale_3d = true
+scale_3d_min = Vector3(1, 1, 1)
+scale_3d_max = Vector3(1, 1, 1)
+scale_curve = SubResource("CurveTexture_twnr7")
+color_ramp = SubResource("GradientTexture1D_rpmx2")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ggtn6"]
+transparency = 1
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.8192276, 0.81922776, 0.8192277, 1)
+albedo_texture = ExtResource("1_8nvdr")
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_6kw3t"]
+material = SubResource("StandardMaterial3D_ggtn6")
+
+[node name="SmokePipe" type="GPUParticles3D" unique_id=1689017801]
+amount = 60
+lifetime = 2.5
+process_material = SubResource("ParticleProcessMaterial_hkxm2")
+draw_pass_1 = SubResource("QuadMesh_6kw3t")

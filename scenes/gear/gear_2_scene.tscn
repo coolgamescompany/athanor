@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://cq0t2yjswg6vf"]
+
+[ext_resource type="PackedScene" uid="uid://b3kyhp5fxr3kw" path="res://assets/models/gear/steampunk_gear (1).glb" id="1_opv6q"]
+
+[node name="Sketchfab_Scene" unique_id=663977440 instance=ExtResource("1_opv6q")]

@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://2dp64k2rn53k"]
+
+[ext_resource type="PackedScene" uid="uid://b55ra4wpnxchk" path="res://assets/models/pipe/pipe_2.glb" id="1_rpw7x"]
+
+[node name="pipe_2" unique_id=409227421 instance=ExtResource("1_rpw7x")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46, 0, -27)

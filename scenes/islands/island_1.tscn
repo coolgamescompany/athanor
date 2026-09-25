@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://bs3motpksscxx" path="res://assets/models/island_1/island_1-col.glb" id="1_w123x"]
 [ext_resource type="Material" uid="uid://b3hat60d218pu" path="res://shaders/island_material.tres" id="2_jehju"]
-[ext_resource type="Script" uid="uid://clfut4r75kvfj" path="res://assets/fly_rock.gd" id="3_mloar"]
+[ext_resource type="Script" uid="uid://clfut4r75kvfj" path="res://assets/system/fly_rock.gd" id="3_mloar"]
 
 [node name="island_1-col" unique_id=1931036163 instance=ExtResource("1_w123x")]
 
