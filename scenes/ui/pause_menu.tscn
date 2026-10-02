@@ -45,6 +45,7 @@ script = ExtResource("1_f6eus")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1257655806]
 unique_name_in_owner = true
+visible = false
 material = SubResource("ShaderMaterial_3qbcn")
 anchors_preset = 15
 anchor_right = 1.0
