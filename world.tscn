@@ -23,58 +23,12 @@
 
 [node name="World" type="Node3D" unique_id=1044360984]
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=179284645]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-stretch = true
-
-[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=1366538975]
-handle_input_locally = false
-msaa_3d = 2
-use_taa = true
-audio_listener_enable_3d = true
-size = Vector2i(1280, 720)
-render_target_update_mode = 4
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/SubViewport" unique_id=647825155]
-environment = ExtResource("1_036b0")
-
-[node name="Island_1_Start3" parent="SubViewportContainer/SubViewport" unique_id=1931036163 instance=ExtResource("2_fj7yv")]
-
-[node name="Island_1_Start2" parent="SubViewportContainer/SubViewport" unique_id=601728064 instance=ExtResource("2_fj7yv")]
-transform = Transform3D(-0.80599177, 0.20941237, -0.87123907, 0.15754011, 0.9042796, 0.22892995, 0.88940656, 0.029597685, -0.83007836, -26.35923, 9.459701, 5.249629)
-
-[node name="Player" parent="SubViewportContainer/SubViewport" unique_id=7781218 instance=ExtResource("3_tlwt5")]
-transform = Transform3D(0.18266931, 0, 0.9831744, 0, 1, 0, -0.9831744, 0, 0.18266931, 2.0542028, 1.7932391, -0.87937593)
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewportContainer/SubViewport" unique_id=1962530227]
-transform = Transform3D(-0.7660445, 0.60402274, 0.2198463, 0, -0.34202012, 0.9396927, 0.6427876, 0.71984637, 0.26200265, -0.8530445, 3.7416687, 5.6277966)
-light_color = Color(0.72156835, 0.9255543, 0.97680384, 1)
-shadow_enabled = true
-
-[node name="island_main" parent="SubViewportContainer/SubViewport" unique_id=2061596629 instance=ExtResource("4_036b0")]
-transform = Transform3D(0.023089657, 0, 3.2599182, 0, 3.26, 0, -3.2599182, 0, 0.023089657, -23.139912, 26.444212, -40.50846)
-
-[node name="FloatingText" parent="SubViewportContainer/SubViewport" unique_id=2140700472 instance=ExtResource("5_dwbse")]
-
-[node name="Portal1" parent="SubViewportContainer/SubViewport" unique_id=1596774714 node_paths=PackedStringArray("target_portal") instance=ExtResource("7_pkg7o")]
-transform = Transform3D(0.8257631, 0.10488854, 0.2121189, -0.07140435, 0.84455967, -0.13964601, -0.22560447, 0.11661038, 0.8206004, -27.11248, 10.266627, 5.1964464)
-target_portal = NodePath("../Portal2")
-
-[node name="Portal2" parent="SubViewportContainer/SubViewport" unique_id=1322518164 node_paths=PackedStringArray("target_portal") instance=ExtResource("8_gbfbk")]
-transform = Transform3D(0.72498924, 0, 0.48092687, 0, 0.87, 0, -0.48092687, 0, 0.72498924, -36.497208, 32.00865, -51.543434)
-target_portal = NodePath("../Portal1")
-
-[node name="tree_1" parent="SubViewportContainer/SubViewport" unique_id=41199596 instance=ExtResource("8_wse8f")]
-visible = false
-
 [node name="PauseMenu" parent="." unique_id=1236970684 instance=ExtResource("4_aqk2v")]
 unique_name_in_owner = true
 
 [node name="Rockway" parent="." unique_id=1629384071 instance=ExtResource("9_ioo17")]
+
+[node name="FloatingText" parent="." unique_id=2140700472 instance=ExtResource("5_dwbse")]
 
 [node name="stone01-col" parent="." unique_id=685230471 instance=ExtResource("11_ic0uy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.720643, 1.5091261, -0.1400938)
@@ -110,3 +64,33 @@ transform = Transform3D(0.40000004, 0, 0, 0, 0.40000004, 0, 0, 0, 0.40000004, -8
 
 [node name="pipe_7" parent="." unique_id=1066221078 instance=ExtResource("18_ikiii")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.524471, 9.41732, 3.135765)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=647825155]
+environment = ExtResource("1_036b0")
+
+[node name="Island_1_Start3" parent="." unique_id=1931036163 instance=ExtResource("2_fj7yv")]
+
+[node name="Island_1_Start2" parent="." unique_id=601728064 instance=ExtResource("2_fj7yv")]
+transform = Transform3D(-0.80599177, 0.20941237, -0.87123907, 0.15754011, 0.9042796, 0.22892995, 0.88940656, 0.029597685, -0.83007836, -26.35923, 9.459701, 5.249629)
+
+[node name="Player" parent="." unique_id=7781218 instance=ExtResource("3_tlwt5")]
+transform = Transform3D(0.18266931, 0, 0.9831744, 0, 1, 0, -0.9831744, 0, 0.18266931, 2.0542028, 1.7932391, -0.87937593)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1962530227]
+transform = Transform3D(-0.7660445, 0.60402274, 0.2198463, 0, -0.34202012, 0.9396927, 0.6427876, 0.71984637, 0.26200265, -0.8530445, 3.7416687, 5.6277966)
+light_color = Color(0.72156835, 0.9255543, 0.97680384, 1)
+shadow_enabled = true
+
+[node name="island_main" parent="." unique_id=2061596629 instance=ExtResource("4_036b0")]
+transform = Transform3D(0.023089657, 0, 3.2599182, 0, 3.26, 0, -3.2599182, 0, 0.023089657, -23.139912, 26.444212, -40.50846)
+
+[node name="Portal1" parent="." unique_id=1596774714 node_paths=PackedStringArray("target_portal") instance=ExtResource("7_pkg7o")]
+transform = Transform3D(0.8257631, 0.10488854, 0.2121189, -0.07140435, 0.84455967, -0.13964601, -0.22560447, 0.11661038, 0.8206004, -27.11248, 10.266627, 5.1964464)
+target_portal = NodePath("../Portal2")
+
+[node name="Portal2" parent="." unique_id=1322518164 node_paths=PackedStringArray("target_portal") instance=ExtResource("8_gbfbk")]
+transform = Transform3D(0.72498924, 0, 0.48092687, 0, 0.87, 0, -0.48092687, 0, 0.72498924, -36.497208, 32.00865, -51.543434)
+target_portal = NodePath("../Portal1")
+
+[node name="tree_1" parent="." unique_id=41199596 instance=ExtResource("8_wse8f")]
+visible = false
