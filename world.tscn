@@ -23,9 +23,6 @@
 
 [node name="World" type="Node3D" unique_id=1044360984]
 
-[node name="PauseMenu" parent="." unique_id=1236970684 instance=ExtResource("4_aqk2v")]
-unique_name_in_owner = true
-
 [node name="Rockway" parent="." unique_id=1629384071 instance=ExtResource("9_ioo17")]
 
 [node name="FloatingText" parent="." unique_id=2140700472 instance=ExtResource("5_dwbse")]
@@ -94,3 +91,6 @@ target_portal = NodePath("../Portal1")
 
 [node name="tree_1" parent="." unique_id=41199596 instance=ExtResource("8_wse8f")]
 visible = false
+
+[node name="PauseMenu" parent="." unique_id=1236970684 instance=ExtResource("4_aqk2v")]
+unique_name_in_owner = true
