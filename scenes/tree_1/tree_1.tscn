@@ -17,7 +17,7 @@ shader_parameter/wind_frequency = 2.0
 
 [node name="tree_1" unique_id=41199596 instance=ExtResource("1_ec4jf")]
 
-[node name="leaves" parent="." index="0" unique_id=496572582]
+[node name="leaves" parent="." index="0" unique_id=1110992326]
 material_override = SubResource("ShaderMaterial_ioo17")
 
 [node name="korny1" parent="." index="2" unique_id=305806854 instance=ExtResource("4_a5mp2")]
