@@ -21,5 +21,5 @@ shape = SubResource("BoxShape3D_q2ig4")
 [node name="SpawnMarker" type="Marker3D" parent="PortalArea" unique_id=1958318660]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.31651735, 0)
 
-[connection signal="body_entered" from="PortalArea" to="PortalArea" method="_on_body_entered"]
-[connection signal="body_exited" from="PortalArea" to="PortalArea" method="_on_body_exited"]
+[connection signal="body_entered" from="PortalArea" to="." method="_on_body_entered"]
+[connection signal="body_exited" from="PortalArea" to="." method="_on_body_exited"]

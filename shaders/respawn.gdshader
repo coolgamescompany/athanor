@@ -3,7 +3,7 @@ shader_type canvas_item;
 uniform sampler2D screen_texture : hint_screen_texture, filter_linear_mipmap;
 uniform float blur_amount : hint_range(0.0, 5.0) = 0.0;
 uniform float white_fade : hint_range(0.0, 1.0) = 0.0;
-uniform float contrast : hint_range(0.5, 2.0) = 1.0;
+uniform float contrast : hint_range(0.1, 4.0) = 1.0;
 
 void fragment() {
 	// 1. Берем картинку с экрана и размываем её

@@ -186,7 +186,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0, 3.5),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [1.0, 2.0]
+"values": [1.0, 3.0]
 }
 
 [sub_resource type="Animation" id="Animation_gmlin"]
@@ -202,7 +202,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 1.5),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [0.0, 0.0]
+"values": [1.0, 0.0]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -223,10 +223,10 @@ tracks/2/path = NodePath("ShaderRect:material:shader_parameter/contrast")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 1.5),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 0.2, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
-"values": [2.0, 1.0]
+"values": [3.0, 3.0, 1.0]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_lvxji"]
@@ -301,7 +301,8 @@ dof_blur_near_distance = 0.6
 dof_blur_near_transition = 0.3
 
 [node name="Player" type="CharacterBody3D" unique_id=7781218 groups=["player"]]
-process_mode = 3
+process_mode = 1
+floor_snap_length = 0.25
 script = ExtResource("1_8afob")
 
 [node name="RespawnEffect" type="CanvasLayer" parent="." unique_id=2750634]

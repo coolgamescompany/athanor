@@ -1,12 +1,10 @@
 extends MeshInstance3D
 
-var time = 0.0
+var time: float = 0.0
+@export var speed: float = 1.0
+@export var amplitude: float = 0.2
 
-# Настройки полета (можно менять)
-var speed = 1.0     # Скорость движения
-var amplitude = 0.2 # Высота полета (в метрах)
 
-func _process(delta):
+func _process(delta: float) -> void:
 	time += delta
-	# Двигаем камень вверх-вниз по синусоиде
 	position.y += sin(time * speed) * amplitude * delta

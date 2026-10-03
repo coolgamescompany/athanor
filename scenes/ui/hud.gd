@@ -1,15 +1,15 @@
 extends Control
 
-@onready var label = %FPSLabel
+@onready var label: Label = %FPSLabel
+var _fps_accum: float = 0.0
 
-func _ready() -> void:
-	# Подписываемся на глобальный синглтон настроек
-	SettingsManager.fov_changed.connect(func(_val): pass) # Просто пример
 
-func _process(_delta: float) -> void:
-	# Проверяем, разрешил ли игрок показывать FPS в файле конфигурации
-	if Engine.get_frames_per_second() > 0 and SettingsManager.show_fps_counter:
-		visible = true
-		label.text = "FPS: " + str(Engine.get_frames_per_second())
-	else:
-		visible = false
+func _process(delta: float) -> void:
+	_fps_accum += delta
+	if _fps_accum < 0.25:
+		return
+	_fps_accum = 0.0
+	var show_fps: bool = SettingsManager.show_fps_counter
+	label.visible = show_fps
+	if show_fps:
+		label.text = "FPS: %d" % Engine.get_frames_per_second()

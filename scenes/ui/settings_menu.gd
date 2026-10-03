@@ -31,6 +31,7 @@ var key_waiting_button: Button = null
 @onready var mouse_sens_slider = %SliderMouseSens
 @onready var mouse_invert_btn = %CheckButtonMouseInvert
 @onready var keybinds_grid = %KeybindsGrid
+@onready var apply_btn: Button = %SaveButton
 
 const RESOLUTIONS = [Vector2i(1280, 720), Vector2i(1600, 900), Vector2i(1920, 1080), Vector2i(2560, 1440)]
 const LANGUAGES = ["ru", "en"]
@@ -42,7 +43,9 @@ const CONFIGURABLE_ACTIONS = {
 	"move_left": "Влево",
 	"move_right": "Вправо",
 	"jump": "Прыжок",
-	"interact": "Действие"
+	"interact": "Действие",
+	"crouch": "Присед",
+	"sprint": "Бег"
 }
 
 func _ready():
@@ -80,7 +83,8 @@ func _init_ui_elements():
 	fov_slider.min_value = 60
 	fov_slider.max_value = 120
 	fov_slider.step = 1
-	fov_slider.value_changed.connect(func(val):
+	fov_slider.value_changed.connect(func(val: float) -> void:
+		SettingsManager.current_fov = val
 		SettingsManager.fov_changed.emit(val)
 		_auto_save_check()
 	)
@@ -109,8 +113,14 @@ func _init_ui_elements():
 	fps_limit_btn.item_selected.connect(_on_fps_limit_selected)
 	
 	# Кнопки сброса
-	reset_progress_btn.pressed.connect(_on_reset_progress_pressed)
+	if not reset_progress_btn.pressed.is_connected(_on_reset_progress_pressed):
+		reset_progress_btn.pressed.connect(_on_reset_progress_pressed)
 	reset_settings_btn.pressed.connect(_on_reset_settings_pressed)
+	if apply_btn and not apply_btn.pressed.is_connected(save_settings):
+		apply_btn.pressed.connect(save_settings)
+	
+	# Переключатель: 3D-текст vs UI-текст (добавляем в Controls tab)
+	_add_ui_messages_toggle()
 	
 	# Управление (Мышь)
 	mouse_sens_slider.min_value = 0.01
@@ -134,32 +144,6 @@ func _create_keybind_menu():
 		button.text = _get_action_key_text(action)
 		button.pressed.connect(_on_keybind_button_pressed.bind(action, button))
 		keybinds_grid.add_child(button)
-
-func _get_action_key_text(action: String) -> String:
-	var events = InputMap.action_get_events(action)
-	if events.size() > 0 and events[0] is InputEventKey:
-		return OS.get_keycode_string(events[0].physical_keycode)
-	return "Не назначено"
-
-func _on_keybind_button_pressed(action: String, button: Button):
-	if key_waiting_for_action != "": 
-		return
-	key_waiting_for_action = action
-	key_waiting_button = button
-	button.text = "... Нажмите клавишу ..."
-
-func _input(event):
-	if key_waiting_for_action != "" and event is InputEventKey and event.is_pressed():
-		var scancode = event.physical_keycode
-		SettingsManager._apply_keybind(key_waiting_for_action, scancode)
-		
-		key_waiting_button.text = OS.get_keycode_string(scancode)
-		config.set_value("keybinds", key_waiting_for_action, scancode)
-		config.save(SAVE_PATH)
-		
-		key_waiting_for_action = ""
-		key_waiting_button = null
-		get_viewport().set_input_as_handled()
 
 func load_settings():
 	if !FileAccess.file_exists(SAVE_PATH):
@@ -202,7 +186,7 @@ func load_settings():
 	fps_limit_btn.selected = FPS_LIMITS.find(limit_val) if FPS_LIMITS.find(limit_val) != -1 else 0
 	_on_fps_limit_selected(fps_limit_btn.selected)
 	
-	mouse_sens_slider.value = config.get_value("controls", "mouse_sensitivity", 20)
+	mouse_sens_slider.value = clampf(float(config.get_value("controls", "mouse_sensitivity", 0.5)), 0.01, 1.0)
 	_on_mouse_sens_changed(mouse_sens_slider.value)
 	
 	mouse_invert_btn.button_pressed = config.get_value("controls", "mouse_inverted", false)
@@ -213,13 +197,17 @@ func load_settings():
 	TranslationServer.set_locale(current_lang)
 	
 	_create_keybind_menu()
+	
+	if _ui_messages_check:
+		_ui_messages_check.button_pressed = SettingsManager.show_3d_messages
 
 
 func _set_defaults():
 	master_slider.value = 0.7
 	music_slider.value = 0.7
 	sfx_slider.value = 0.7
-	show_tutorial = true
+	show_tutorial.button_pressed = true
+	SettingsManager.show_tutorial = true
 	fov_slider.value = 85 # Сделали дефолтный FOV приятным для 3D
 	window_mode_btn.selected = 0
 	vsync_btn.button_pressed = true
@@ -237,6 +225,8 @@ func _set_defaults():
 	_on_graphics_selected(2) # Сброс на Высокие
 	
 	SettingsManager.fov_changed.emit(85)
+	if _ui_messages_check:
+		_ui_messages_check.button_pressed = false
 
 func save_settings():
 	config.set_value("video", "resolution_index", resolution_btn.selected)
@@ -258,6 +248,8 @@ func save_settings():
 	
 	config.set_value("controls", "mouse_sensitivity", mouse_sens_slider.value)
 	config.set_value("controls", "mouse_inverted", mouse_invert_btn.button_pressed)
+	if _ui_messages_check:
+		config.set_value("general", "show_3d_messages", _ui_messages_check.button_pressed)
 	config.save(SAVE_PATH)
 
 
@@ -281,53 +273,22 @@ func _on_vsync_toggled(toggled_on):
 	_auto_save_check()
 
 func _on_graphics_selected(index):
-	var env = load(ENV_PATH) as Environment
-	if env:
-		match index:
-			0: # НИЗКОЕ
-				env.tonemap_mode = Environment.TONE_MAPPER_ACES
-				env.glow_enabled = false
-				env.ssao_enabled = false
-				env.ssil_enabled = false
-				env.volumetric_fog_enabled = false
-			1: # СРЕДНЕЕ
-				env.tonemap_mode = Environment.TONE_MAPPER_ACES
-				env.glow_enabled = true
-				env.glow_bloom = 0.15
-				env.ssao_enabled = false
-				env.ssil_enabled = false
-				env.volumetric_fog_enabled = true
-				env.volumetric_fog_density = 0.01
-			2: # ВЫСОКОЕ
-				env.tonemap_mode = Environment.TONE_MAPPER_ACES
-				env.glow_enabled = true
-				env.glow_bloom = 0.3
-				env.ssao_enabled = true
-				env.ssil_enabled = false
-				env.volumetric_fog_enabled = true
-				env.volumetric_fog_density = 0.01
-			3: # УЛЬТРА
-				env.tonemap_mode = Environment.TONE_MAPPER_ACES
-				env.glow_enabled = true
-				env.glow_bloom = 0.4
-				env.ssao_enabled = true
-				env.ssil_enabled = true
-				env.volumetric_fog_enabled = true
-				env.volumetric_fog_density = 0.02
-				
-	# Важно: вызываем сохранение только если мы НЕ в процессе загрузки меню
-	if !is_loading:
+	SettingsManager._apply_graphics_preset(index)
+	if not is_loading:
 		_auto_save_check()
 
 				
 func _on_master_slider_value_changed(value):
 	SettingsManager._set_bus_vol("Master", value)
-	
+	_auto_save_check()
+
 func _on_music_slider_value_changed(value):
 	SettingsManager._set_bus_vol("Music", value)
-	
+	_auto_save_check()
+
 func _on_sfx_slider_value_changed(value):
 	SettingsManager._set_bus_vol("Sfx", value)
+	_auto_save_check()
 	
 func _on_language_selected(index):
 	TranslationServer.set_locale(LANGUAGES[index])
@@ -342,25 +303,27 @@ func _on_fps_limit_selected(index):
 	_auto_save_check()
 	
 func _on_mouse_sens_changed(value):
-	SettingsManager.mouse_sensitivity = value
+	SettingsManager.mouse_sensitivity = clampf(float(value), 0.01, 1.0)
 	_auto_save_check()
 	
 func _on_mouse_invert_toggled(toggled_on):
 	SettingsManager.mouse_inverted = toggled_on
 	_auto_save_check()
 
+func _on_reset_progress_button_pressed() -> void:
+	_on_reset_progress_pressed()
+
+
 func _on_reset_progress_pressed() -> void:
-	# 1. Вызываем физическое удаление файла с диска и очистку памяти
-	if has_node("/root/SaveManager"):
-		get_node("/root/SaveManager").clear_save()
-		
-	# 2. Перезагружаем текущую сцену Главного Меню, чтобы кнопка "Продолжить" мгновенно превратилась обратно в "Играть"!
-	get_tree().reload_current_scene()
+	SaveManager.clear_save()
+	get_tree().paused = false
+	SceneLoader.change_scene_async("res://scenes/ui/main_menu.tscn")
+
 
 func _on_reset_settings_pressed():
 	if FileAccess.file_exists(SAVE_PATH):
 		DirAccess.remove_absolute(SAVE_PATH)
-		get_tree().reload_current_scene()
+		SceneLoader.reload_current_scene()
 
 func _play_entrance_animation():
 	%MainPanel.modulate.a = 0.0
@@ -380,3 +343,84 @@ func _on_tutorial_toggled(toggled_on: bool) -> void:
 	# Напрямую переключаем флаг в синглтоне
 	SettingsManager.show_tutorial = toggled_on
 	_auto_save_check()
+
+
+# ─── Настройка UI-текста вместо 3D ────────────────────────────────────────────
+
+var _ui_messages_check: CheckButton = null
+
+func _add_ui_messages_toggle() -> void:
+	# Добавляем строку в Controls tab (GridContainer с 2 колонками)
+	var main_grid: GridContainer = keybinds_grid.get_parent().get_parent() as GridContainer
+	if main_grid == null:
+		return
+	var label: Label = Label.new()
+	label.text = "KEY_SETTINGS_UI_MESSAGES"
+	label.unique_name_in_owner = false
+	main_grid.add_child(label)
+	_ui_messages_check = CheckButton.new()
+	_ui_messages_check.toggled.connect(_on_ui_messages_toggled)
+	main_grid.add_child(_ui_messages_check)
+
+func _on_ui_messages_toggled(toggled_on: bool) -> void:
+	SettingsManager.show_3d_messages = toggled_on
+	_auto_save_check()
+
+# ─── Улучшенное переназначение клавиш ──────────────────────────────────────────
+
+func _input(event):
+	if key_waiting_for_action != "" and event.is_action_pressed("ui_cancel"):
+		# Escape — отмена назначения
+		key_waiting_button.text = _get_action_key_text(key_waiting_for_action)
+		_abort_keybinding()
+		get_viewport().set_input_as_handled()
+		return
+	if key_waiting_for_action != "" and event is InputEventKey and not event.echo and event.is_pressed():
+		var scancode: int = event.physical_keycode
+		# Проверяем дубликат — эту клавишу уже использует другое действие?
+		_remove_duplicate_bind(scancode, key_waiting_for_action)
+		
+		SettingsManager._apply_keybind(key_waiting_for_action, scancode)
+		key_waiting_button.text = OS.get_keycode_string(scancode)
+		config.set_value("keybinds", key_waiting_for_action, scancode)
+		config.save(SAVE_PATH)
+		key_waiting_for_action = ""
+		key_waiting_button = null
+		get_viewport().set_input_as_handled()
+
+func _abort_keybinding() -> void:
+	key_waiting_for_action = ""
+	key_waiting_button = null
+
+func _remove_duplicate_bind(scancode: int, except_action: String) -> void:
+	for action in CONFIGURABLE_ACTIONS:
+		if action == except_action:
+			continue
+		var events: Array = InputMap.action_get_events(action)
+		for ev in events:
+			if ev is InputEventKey and ev.physical_keycode == scancode:
+				InputMap.action_erase_event(action, ev)
+				config.set_value("keybinds", action, -1)
+				break
+	# Обновляем текст кнопок в UI, если клавишу отвязали
+	_create_keybind_menu()
+
+
+func _on_keybind_button_pressed(action: String, button: Button):
+	if key_waiting_for_action != "":
+		_cancel_current_keybinding()
+	key_waiting_for_action = action
+	key_waiting_button = button
+	button.text = "... Нажмите клавишу ..."
+
+func _cancel_current_keybinding() -> void:
+	if key_waiting_button:
+		key_waiting_button.text = _get_action_key_text(key_waiting_for_action)
+	key_waiting_for_action = ""
+	key_waiting_button = null
+
+func _get_action_key_text(action: String) -> String:
+	var events: Array = InputMap.action_get_events(action)
+	if events.size() > 0 and events[0] is InputEventKey:
+		return OS.get_keycode_string(events[0].physical_keycode)
+	return "—"

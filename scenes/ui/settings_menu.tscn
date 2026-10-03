@@ -298,8 +298,10 @@ layout_mode = 2
 text = "KEY_BUTTON_BACK"
 
 [node name="SaveButton" type="Button" parent="BlurBackground/PanelContainer/CenterContainer/MainPanel/VBoxContainer/MarginContainer/BottomButtons" unique_id=783225957]
+unique_name_in_owner = true
 layout_mode = 2
 text = "KEY_BUTTON_APPLY"
 
-[connection signal="pressed" from="BlurBackground/PanelContainer/CenterContainer/MainPanel/VBoxContainer/TabContainer/KEY_TAB_GENERAL/GridContainer/ResetProgressButton" to="." method="_on_reset_progress_button_pressed"]
+[connection signal="pressed" from="BlurBackground/PanelContainer/CenterContainer/MainPanel/VBoxContainer/TabContainer/KEY_TAB_GENERAL/GridContainer/ResetProgressButton" to="." method="_on_reset_progress_pressed"]
 [connection signal="pressed" from="BlurBackground/PanelContainer/CenterContainer/MainPanel/VBoxContainer/MarginContainer/BottomButtons/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="BlurBackground/PanelContainer/CenterContainer/MainPanel/VBoxContainer/MarginContainer/BottomButtons/SaveButton" to="." method="save_settings"]
