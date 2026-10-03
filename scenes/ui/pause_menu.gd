@@ -10,6 +10,10 @@ func _ready() -> void:
 	if v_box_container:
 		v_box_container.modulate.a = 1.0
 	
+	# === КРИТИЧЕСКИЙ ФИКС СЛОЕВ ===
+	# Поднимаем слой паузы выше HUD игрока
+	layer = 2
+	
 	# Инициализация профиля тотального размытия 3D-мира при старте
 	camera_attrs = CameraAttributesPractical.new()
 	camera_attrs.dof_blur_far_enabled = true
@@ -32,15 +36,18 @@ func _input(event: InputEvent) -> void:
 
 
 func open_pause_menu() -> void:
-	# Страховка респауна: если игрок летит в бездну, запрещаем открывать меню
-	var player = get_tree().current_scene.find_child("Player", true, false)
+	# Страховка респауна
+	var player = get_tree().current_scene.find_child("Player", true, false) as CharacterBody3D
 	if player and player.global_position.y < -20.0:
 		return
 		
+	# === ОТКЛЮЧЕНИЕ ПРИЦЕЛА ПО ТОЧНОМУ ПУТИ ===
+	# Стучимся в плеер, открываем HUD, заходим в CanvasLayer и тушим Crosshair!
+	if player and player.has_node("HUD/CanvasLayer/Crosshair"):
+		player.get_node("HUD/CanvasLayer/Crosshair").visible = false
+		
 	visible = true
 	get_tree().paused = true # Безопасно замораживаем глобальную физику движка
-	
-	# Включаем видимость мыши для интерфейса
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	
 	# Подключаем наши ААА-атрибуты размытия к 3D-камере игрока
@@ -48,7 +55,7 @@ func open_pause_menu() -> void:
 		var camera = player.get_node("Camera3D") as Camera3D
 		camera.attributes = camera_attrs
 	
-	# Анимация плавного появления
+	# Анимация плавного появления кнопок
 	if blur_tween: blur_tween.kill()
 	blur_tween = create_tween().set_parallel(true)
 	blur_tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
@@ -60,19 +67,9 @@ func open_pause_menu() -> void:
 	# Плавно выводим сочное размытие на твое идеальное значение 0.25
 	blur_tween.tween_property(camera_attrs, "dof_blur_amount", 0.25, 0.25)\
 		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
-		
-	# === ФИКС ФОКУСА КНОПОК ===
-	# Автоматически передаем фокус ввода первой кнопке в контейнере (кнопке "Вернуться")
-	# Это заставляет интерфейс мгновенно реагировать на клики и мышь, 
-	# даже если анимация вставания или респауна в фоне пытается блокировать ввод!
-	#if v_box_container and v_box_container.get_child_count() > 0:
-	#	var first_button = v_box_container.get_child(0)
-	#	if first_button is Control:
-	#		first_button.grab_focus()
 
 
 func close_pause_menu() -> void:
-	# Возвращаем мышь обратно в скрытый режим для 3D-управления
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 	if blur_tween: blur_tween.kill()
@@ -86,15 +83,18 @@ func close_pause_menu() -> void:
 	blur_tween.tween_property(camera_attrs, "dof_blur_amount", 0.0, 0.2)\
 		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	
-	# Когда мир полностью стал четким — снимаем паузу движка и прячем интерфейс
 	blur_tween.finished.connect(func():
 		get_tree().paused = false
 		visible = false
 		if v_box_container:
 			v_box_container.modulate.a = 1.0
 			
-		# Отвязываем атрибуты в геймплее, чтобы не жрать ресурсы видеокарты при беге
-		var player = get_tree().current_scene.find_child("Player", true, false)
+		# === ВОЗВРАЩАЕМ ПРИЦЕЛ ПРИ ВЫХОДЕ ИЗ ПАУЗЫ ===
+		var player = get_tree().current_scene.find_child("Player", true, false) as CharacterBody3D
+		if player and player.has_node("HUD/CanvasLayer/Crosshair"):
+			player.get_node("HUD/CanvasLayer/Crosshair").visible = true
+			
+		# Отвязываем атрибуты в геймплее
 		if player and player.has_node("Camera3D"):
 			var camera = player.get_node("Camera3D") as Camera3D
 			camera.attributes = null
